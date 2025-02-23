@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "timepapers")
-public class Timepaper extends BaseTimeEntity {
+@Table(name = "time_papers")
+public class TimePaper extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

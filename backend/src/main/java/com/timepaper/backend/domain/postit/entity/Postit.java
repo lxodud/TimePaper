@@ -1,6 +1,6 @@
 package com.timepaper.backend.domain.postit.entity;
 
-import com.timepaper.backend.domain.timepaper.entity.Timepaper;
+import com.timepaper.backend.domain.timepaper.entity.TimePaper;
 import com.timepaper.backend.domain.user.entity.User;
 import com.timepaper.backend.global.entity.BaseTimeEntity;
 import jakarta.persistence.Entity;
@@ -26,15 +26,15 @@ public class Postit extends BaseTimeEntity {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "timepaper_id", nullable = false)
-  private Timepaper timepaper;
+  @JoinColumn(name = "time_paper_id", nullable = false)
+  private TimePaper timePaper;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "author_id", nullable = false)
   private User author;
 
   private String content;
-  
+
   private String imageUrl;
 
 }
