@@ -3,11 +3,14 @@ import RootLayout from "../RootLayout.jsx";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
-import My from "../pages/My";
+import MyPage from "../pages/MyPage.jsx";
+import TimePaperCreate from "../pages/TimePaperCreate";
+import TimePaperDetail from "../pages/TimePaperDetail";
+import TimePaperLock from "../pages/TimePaperIsLocked.jsx";
+import PostItCreate from "../pages/PostItCreate";
+import NotFound from "../pages/NotFound";
 
-
-
-const router =createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
@@ -27,9 +30,33 @@ const router =createBrowserRouter([
       },
       {
         path: "/my",
-        element: <My />,
-      }
-
+        element: <MyPage />,
+      },
+      {
+        path: "/timepaper",
+        children: [
+          {
+            path: "create",
+            element: <TimePaperCreate />,
+          },
+          {
+            path: ":timepaperId",
+            element: <TimePaperDetail />,
+          },
+          {
+            path: ":timepaperId/lock",
+            element: <TimePaperLock />,
+          },
+        ],
+      },
+      {
+        path: "/postit/create",
+        element: <PostItCreate />,
+      },
+      {
+        path: "/error",
+        element: <NotFound />,
+      },
     ],
   },
 ]);
