@@ -14,6 +14,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         path: '/',
@@ -52,10 +53,6 @@ const router = createBrowserRouter([
       {
         path: '/postit/create',
         element: <PostItCreate />,
-      },
-      {
-        path: '/error',
-        element: <NotFound />,
       },
     ],
   },
