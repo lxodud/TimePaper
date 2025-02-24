@@ -4,12 +4,12 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Signup from '../pages/SignUp';
 import MyPage from '../pages/MyPage.jsx';
-import TimePaperCreate from '../pages/TimePaperCreate';
 import TimePaperDetail from '../pages/TimePaperDetail';
 import TimePaperIsLocked from '../pages/TimePaperIsLocked.jsx';
 import PostItCreate from '../pages/PostItCreate';
 import NotFound from '../pages/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
+import TimePaperCreate from '../pages/timepapercreate/TimePaperCreate.jsx';
 
 const router = createBrowserRouter([
   {
