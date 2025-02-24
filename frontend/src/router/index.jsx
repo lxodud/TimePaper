@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {
-        index:true,
+        index: true,
         element: <Home />,
       },
       {
@@ -37,8 +37,8 @@ const router = createBrowserRouter([
         path: '/timepaper',
         children: [
           {
-            index:true,
-            element:<Home />
+            index: true,
+            element: <Home />,
           },
           {
             path: 'create',
