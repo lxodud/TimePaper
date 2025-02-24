@@ -42,6 +42,8 @@
   width: 400px;
   min-height: 100vh;
   padding-bottom: 30px;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 body {
