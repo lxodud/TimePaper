@@ -10,7 +10,8 @@
   height: 72px;
   transition: background-color 0.3s ease;
   border-radius: 10px;
-  font: var(--pretendard-regular);
+  font-family: var(--pretendard-semiBold);
+  margin: 50% auto 0 auto;
 }
 
 .buttonBasic:hover {
