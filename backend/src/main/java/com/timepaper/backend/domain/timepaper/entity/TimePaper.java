@@ -30,7 +30,7 @@ public class TimePaper extends BaseTimeEntity {
   @JoinColumn(name = "creator_id", nullable = false)
   private User creator;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 30)
   private String title;
 
   private String recipientEmail;
