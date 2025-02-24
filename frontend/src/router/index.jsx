@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from '../layout/RootLayout.jsx';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
-import Signup from '../pages/SignUp';
+import Signup from '../pages/signup/SignUp';
 import MyPage from '../pages/MyPage.jsx';
 import TimePaperCreate from '../pages/TimePaperCreate';
 import TimePaperDetail from '../pages/TimePaperDetail';
