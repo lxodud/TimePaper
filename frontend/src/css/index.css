@@ -47,11 +47,12 @@
   background-color: var(--background-color);
   max-width: 400px;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 body {
   margin: 0px;
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
 }
 
 /* NotFound.jsx */
@@ -62,19 +63,24 @@ body {
 }
 
 .home-link {
-  /* position: absolute; */
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 20px;
   display: flex;
   justify-content: center;
-  border: 1px solid black;
+  margin: 0 auto;
   font-size: 18px;
-  bottom: 10vh;
+  z-index: 99;
   width: 100%;
-  z-index: -99;
-
-  /* left: var(--button-x); */
-  /* top: var(--button-y); */
 }
 
 .home-link > a {
+  display: inline-block;
+  background-color: var(--orange-color);
+  color: var(--button-text-color);
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
   text-decoration: none;
 }
