@@ -9,6 +9,12 @@
   --pretendard-bold: 'Pretendard-Bold';
   --pretendard-semiBold: 'Pretendard-SemiBold';
   --pretendard-light: 'Pretendard-Light';
+
+  /*position*/
+  --image-x: 0px;
+  --image-y: 155px;
+  --button-x: 828px;
+  --button-y: 788px;
 }
 
 @font-face {
@@ -48,5 +54,30 @@
 
 body {
   margin: 0px;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
+}
+
+/* NotFound.jsx */
+.image-container {
+  position: relative;
+  left: var(--image-x);
+  top: var(--image-y);
+}
+
+.home-link {
+  /* position: absolute; */
+  display: flex;
+  justify-content: center;
+  border: 1px solid black;
+  font-size: 18px;
+  bottom: 10vh;
+  width: 100%;
+  z-index: -99;
+
+  /* left: var(--button-x); */
+  /* top: var(--button-y); */
+}
+
+.home-link > a {
+  text-decoration: none;
 }
