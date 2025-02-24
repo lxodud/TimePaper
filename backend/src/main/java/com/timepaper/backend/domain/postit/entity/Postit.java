@@ -3,6 +3,7 @@ package com.timepaper.backend.domain.postit.entity;
 import com.timepaper.backend.domain.timepaper.entity.TimePaper;
 import com.timepaper.backend.domain.user.entity.User;
 import com.timepaper.backend.global.entity.BaseTimeEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +34,10 @@ public class Postit extends BaseTimeEntity {
   @JoinColumn(name = "author_id", nullable = false)
   private User author;
 
+  @Column(length = 20, nullable = false)
+  private String authorName;
+
+  @Column(length = 155)
   private String content;
 
   private String imageUrl;
