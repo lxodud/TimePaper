@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,21 +31,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   public Authentication attemptAuthentication(HttpServletRequest request,
       HttpServletResponse response) throws AuthenticationException {
 
-    String email = null;
-    String password = null;
+    LoginRequestDto requestDto;
 
     try {
-      LoginRequestDto requestDto = objectMapper.readValue(request.getInputStream(),
+      requestDto = objectMapper.readValue(request.getInputStream(),
           LoginRequestDto.class);
-
-      email = requestDto.getEmail();
-      password = requestDto.getPassword();
-      log.info("email : {}, password : {}", email, password);
 
     } catch (IOException e) {
       throw new RuntimeException("LoginRequestDto 파싱 중 에러 발생 ", e);
     }
     // 이메일 형식 유효성 검증
+    validateLoginRequest(requestDto);
+
+    String email = requestDto.getEmail();
+    String password = requestDto.getPassword();
+    log.info("email : {}, password : {}", email, password);
 
     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
         email, password, null);
@@ -63,5 +64,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
       HttpServletResponse response, AuthenticationException failed)
       throws IOException, ServletException {
     log.info("로그인 검증 실패");
+  }
+
+  private void validateLoginRequest(LoginRequestDto requestDto) {
+    Optional<String> emailOpt = Optional.ofNullable(requestDto.getEmail());
+    Optional<String> passwordOpt = Optional.ofNullable(requestDto.getPassword());
+
+    if (emailOpt.isEmpty() || passwordOpt.isEmpty()) {
+      throw new IllegalArgumentException("Email 또는 Password empty");
+    }
+
   }
 }
