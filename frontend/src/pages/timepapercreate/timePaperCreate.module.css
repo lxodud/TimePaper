@@ -1,17 +1,10 @@
 /* timePaperCreate.module.css */
 
-.inputParentContainer {
+.container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: #f6f1e7;
-}
-
-.buttonParentContainer {
-  background-color: #f6f1e7;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding-bottom: 5%;
 }
