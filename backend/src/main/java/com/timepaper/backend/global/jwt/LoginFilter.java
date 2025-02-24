@@ -1,5 +1,7 @@
 package com.timepaper.backend.global.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
   private final AuthenticationManager authenticationManager;
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   public LoginFilter(AuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
@@ -26,10 +29,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request,
       HttpServletResponse response) throws AuthenticationException {
-    String email = obtainUsername(request);
-    String password = obtainPassword(request);
-    log.info("email : {}, password : {}", email, password);
 
+    String email = null;
+    String password = null;
+
+    try {
+      LoginRequestDto requestDto = objectMapper.readValue(request.getInputStream(),
+          LoginRequestDto.class);
+
+      email = requestDto.getEmail();
+      password = requestDto.getPassword();
+      log.info("email : {}, password : {}", email, password);
+
+    } catch (IOException e) {
+      throw new RuntimeException("LoginRequestDto 파싱 중 에러 발생 ", e);
+    }
     // 이메일 형식 유효성 검증
 
     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
