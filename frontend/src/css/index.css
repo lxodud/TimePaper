@@ -1,0 +1,49 @@
+:root {
+  /*color*/
+  --orange-color: #f0842c;
+  --gray-color: #d9d9d9;
+  --background-color: #efe9db;
+
+  /*font*/
+  --pretendard-regular: 'Pretendard-Regular';
+  --pretendard-bold: 'Pretendard-Bold';
+  --pretendard-semiBold: 'Pretendard-SemiBold';
+  --pretendard-light: 'Pretendard-Light';
+}
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('../assets/fonts/Pretendard-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Pretendard-Bold';
+  src: url('../assets/fonts/Pretendard-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Pretendard-SemiBold';
+  src: url('../assets/fonts/Pretendard-SemiBold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Pretendard-Light';
+  src: url('../assets/fonts/Pretendard-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Pretendard-Medium';
+  src: url('../assets/fonts/Pretendard-Medium.otf') format('opentype');
+}
+
+.main-container {
+  margin: 0 auto;
+  background-color: var(--background-color);
+  width: 400px;
+  min-height: 900px;
+}
+
+body {
+  margin: 0px;
+  overflow-x: hidden;
+}

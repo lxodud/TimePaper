@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import RootLayout from '../RootLayout.jsx';
+import RootLayout from '../layout/RootLayout.jsx';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Signup from '../pages/SignUp';
@@ -9,6 +9,7 @@ import TimePaperDetail from '../pages/TimePaperDetail';
 import TimePaperIsLocked from '../pages/TimePaperIsLocked.jsx';
 import PostItCreate from '../pages/PostItCreate';
 import NotFound from '../pages/NotFound';
+import HeaderLayout from '../layout/HeaderLayout.jsx';
 
 const router = createBrowserRouter([
   {
@@ -24,39 +25,44 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />,
       },
-
       {
-        path: '/signup',
-        element: <Signup />,
-      },
-      {
-        path: '/my',
-        element: <MyPage />,
-      },
-      {
-        path: '/timepaper',
+        path: '/',
+        element: <HeaderLayout />,
         children: [
           {
-            index: true,
-            element: <Home />,
+            path: '/signup',
+            element: <Signup />,
           },
           {
-            path: 'create',
-            element: <TimePaperCreate />,
+            path: '/my',
+            element: <MyPage />,
           },
           {
-            path: ':timepaperId',
-            element: <TimePaperDetail />,
+            path: '/postit/create',
+            element: <PostItCreate />,
           },
           {
-            path: ':timepaperId/lock',
-            element: <TimePaperIsLocked />,
+            path: '/timepaper',
+            children: [
+              {
+                index: true,
+                element: <Home />,
+              },
+              {
+                path: 'create',
+                element: <TimePaperCreate />,
+              },
+              {
+                path: ':timepaperId',
+                element: <TimePaperDetail />,
+              },
+              {
+                path: ':timepaperId/lock',
+                element: <TimePaperIsLocked />,
+              },
+            ],
           },
         ],
-      },
-      {
-        path: '/postit/create',
-        element: <PostItCreate />,
       },
     ],
   },
