@@ -30,5 +30,7 @@ public class User extends BaseTimeEntity {
   @Column(nullable = false)
   private String password;
 
+  private ROLE role;
+
 
 }
