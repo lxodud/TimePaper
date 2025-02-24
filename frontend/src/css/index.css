@@ -2,7 +2,7 @@
   /*color*/
   --orange-color: #f0842c;
   --gray-color: #d9d9d9;
-  --background-color: #efe9db;
+  --background-color: #F6F1E7;
 
   /*font*/
   --pretendard-regular: 'Pretendard-Regular';
@@ -40,7 +40,8 @@
   margin: 0 auto;
   background-color: var(--background-color);
   width: 400px;
-  min-height: 900px;
+  min-height: 100vh;
+  padding-bottom: 30px;
 }
 
 body {
