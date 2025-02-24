@@ -13,6 +13,7 @@ import jakarta.persistence.UniqueConstraint;
 import java.util.Collection;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,6 +40,13 @@ public class User extends BaseTimeEntity implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private ROLE role;
+
+  @Builder
+  public User(String email, String password, ROLE role) {
+    this.email = email;
+    this.password = password;
+    this.role = role;
+  }
 
 
   @Override
