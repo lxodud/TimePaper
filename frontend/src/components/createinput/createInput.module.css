@@ -1,0 +1,17 @@
+/* createInput.module.css */
+
+.textInput {
+  background-color: var(--background-color);
+  border-width: 0;
+  border-width: 0 0 1px;
+  width: 270px;
+  height: 65px;
+  padding: 0;
+  font: var(--pretendard-regular);
+  text-align: center;
+}
+
+.textInput:focus {
+  border-color: #f0842c;
+  outline: none;
+}
