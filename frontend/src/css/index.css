@@ -40,7 +40,6 @@
   margin: 0 auto;
   background-color: var(--background-color);
   width: 400px;
-  min-height: 100vh;
   padding-bottom: 30px;
   min-height: 100vh;
   overflow: hidden;
