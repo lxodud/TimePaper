@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './CreateInput.module.css'; // CSS 파일 가져오기
+import style from './timePaperCreate.module.css';
 
 export default function CreateInput({ placeholder }) {
   return (
