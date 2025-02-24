@@ -1,0 +1,108 @@
+html, body {
+    height: 100%; /* html과 body의 높이를 100%로 설정 */
+    margin: 0; /* 기본 margin 제거 */
+}
+
+body{
+    width: 412px;
+    margin: 0 auto;
+}
+
+.signMainBox{
+    background-color: #F6F1E7;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.bigbox{
+    margin: 20px;
+}
+
+.signMainBox > div {
+    margin: 20px;
+}
+
+.fieldsBox{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentBox{
+    width: 80%;
+}
+
+.fieldsInput{
+    text-align: center;
+    width: 70%;
+}
+
+.pwfont{
+    color: red;
+    font-size: 10px;
+}
+
+.emailCheckBox{
+    display: flex;
+    justify-content: space-between;
+}
+
+.emailCheckBut{
+    width: 22%;
+    background-color: #F0842C;
+    font-weight: bold;
+}
+
+.border-radius{
+    border-radius: 3px;
+    border: none;
+}
+
+.checkboxText{
+    font-size: 7px;
+}
+
+.checkboxText > label{
+    vertical-align: 4px;
+    cursor: pointer;
+}
+
+.checkBoxDiv > div{
+    font-size: 10px;
+}
+
+.checkBoxDiv {
+    width: 62%;
+    display: flex; /* flexbox 사용 */
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    gap: 10px; /* 각 체크박스 사이의 간격 */
+}
+
+.isPrivacyPolicyAccepted,
+.isTermsAccepted {
+    display: flex; /* flexbox 사용 */
+    align-items: center; /* 수직 정렬 */
+    justify-content: space-between; /* 좌우 간격을 동일하게 */
+}
+
+.signUpBut{
+    width: 80%;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background-color: #F0842C;
+    font-weight: bold;
+}
+
+/* 전체 요소에 드래그 방지 적용 */
+* {
+    user-select: none;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer */
+}
+
