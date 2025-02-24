@@ -35,3 +35,15 @@
   font-family: 'Pretendard-Medium';
   src: url('../assets/fonts/Pretendard-Medium.otf') format('opentype');
 }
+
+.main-container {
+  margin: 0 auto;
+  background-color: var(--background-color);
+  width: 400px;
+  min-height: 900px;
+}
+
+body {
+  margin: 0px;
+  overflow-x: hidden;
+}
