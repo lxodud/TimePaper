@@ -1,0 +1,17 @@
+/* timePaperCreate.module.css */
+
+.inputParentContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f6f1e7; /* 배경색 */
+}
+
+.buttonParentContainer {
+  background-color: #f6f1e7;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 20px;
+}
