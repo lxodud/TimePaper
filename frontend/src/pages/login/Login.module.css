@@ -1,15 +1,8 @@
 .container {
+  margin-top: var(--top-margin);
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.logoImage {
-  width: 90%;
-  height: 90%;
-  margin-top: 10%;
-  user-select: none;
-  pointer-events: none;
 }
 
 .formContainer {
@@ -17,12 +10,13 @@
   flex-direction: column;
   align-items: center;
   margin-top: 10%;
+  width: 100%;
 }
 
 .inputId {
   border-radius: 5px;
   border: none;
-  width: 100%;
+  width: 90%;
   height: 49px;
   padding-left: 5%;
   box-sizing: border-box;
@@ -31,32 +25,29 @@
 .inputPassword {
   border-radius: 5px;
   border: none;
-  width: 100%;
+  width: 90%;
   height: 46px;
   margin-top: 3%;
   padding-left: 5%;
   box-sizing: border-box;
 }
 
-input::placeholder {
+.inputId.inputPassword::placeholder {
   color: #B1B1B1;
   font-family: var(--pretendard-regular);
   font-size: 17px;
 }
 
-.loginButton {
-  width: 353px;
-  height: 55px;
-  background-color: var(--orange-color);
-  border: none;
-  border-radius: 10px;
-  font-family: var(--pretendard-regular);
-  font-size: 17px;
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 7%;
+  width: 100%;
 }
 
 .signupButton {
-  width: 353px;
+  width: 90%;
   height: 55px;
   background-color: #D9D9D9;
   margin-top: 3%;
