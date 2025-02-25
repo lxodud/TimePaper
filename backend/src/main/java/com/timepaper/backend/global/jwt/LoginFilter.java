@@ -8,7 +8,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 //TODO: 이메일 형식 유효성 검증 로직
 @RequiredArgsConstructor
@@ -26,6 +26,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
   private final AuthenticationManager authenticationManager;
   private final ObjectMapper objectMapper;
+  private final JWTUtil jwtUtil;
 
   @PostConstruct
   public void init() {
@@ -62,8 +63,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
   @Override
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-      FilterChain chain, Authentication authResult) throws IOException, ServletException {
-    log.info("로그인 검증 성공");
+      FilterChain chain, Authentication authentication) throws IOException, ServletException {
+
+    String accessToken = jwtUtil.createToken(authentication);
+    log.info("로그인 검증 성공, accessToken : {}", accessToken);
+
   }
 
   @Override
@@ -74,12 +78,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   }
 
   private void validateLoginRequest(LoginRequestDto requestDto) {
-    Optional<String> emailOpt = Optional.ofNullable(requestDto.getEmail());
-    Optional<String> passwordOpt = Optional.ofNullable(requestDto.getPassword());
-
-    if (emailOpt.isEmpty() || passwordOpt.isEmpty()) {
-      throw new IllegalArgumentException("Email 또는 Password empty");
+    if (!StringUtils.hasText(requestDto.getEmail())) {
+      throw new IllegalArgumentException("Email은 필수 입력 값입니다.");
     }
 
+    if (!StringUtils.hasText(requestDto.getPassword())) {
+      throw new IllegalArgumentException("Password는 필수 입력 값입니다.");
+    }
   }
 }
