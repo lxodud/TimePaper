@@ -1,11 +1,10 @@
 :root {
   /*color*/
   --orange-color: #f0842c;
-  --gray-color: #C8C8C8;
-  --disable-gray-color: #E6E3E3;
-  --background-color: #F6F1E7;
+  --gray-color: #c8c8c8;
+  --disable-gray-color: #e6e3e3;
+  --background-color: #f6f1e7;
   --black-color: #000000;
-
 
   /*font*/
   --pretendard-regular: 'Pretendard-Regular';
