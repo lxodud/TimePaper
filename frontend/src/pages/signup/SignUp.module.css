@@ -15,7 +15,7 @@
 }
 
 .fields {
-  font-size: 12px;
+  font-size: var(--font-size-small);
   padding-bottom: 5px;
   padding-left: 3px;
 }
@@ -38,7 +38,7 @@
   height: 20px;
   padding: 4px;
   margin-bottom: 10px;
-  font-size: 12px;
+  font-size: var(--font-size-small);
 }
 
 .fieldsInput::placeholder {
@@ -62,7 +62,7 @@
 .emailCheckBut {
   width: 20%;
   height: 28px;
-  font-size: 12px;
+  font-size: var(--font-size-small);
   background-color: var(--orange-color);
   cursor: pointer;
 }
@@ -82,7 +82,7 @@
 }
 
 .checkBoxDiv > div {
-  font-size: 12px;
+  font-size: var(--font-size-small);
 }
 
 .checkBoxDiv {
@@ -107,7 +107,7 @@
   background-color: var(--orange-color);
   font-size: 16px;
   cursor: pointer;
-  margin-top: 30px;
+  margin-top: var(--top-margin);
 }
 
 /* 전체 요소에 드래그 방지 적용 */
