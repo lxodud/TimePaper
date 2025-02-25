@@ -9,6 +9,6 @@
   border-radius: 10px;
 }
 
-button:hover {
+.bottomButton:hover {
   background-color: #d87728;
 }
