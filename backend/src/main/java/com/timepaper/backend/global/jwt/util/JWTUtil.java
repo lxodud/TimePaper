@@ -1,20 +1,24 @@
 package com.timepaper.backend.global.jwt.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JWTUtil {
 
-  private final long tokenValidityInMilliseconds = 1000L * 60 * 60; // 1시간
+  private final long tokenValidityInMilliseconds = 1000L * 60 * 30; // 30분
 
   @Value("${jwt.secret}")
   private String secretKey;
@@ -26,7 +30,14 @@ public class JWTUtil {
 
   public String createToken(Authentication authentication) {
     String email = authentication.getName();
+
+    List<String> roles = authentication.getAuthorities()
+        .stream()
+        .map(GrantedAuthority::getAuthority)
+        .collect(Collectors.toList());
+
     Claims claims = Jwts.claims().setSubject(email);
+    claims.put("roles", roles);
 
     Date now = new Date();
     Date validity = new Date(now.getTime() + tokenValidityInMilliseconds);
@@ -56,6 +67,21 @@ public class JWTUtil {
         .getBody()
         .getExpiration()
         .before(new Date());
+  }
+
+  public boolean validateToken(String token) {
+
+    try {
+      Jwts.parserBuilder()
+          .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
+          .build()
+          .parseClaimsJws(token);
+
+      return true;
+    } catch (JwtException | IllegalArgumentException e) {
+      return false;
+    }
+
   }
 
 }

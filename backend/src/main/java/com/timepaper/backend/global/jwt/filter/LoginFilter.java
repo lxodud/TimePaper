@@ -3,7 +3,6 @@ package com.timepaper.backend.global.jwt.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
 import com.timepaper.backend.global.dto.ApiResponse;
-import com.timepaper.backend.global.jwt.dto.AccessTokenResponse;
 import com.timepaper.backend.global.jwt.util.JWTUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
@@ -13,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -71,14 +71,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     String accessToken = jwtUtil.createToken(authentication);
     log.info("로그인 검증 성공, accessToken : {}", accessToken);
 
-    AccessTokenResponse accessTokenResponse = AccessTokenResponse.from("Bearer " + accessToken);
-    ApiResponse<AccessTokenResponse> apiResponse = ApiResponse.ok("Login Successful", "SUCCESS",
-        accessTokenResponse);
-
-    response.setContentType("application/json");
+    response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
     response.setStatus(HttpServletResponse.SC_OK);
-
-    objectMapper.writeValue(response.getOutputStream(), apiResponse);
   }
 
   @Override
