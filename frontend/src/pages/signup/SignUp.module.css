@@ -1,5 +1,5 @@
 .signMainBox {
-  background-color: #f6f1e7;
+  background-color: var(--background-color);
   height: 100%;
   display: flex;
   align-items: center;
@@ -12,6 +12,12 @@
 
 .signMainBox > div {
   margin: 20px;
+}
+
+.fields {
+  font-size: 12px;
+  padding-bottom: 5px;
+  padding-left: 3px;
 }
 
 .fieldsBox {
@@ -29,8 +35,14 @@
 .fieldsInput {
   text-align: center;
   width: 70%;
-  padding: 6px;
-  margin: 5px;
+  height: 20px;
+  padding: 4px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.fieldsInput::placeholder {
+  color: rgba(0, 0, 0, 0.2);
 }
 
 .pwfont {
@@ -40,16 +52,18 @@
 
 .emailCheckBox {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+}
+
+.emailCheckBox :nth-child(2) {
+  margin-right: 10px;
 }
 
 .emailCheckBut {
-  width: 80px; /* 버튼의 가로 길이를 고정 */
-  height: 25px; /* 버튼 높이를 조정 */
-  font-size: 12px; /* 글자 크기 줄이기 */
-  background-color: #f0842c;
-  font-weight: bold;
+  width: 20%;
+  height: 28px;
+  font-size: 12px;
+  background-color: var(--orange-color);
   cursor: pointer;
 }
 
@@ -68,24 +82,21 @@
 }
 
 .checkBoxDiv > div {
-  font-size: 10px;
-}
-.isPrivacyPolicyAcceptedText .isTermsAcceptedTxt {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .checkBoxDiv {
-  width: 62%;
-  display: flex; /* flexbox 사용 */
-  flex-direction: column; /* 세로 방향으로 정렬 */
-  gap: 10px; /* 각 체크박스 사이의 간격 */
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .isPrivacyPolicyAccepted,
 .isTermsAccepted {
-  display: flex; /* flexbox 사용 */
-  align-items: center; /* 수직 정렬 */
-  justify-content: space-between; /* 좌우 간격을 동일하게 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .signUpBut {
@@ -93,16 +104,16 @@
   height: 40px;
   border-radius: 10px;
   border: none;
-  background-color: #f0842c;
-  font-weight: bold;
+  background-color: var(--orange-color);
   font-size: 16px;
   cursor: pointer;
+  margin-top: 30px;
 }
 
 /* 전체 요소에 드래그 방지 적용 */
 * {
   user-select: none;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
