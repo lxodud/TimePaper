@@ -6,12 +6,12 @@
   --background-color: #F6F1E7;
   --black-color: #000000;
 
+
   /*font*/
   --pretendard-regular: 'Pretendard-Regular';
   --pretendard-bold: 'Pretendard-Bold';
   --pretendard-semiBold: 'Pretendard-SemiBold';
   --pretendard-light: 'Pretendard-Light';
-
   --font-size-small: 12px;
   --font-size-medium: 18px;
 
@@ -62,5 +62,5 @@
 
 body {
   margin: 0px;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }

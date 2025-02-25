@@ -8,7 +8,7 @@ import TimePaperCreate from '../pages/TimePaperCreate';
 import TimePaperDetail from '../pages/TimePaperDetail';
 import TimePaperIsLocked from '../pages/TimePaperIsLocked.jsx';
 import PostItCreate from '../pages/PostItCreate';
-import NotFound from '../pages/NotFound';
+import NotFound from '../pages/error/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
 
 const router = createBrowserRouter([
