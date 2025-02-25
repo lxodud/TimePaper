@@ -1,8 +1,8 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import RootLayout from '../layout/RootLayout.jsx';
 import Home from '../pages/Home';
-import Login from '../pages/Login';
 import Signup from '../pages/signup/SignUp';
+import Login from '../pages/login/Login.jsx';
 import MyPage from '../pages/MyPage.jsx';
 import TimePaperCreate from '../pages/TimePaperCreate';
 import TimePaperDetail from '../pages/TimePaperDetail';
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <Home />,
+                element: <Navigate to="/" replace />,
               },
               {
                 path: 'create',
