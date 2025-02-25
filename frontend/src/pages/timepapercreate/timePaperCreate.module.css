@@ -5,41 +5,5 @@
   align-items: center;
   height: 100vh;
   background-color: #f6f1e7;
-}
-
-.textInput {
-  background-color: var(--background-color);
-  border-width: 0;
-  border-width: 0 0 1px;
-  display: block;
-  margin: 0 auto;
-  width: 100%;
-  height: 65px;
-  padding: 0;
-  text-align: center;
-  margin: 80% auto 80% auto;
-  font-family: var(--pretendard-bold);
-}
-
-.textInput:focus {
-  border-color: #f0842c;
-  outline: none;
-}
-
-.buttonBasic {
-  background-color: var(--orange-color);
-  color: #000000;
-  border: none;
-  padding: 2.5% 5%;
-  cursor: pointer;
-  width: 95.25%;
-  height: 72px;
-  transition: background-color 0.3s ease;
-  border-radius: 10px;
-  font-family: var(--pretendard-semiBold);
-  margin: 50% auto 0 auto;
-}
-
-.buttonBasic:hover {
-  background-color: #d87728;
+  gap: 20%;
 }
