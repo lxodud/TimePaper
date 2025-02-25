@@ -10,6 +10,8 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JWTUtil {
 
+  private static final Logger log = LoggerFactory.getLogger(JWTUtil.class);
   private final long tokenValidityInMilliseconds = 1000L * 60 * 30; // 30분
 
   @Value("${jwt.secret}")
@@ -59,16 +62,6 @@ public class JWTUtil {
         .getSubject();
   }
 
-  public boolean isExpired(String token) {
-    return Jwts.parserBuilder()
-        .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
-        .build()
-        .parseClaimsJws(token)
-        .getBody()
-        .getExpiration()
-        .before(new Date());
-  }
-
   public boolean validateToken(String token) {
 
     try {
@@ -76,12 +69,10 @@ public class JWTUtil {
           .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
           .build()
           .parseClaimsJws(token);
-
       return true;
     } catch (JwtException | IllegalArgumentException e) {
       return false;
     }
-
   }
 
 }

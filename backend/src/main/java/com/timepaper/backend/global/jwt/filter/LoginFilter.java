@@ -27,15 +27,14 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
-  private final AuthenticationManager authenticationManager;
   private final ObjectMapper objectMapper;
   private final JWTUtil jwtUtil;
+  private final AuthenticationManager authenticationManager;
 
   @PostConstruct
-  public void init() {
+  public void initializeLoginFilter() {
     setAuthenticationManager(authenticationManager);
     setFilterProcessesUrl("/api/auth/login");
-
   }
 
   @Override
@@ -61,7 +60,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
         email, password, null);
 
-    return authenticationManager.authenticate(authToken);
+    return getAuthenticationManager().authenticate(authToken);
   }
 
   @Override
