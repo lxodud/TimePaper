@@ -72,7 +72,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     log.info("로그인 검증 성공, accessToken : {}", accessToken);
 
     AccessTokenResponse accessTokenResponse = AccessTokenResponse.from("Bearer " + accessToken);
-    ApiResponse<AccessTokenResponse> apiResponse = ApiResponse.ok(accessTokenResponse);
+    ApiResponse<AccessTokenResponse> apiResponse = ApiResponse.ok("Login Successful", "SUCCESS",
+        accessTokenResponse);
 
     response.setContentType("application/json");
     response.setStatus(HttpServletResponse.SC_OK);
@@ -85,6 +86,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
       HttpServletResponse response, AuthenticationException failed)
       throws IOException, ServletException {
     log.info("로그인 검증 실패");
+    ApiResponse<Object> apiResponse = ApiResponse.error("Invalid credentials", "ERROR");
+
+    response.setContentType("application/json");
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+    objectMapper.writeValue(response.getOutputStream(), apiResponse);
   }
 
   private void validateLoginRequest(LoginRequestDto requestDto) {
