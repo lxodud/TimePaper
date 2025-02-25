@@ -8,3 +8,7 @@
   height: 55px;
   border-radius: 10px;
 }
+
+button:hover {
+  background-color: #d87728;
+}
