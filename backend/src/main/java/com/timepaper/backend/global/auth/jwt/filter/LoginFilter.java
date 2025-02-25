@@ -1,9 +1,11 @@
-package com.timepaper.backend.global.jwt.filter;
+package com.timepaper.backend.global.auth.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
+import com.timepaper.backend.global.auth.jwt.util.JWTUtil;
+import com.timepaper.backend.global.auth.token.service.RefreshTokenService;
+import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
 import com.timepaper.backend.global.dto.ApiResponse;
-import com.timepaper.backend.global.jwt.util.JWTUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,7 +31,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
   private final ObjectMapper objectMapper;
   private final JWTUtil jwtUtil;
+  private final RefreshTokenUtil refreshTokenUtil;
+  private final RefreshTokenService refreshTokenService;
   private final AuthenticationManager authenticationManager;
+
 
   @PostConstruct
   public void initializeLoginFilter() {
@@ -70,8 +75,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     String accessToken = jwtUtil.createToken(authentication);
     log.info("로그인 검증 성공, accessToken : {}", accessToken);
 
+    //1. refreshToken을 발급한다.
+    String refreshToken = refreshTokenUtil.createRefreshToken();
+    //2. DB에 저장한다. (Service호출하면 내부에서 해싱처리하고 저장하고까지 처리)
+    refreshTokenService.save(refreshToken, authentication);
+
+    //3. 클라이언트한테 refreshToken을 응답한다.
+
     response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
     response.setStatus(HttpServletResponse.SC_OK);
+
+
   }
 
   @Override
