@@ -5,8 +5,7 @@ import authSlice from "./slices/authSlice";
 const store = configureStore({
   reducer: {
     timepapers: timepapersReducer,
-    auth:authReducer,
-    
+    auth:authReducer,    
   },
 });
 
