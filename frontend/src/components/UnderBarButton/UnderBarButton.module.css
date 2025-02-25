@@ -1,0 +1,9 @@
+.underBarButton {
+  background-color: transparent;
+  color: var(--black-color);
+  font-family: var(--pretendard-regular);
+  font-size: var(--font-size-medium);
+  border: none;
+  border-bottom: 1px solid var(--black-color);
+  padding-bottom: 5px;
+}
