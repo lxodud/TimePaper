@@ -39,6 +39,14 @@ export const api = {
     })
   },
 
+  checkEmailVerificationCode: async (authenticationCode) => { 
+    const response = await apiInstance.post("/auth/email-verification-codes/validate", {
+      data: {
+        authenticationCode: authenticationCode
+      }
+    })
+  },
+
   getTimepaper: async (id) => {
     const response = await apiInstance.get(`/timepapers/${id}`)
   },
@@ -76,7 +84,7 @@ export const api = {
     const response = await apiInstance.get(`/my/postits`)
   },
 
-  getMyRollingPapers: async () => { 
+  getMyTimePapers: async () => { 
     const response = await apiInstance.get(`/my/rollingpapers`)
   }
 }
