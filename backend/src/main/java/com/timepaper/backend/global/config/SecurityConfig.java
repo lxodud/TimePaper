@@ -1,6 +1,6 @@
 package com.timepaper.backend.global.config;
 
-import com.timepaper.backend.global.jwt.LoginFilter;
+import com.timepaper.backend.global.jwt.filter.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

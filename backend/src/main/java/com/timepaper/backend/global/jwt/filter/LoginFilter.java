@@ -1,7 +1,10 @@
-package com.timepaper.backend.global.jwt;
+package com.timepaper.backend.global.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
+import com.timepaper.backend.global.dto.ApiResponse;
+import com.timepaper.backend.global.jwt.dto.AccessTokenResponse;
+import com.timepaper.backend.global.jwt.util.JWTUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -68,6 +71,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     String accessToken = jwtUtil.createToken(authentication);
     log.info("로그인 검증 성공, accessToken : {}", accessToken);
 
+    AccessTokenResponse accessTokenResponse = AccessTokenResponse.from("Bearer " + accessToken);
+    ApiResponse<AccessTokenResponse> apiResponse = ApiResponse.ok(accessTokenResponse);
+
+    response.setContentType("application/json");
+    response.setStatus(HttpServletResponse.SC_OK);
+
+    objectMapper.writeValue(response.getOutputStream(), apiResponse);
   }
 
   @Override

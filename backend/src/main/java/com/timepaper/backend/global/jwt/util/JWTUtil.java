@@ -1,4 +1,4 @@
-package com.timepaper.backend.global.jwt;
+package com.timepaper.backend.global.jwt.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
