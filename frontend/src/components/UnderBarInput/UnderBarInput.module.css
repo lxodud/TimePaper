@@ -1,0 +1,14 @@
+.underBarInput {
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid var(--black-color);
+  padding-bottom: 5px;
+  text-align: center;
+  outline: none;
+}
+
+input::placeholder {
+  color: #B1B1B1;
+  font-family: var(--pretendard-light);
+  font-size: var(--font-size-small);
+}
