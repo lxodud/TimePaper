@@ -53,6 +53,13 @@
   overflow: hidden;
 }
 
+.logo-image {
+  width: 90%;
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+  user-select: none;
+}
+
 body {
   margin: 0px;
   overflow-x: hidden;
