@@ -12,9 +12,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -75,16 +77,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     String accessToken = jwtUtil.createToken(authentication);
     log.info("로그인 검증 성공, accessToken : {}", accessToken);
 
-    //1. refreshToken을 발급한다.
     String refreshToken = refreshTokenUtil.createRefreshToken();
-    //2. DB에 저장한다. (Service호출하면 내부에서 해싱처리하고 저장하고까지 처리)
     refreshTokenService.save(refreshToken, authentication);
 
-    //3. 클라이언트한테 refreshToken을 응답한다.
+    ResponseCookie refreshTokenCookie = createCookie(refreshToken);
 
     response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+    response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
     response.setStatus(HttpServletResponse.SC_OK);
-
 
   }
 
@@ -109,5 +109,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     if (!StringUtils.hasText(requestDto.getPassword())) {
       throw new IllegalArgumentException("Password는 필수 입력 값입니다.");
     }
+  }
+
+  private ResponseCookie createCookie(String refreshToken) {
+    return ResponseCookie.from("refresh_token", refreshToken)
+        .httpOnly(true)
+        .secure(false) //개발환경 false, 배포시 true
+        .sameSite("Strict")
+        .path("/api/auth/reissue")
+        .maxAge(Duration.ofDays(7))
+        .build();
   }
 }
