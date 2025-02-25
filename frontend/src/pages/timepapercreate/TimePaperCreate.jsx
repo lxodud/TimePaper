@@ -16,17 +16,19 @@ const tempPostTimePaper = async (data) => {
 export default function TimePaperCreate() {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('제목을 입력해주세요.');
 
   const navigate = useNavigate();
 
   const handleTitleChange = (e) => {
-    const newValue = e.target.value;
+    let newValue = e.target.value;
     if (newValue.length > 30) {
-      setError('제목의 최대 글자 수는 30자 입니다.');
-      return;
+      newValue = newValue.slice(0, 30);
+      setError(true);
+      setErrorMessage('제목의 최대 글자 수는 30자 입니다.');
     } else {
-      setError(null);
+      setError(false);
     }
     setTitle(newValue);
   };
@@ -34,10 +36,11 @@ export default function TimePaperCreate() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title.trim()) {
-      setError('제목을 입력해주세요.');
+      setError(true);
+      setErrorMessage('제목을 입력해주세요.');
       return;
     }
-    setError(null);
+    setError(false);
     setLoading(true);
 
     try {
@@ -45,7 +48,8 @@ export default function TimePaperCreate() {
       navigate(`/timepaper/${response.id}`);
     } catch (err) {
       console.error(err);
-      setError('타임페이퍼 생성 중 오류가 발생했습니다.');
+      setError(true);
+      setErrorMessage('타임페이퍼 생성 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
@@ -58,10 +62,15 @@ export default function TimePaperCreate() {
           <div className={styles.inputContainer}>
             <UnderBarInput
               placeholder="제목을 입력해주세요"
-              value={title} 
+              value={title}
               onChange={handleTitleChange}
             />
-            {error && <div className={styles.errContainer}>{error}</div>}
+            <div
+              className={styles.errContainer}
+              style={{ visibility: error ? 'visible' : 'hidden' }}
+            >
+              {errorMessage}
+            </div>
           </div>
           <BottomButton
             title={loading ? '추억거리 생성 중...' : '타임페이퍼 생성'}
