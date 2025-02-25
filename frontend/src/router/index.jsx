@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import RootLayout from '../layout/RootLayout.jsx';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <Home />,
+                element: <Navigate to="/" replace />,
               },
               {
                 path: 'create',
