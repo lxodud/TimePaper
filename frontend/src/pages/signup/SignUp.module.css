@@ -1,17 +1,23 @@
-.signMainBox {
-  background-color: var(--background-color);
-  height: 100%;
+.signUpContainer {
+  margin-bottom: 3rem;
   display: flex;
-  align-items: center;
+  margin: 0 auto;
+}
+
+.signUpForm {
+  min-width: 390px;
+  display: flex;
   flex-direction: column;
+  align-items: left;
+  gap: 10px;
+  margin: 0 auto 10% 0;
 }
-
-.bigbox {
-  margin: 20px;
+.signUpForm label {
+  display: block;
 }
-
-.signMainBox > div {
-  margin: 20px;
+.signUpForm > div {
+  width: 95%;
+  margin-left: 6%;
 }
 
 .fields {
@@ -19,55 +25,24 @@
   padding-bottom: 5px;
   padding-left: 3px;
 }
-
-.fieldsBox {
-  width: 80%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.contentBox {
-  width: 100%;
-}
-
 .fieldsInput {
-  text-align: center;
+  border: none;
+  font-size: 16px;
   width: 70%;
-  height: 20px;
-  padding: 4px;
-  margin-bottom: 10px;
-  font-size: var(--font-size-small);
+  height: 25px;
+  border-radius: 5px;
 }
 
 .fieldsInput::placeholder {
   color: rgba(0, 0, 0, 0.2);
 }
 
-.pwfont {
-  color: red;
-  font-size: 10px;
-}
-
-.emailCheckBox {
-  display: flex;
-  justify-content: space-between;
-}
-
-.emailCheckBox :nth-child(2) {
-  margin-right: 10px;
-}
-
 .emailCheckBut {
-  width: 20%;
-  height: 28px;
+  margin-left: 1rem;
+  padding: 6px 20px;
   font-size: var(--font-size-small);
   background-color: var(--orange-color);
   cursor: pointer;
-}
-
-.borderRadius {
   border-radius: 4px;
   border: none;
 }
@@ -90,6 +65,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: 0 auto 2rem auto;
 }
 
 .isPrivacyPolicyAccepted,
@@ -110,10 +86,32 @@
   margin-top: var(--top-margin);
 }
 
+.authentication {
+  font-size: 10px;
+  padding-left: 3px;
+}
+
+.visibilityVisible {
+  color: red;
+  font-size: 13px;
+  visibility: hidden;
+  padding: 1%;
+}
+.visibilityHidden {
+  color: red;
+  font-size: 13px;
+  visibility: visible;
+  padding: 1%;
+}
+
 /* 전체 요소에 드래그 방지 적용 */
 * {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+.bottomBox {
+  text-align: center;
 }
