@@ -2,29 +2,36 @@ package com.timepaper.backend.global.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 //TODO: 이메일 형식 유효성 검증 로직
+@RequiredArgsConstructor
+@Component
 @Slf4j
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
   private final AuthenticationManager authenticationManager;
-  private final ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper objectMapper;
 
-  public LoginFilter(AuthenticationManager authenticationManager) {
-    this.authenticationManager = authenticationManager;
+  @PostConstruct
+  public void init() {
+    setAuthenticationManager(authenticationManager);
     setFilterProcessesUrl("/api/auth/login");
+
   }
 
   @Override

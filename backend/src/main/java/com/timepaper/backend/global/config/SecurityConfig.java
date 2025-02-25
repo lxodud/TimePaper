@@ -21,7 +21,7 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http,
-      AuthenticationManager authenticationManager) throws Exception {
+      LoginFilter loginFilter) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
         .formLogin(auth -> auth.disable())
@@ -32,8 +32,7 @@ public class SecurityConfig {
             .requestMatchers("/api/auth/login", "/api/auth/signup").permitAll()
             .anyRequest().authenticated()
         )
-        .addFilterAt(new LoginFilter(authenticationManager),
-            UsernamePasswordAuthenticationFilter.class);
+        .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
