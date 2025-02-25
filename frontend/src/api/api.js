@@ -27,8 +27,8 @@ export const api = {
     })
   },
 
-  logout: async () => {
-    const response = await apiInstance.delete("/auth/unsubcribe")
+  unsubscribe: async () => {
+    const response = await apiInstance.delete("/auth/unsubscribe")
   },
 
   requestEmailVerificationCode: async (email) => {
@@ -47,8 +47,8 @@ export const api = {
     })
   },
 
-  getTimepaper: async (id) => {
-    const response = await apiInstance.get(`/timepapers/${id}`)
+  getTimepaper: async (timepaperId) => {
+    const response = await apiInstance.get(`/timepapers/${timepaperId}`)
   },
 
   createTimepaper: async (title) => {
@@ -59,25 +59,25 @@ export const api = {
     })
   },
 
-  deleteTimepaper: async (title) => { 
-    const response = await apiInstance.delete(`/timepapers/${id}`)
+  deleteTimepaper: async (timepaperId) => { 
+    const response = await apiInstance.delete(`/timepapers/${timepaperId}`)
   },
 
-  lockTimepaper: async () => { 
-    const response = await apiInstance.patch(`/timepapers/${id}/lock`)
+  lockTimepaper: async (timepaperId) => { 
+    const response = await apiInstance.patch(`/timepapers/${timepaperId}/lock`)
   },
 
-  getPostits: async () => { 
-    const response = await apiInstance.get(`/timepapers/${id}/postits`)
+  getPostits: async (timepaperId) => { 
+    const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`)
   },
 
-  createPostit: async (rollingPaperId, author, content, image) => { 
+  createPostit: async (timepaperId, author, content, image) => { 
     // TODO: multi-part form 데이터
-    const response = await apiInstance.post(`/timepapers/${id}/postits`)
+    const response = await apiInstance.post(`/timepapers/${timepaperId}/postits`)
   },
 
-  deletePostit: async (id) => { 
-    const response = await apiInstance.delete(`/postits/${id}`)
+  deletePostit: async (postitId) => { 
+    const response = await apiInstance.delete(`/postits/${postitId}`)
   },
 
   getMyPostits: async () => { 
@@ -85,6 +85,6 @@ export const api = {
   },
 
   getMyTimePapers: async () => { 
-    const response = await apiInstance.get(`/my/rollingpapers`)
+    const response = await apiInstance.get(`/my/timepapers`)
   }
 }
