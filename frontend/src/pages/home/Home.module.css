@@ -1,0 +1,15 @@
+.container {
+  margin-top: var(--top-margin);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.buttonContainer {
+  margin-top: 30%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
