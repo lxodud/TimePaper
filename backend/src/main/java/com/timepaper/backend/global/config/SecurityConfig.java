@@ -1,7 +1,7 @@
 package com.timepaper.backend.global.config;
 
-import com.timepaper.backend.global.jwt.filter.JwtAuthenticationFilter;
-import com.timepaper.backend.global.jwt.filter.LoginFilter;
+import com.timepaper.backend.global.auth.jwt.filter.JwtAuthenticationFilter;
+import com.timepaper.backend.global.auth.jwt.filter.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
