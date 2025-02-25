@@ -35,7 +35,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     if (StringUtils.hasText(accessToken) && jwtUtil.validateToken(accessToken)) {
       String email = jwtUtil.getEmail(accessToken);
-      //token을 통해 인증된 사용자임을 판명받았으므로 user객체만으로 인증객체를 만들어서 요청에 처리 가능
       UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
       Authentication authentication = new UsernamePasswordAuthenticationToken(
