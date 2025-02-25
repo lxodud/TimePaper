@@ -11,3 +11,9 @@
 .inputContainer {
   width: 80%;
 }
+
+.errContainer {
+  text-align: center;
+  font-family: var(--pretendard-semiBold);
+  margin-top: 3%;
+}
