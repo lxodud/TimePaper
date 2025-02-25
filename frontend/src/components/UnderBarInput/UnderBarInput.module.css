@@ -12,3 +12,7 @@ input::placeholder {
   font-family: var(--pretendard-light);
   font-size: var(--font-size-small);
 }
+
+input:focus {
+  border-color: var(--orange-color);
+}
