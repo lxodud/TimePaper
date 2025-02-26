@@ -2,6 +2,7 @@ package com.timepaper.backend.global.config;
 
 import com.timepaper.backend.global.auth.jwt.filter.JwtAuthenticationFilter;
 import com.timepaper.backend.global.auth.jwt.filter.LoginFilter;
+import com.timepaper.backend.global.auth.jwt.handler.CustomAccessDeniedHandler;
 import com.timepaper.backend.global.auth.jwt.handler.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,7 @@ public class SecurityConfig {
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final LoginFilter loginFilter;
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+  private final CustomAccessDeniedHandler accessDeniedHandler;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -41,7 +43,9 @@ public class SecurityConfig {
         .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .exceptionHandling(exception -> exception
-            .authenticationEntryPoint(jwtAuthenticationEntryPoint));
+            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+            .accessDeniedHandler(accessDeniedHandler)
+        );
 
     return http.build();
   }
