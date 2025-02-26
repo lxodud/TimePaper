@@ -1,11 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 import styles from './SignUp.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
+import { api } from '../../api/api';
 
 export default function SignUp() {
-  const [isPwVisible, setIsPwVisible] = useState(false);
-  const [isPwCheckVisible, setisPwCheckVisible] = useState(false);
   const [placeholdersVisible, setPlaceholdersVisible] = useState([true, true, true, true]);
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
@@ -16,20 +15,32 @@ export default function SignUp() {
   const [passwordInput, setpasswordInput] = useState(false);
   const [passwordInputNum, setpasswordInputNum] = useState('');
   const [passwordCheckInput, setpasswordCheckInput] = useState(false);
-  const form = useRef();
+  const [formData, setFormData] = useState({
+    email: '',
+    username: '',
+    password: '',
+    phoneNumber: '',
+  });
 
   // 6자리 랜덤 코드 생성
   const generateVerificationCode = () => {
     return Math.random().toString(36).substring(2, 8).toUpperCase(); // 영어 + 숫자 조합 (6자리)
   };
 
-  const emailCheck = (e) => {
+  const emailCheck = async (e) => {
     e.preventDefault();
 
     let email_format = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
     if (!email || !email_format.test(email)) {
       alert('이메일 형식이 올바르지 않습니다.');
       return;
+    } else {
+      try {
+        await api.checkEmailVerificationCode(email);
+        alert('인증번호가 전송되었습니다.');
+      } catch {
+        console.error(error);
+      }
     }
 
     const code = generateVerificationCode();
@@ -69,6 +80,8 @@ export default function SignUp() {
     const newPlaceholdersVisible = [...placeholdersVisible];
     newPlaceholdersVisible[index] = false;
     setPlaceholdersVisible(newPlaceholdersVisible);
+    const test = Math.random().toString(36).substring(2, 8).toUpperCase();
+    console.log(test);
   };
 
   const handleBlur = (index, value) => {

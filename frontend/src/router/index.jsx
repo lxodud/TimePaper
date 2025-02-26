@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import RootLayout from '../layout/RootLayout.jsx';
 import Home from '../pages/Home';
-import Signup from '../pages/signup/SignUp';
+import SignUp from '../pages/signup/SignUp.jsx';
 import Login from '../pages/login/Login.jsx';
 import MyPage from '../pages/MyPage.jsx';
 import TimePaperCreate from '../pages/TimePaperCreate';
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/signup',
-            element: <Signup />,
+            element: <SignUp></SignUp>,
           },
           {
             path: '/my',
