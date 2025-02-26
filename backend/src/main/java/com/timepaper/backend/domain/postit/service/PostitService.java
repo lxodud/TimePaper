@@ -2,12 +2,13 @@ package com.timepaper.backend.domain.postit.service;
 
 import com.timepaper.backend.domain.postit.dto.PostitCreateRequestDto;
 import com.timepaper.backend.domain.postit.entity.Postit;
-import com.timepaper.backend.domain.postit.repository.MockTimePaperRepository;
 import com.timepaper.backend.domain.postit.repository.PostitRepository;
 import com.timepaper.backend.domain.timepaper.entity.TimePaper;
+import com.timepaper.backend.domain.timepaper.repository.TimePaperRepository;
 import com.timepaper.backend.domain.user.entity.User;
 import com.timepaper.backend.global.s3.service.S3Service;
 import java.util.Map;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,11 @@ public class PostitService {
 
   private final PostitRepository postitRepository;
   private final S3Service s3Service;
-  private final MockTimePaperRepository mockTimePaperRepository;
+  private final TimePaperRepository timePaperRepository;
 
   @Transactional
   public void createPostit(
-      Long timePaperId,
+      UUID timePaperId,
       User user,
       PostitCreateRequestDto requestDto,
       MultipartFile image
@@ -40,12 +41,11 @@ public class PostitService {
       s3Key = uploadResult.get("s3Key");
     }
 
-    TimePaper timePaper = mockTimePaperRepository.findById(timePaperId)
+    TimePaper timePaper = timePaperRepository.findById(timePaperId)
                               .orElseThrow(() -> new IllegalArgumentException());
 
     Postit postit = requestDto.toEntity(timePaper, user, s3Key, s3ImageUrl);
-
-    log.info("Postit: {}", postit);
+    
     postitRepository.save(postit);
   }
 }
