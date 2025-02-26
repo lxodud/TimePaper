@@ -1,5 +1,8 @@
 package com.timepaper.backend.domain.postit.dto;
 
+import com.timepaper.backend.domain.postit.entity.Postit;
+import com.timepaper.backend.domain.timepaper.entity.TimePaper;
+import com.timepaper.backend.domain.user.entity.User;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -16,4 +19,15 @@ public class PostitCreateRequestDto {
   private String content;
 
   private String staticImagePath;
+
+  public Postit toEntity(TimePaper timePaper, User user, String s3Key, String imageUrl) {
+    return Postit.builder()
+               .timePaper(timePaper)
+               .author(user)
+               .authorName(author)
+               .content(content)
+               .s3Key(s3Key)
+               .imageUrl(imageUrl)
+               .build();
+  }
 }
