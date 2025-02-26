@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +23,15 @@ public class TimePaperController {
   private final TimePaperService timePaperService;
 
   @PostMapping
-  public ResponseEntity<ApiResponse<TimePaperResponseDto>> createTimePaper(@Valid @RequestBody TimePaperCreateRequestDto timePaperCreateRequestDto) {
+  public ResponseEntity<ApiResponse<TimePaperResponseDto>> createTimePaper(@Valid @RequestBody TimePaperCreateRequestDto timePaperCreateRequestDto, Authentication authentication) {
+
+    String creatorEmail = authentication.getName();
+
     return ResponseEntity
         .status(HttpStatus.CREATED)
         .body(
-            ApiResponse.ok("타이틀 생성 성공", "CREATED",
-                timePaperService.createTimePaper(timePaperCreateRequestDto))
+            ApiResponse.ok("타임페이퍼 생성 성공", "SUCCESS",
+                timePaperService.createTimePaper(timePaperCreateRequestDto,creatorEmail))
 
     );
   }
