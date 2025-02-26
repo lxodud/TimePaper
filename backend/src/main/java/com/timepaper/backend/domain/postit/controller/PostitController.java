@@ -1,14 +1,15 @@
 package com.timepaper.backend.domain.postit.controller;
 
 import com.timepaper.backend.domain.postit.dto.PostitCreateRequestDto;
+import com.timepaper.backend.domain.postit.dto.PostitListResponseDto;
 import com.timepaper.backend.domain.postit.service.PostitService;
 import com.timepaper.backend.domain.user.entity.User;
 import com.timepaper.backend.global.dto.ApiResponse;
 import jakarta.validation.Valid;
-import java.awt.print.Pageable;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,10 +42,16 @@ public class PostitController {
   }
 
   @GetMapping("timepapers/{timePaperId}/postits")
-  public void getPostit(
+  public ResponseEntity<ApiResponse<PostitListResponseDto>> getPostit(
       @PathVariable String timePaperId,
       Pageable pageable
   ) {
-
+    return ResponseEntity.ok(
+        ApiResponse.ok(
+            "조회 성공",
+            "SUCCESS",
+            postitService.getPostit(UUID.fromString(timePaperId), pageable)
+        )
+    );
   }
 }

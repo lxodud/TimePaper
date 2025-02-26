@@ -1,4 +1,5 @@
-import com.timepaper.backend.domain.postit.dto.PostitResponseDto;
+package com.timepaper.backend.domain.postit.dto;
+
 import com.timepaper.backend.domain.postit.entity.Postit;
 import java.util.List;
 import java.util.stream.Collectors;
