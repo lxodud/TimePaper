@@ -16,7 +16,7 @@ public class PostitResponseDto {
   private LocalDateTime createdAt;
   private String imageUrl;
 
-  public PostitResponseDto from(Postit postit) {
+  public static PostitResponseDto from(Postit postit) {
     return PostitResponseDto.builder()
                .postitId(postit.getId())
                .author(postit.getAuthorName())
