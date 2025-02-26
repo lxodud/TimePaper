@@ -77,7 +77,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     String accessToken = jwtUtil.createToken(authentication);
     log.info("로그인 검증 성공, accessToken : {}", accessToken);
 
-    String refreshToken = refreshTokenUtil.createRefreshToken();
+    String refreshToken = refreshTokenUtil.createRefreshToken(authentication.getName());
     refreshTokenService.save(refreshToken, authentication);
 
     ResponseCookie refreshTokenCookie = createCookie(refreshToken);

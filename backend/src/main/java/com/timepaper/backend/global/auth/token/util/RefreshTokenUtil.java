@@ -1,5 +1,6 @@
 package com.timepaper.backend.global.auth.token.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +14,15 @@ public class RefreshTokenUtil {
   private final PasswordEncoder passwordEncoder;
   private final SecureRandom secureRandom = new SecureRandom();
 
-  public String createRefreshToken() {
+  public String createRefreshToken(String email) {
+
+    String emailKey = createEmailKey(email);
+
     byte[] tokenBytes = new byte[16];
     secureRandom.nextBytes(tokenBytes);
-    return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
+    String randomToken = Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
+
+    return String.format("%s-%s", emailKey, randomToken);
   }
 
   public String hashToken(String refreshToken) {
@@ -25,6 +31,11 @@ public class RefreshTokenUtil {
 
   public boolean validateRefreshToken(String rawRefreshToken, String hashedRefreshToken) {
     return passwordEncoder.matches(rawRefreshToken, hashedRefreshToken);
+  }
+
+  public String createEmailKey(String email) {
+    return Base64.getUrlEncoder().withoutPadding()
+        .encodeToString(email.getBytes(StandardCharsets.UTF_8));
   }
 
 

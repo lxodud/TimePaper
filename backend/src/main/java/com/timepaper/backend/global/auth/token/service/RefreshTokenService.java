@@ -21,9 +21,9 @@ public class RefreshTokenService {
   private final ObjectMapper objectMapper;
 
   public void save(String refreshToken, Authentication authentication) {
-    String hashedToken = refreshTokenUtil.hashToken(refreshToken);
 
-    String email = authentication.getName();
+    String hashedToken = refreshTokenUtil.hashToken(refreshToken);
+    String emailKey = refreshTokenUtil.createEmailKey(authentication.getName());
 
     RefreshTokenInfo tokenInfo = RefreshTokenInfo.from(authentication, hashedToken);
 
@@ -36,7 +36,7 @@ public class RefreshTokenService {
 
     try {
       redisTemplate.opsForValue().set(
-          email,
+          emailKey,
           tokenInfoJson,
           Duration.ofDays(PERSISTENT_VALIDITY_DAYS)
       );
@@ -45,4 +45,8 @@ public class RefreshTokenService {
     }
 
   }
+
+//  public boolean validate(String refreshToken) {
+//
+//  }
 }
