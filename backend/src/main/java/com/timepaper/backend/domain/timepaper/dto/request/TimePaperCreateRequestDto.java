@@ -18,10 +18,4 @@ public class TimePaperCreateRequestDto {
   @NotBlank(message = "타이틀이 비어있을 수 없습니다.")
   @Size(max = 30, message = "타이틀은 최대 30자까지 허용됩니다.")
   private String title;
-
-  public TimePaper toEntity() {
-    return TimePaper.builder()
-        .title(this.title)
-        .build();
-  }
 }

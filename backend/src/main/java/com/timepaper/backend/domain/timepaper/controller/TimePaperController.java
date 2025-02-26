@@ -25,14 +25,13 @@ public class TimePaperController {
   @PostMapping
   public ResponseEntity<ApiResponse<TimePaperResponseDto>> createTimePaper(@Valid @RequestBody TimePaperCreateRequestDto timePaperCreateRequestDto, Authentication authentication) {
 
-    String creatorEmail = authentication.getName();
+    TimePaperResponseDto responseDto =
+        timePaperService.createTimePaper(timePaperCreateRequestDto, authentication);
 
-    return ResponseEntity
-        .status(HttpStatus.CREATED)
-        .body(
-            ApiResponse.ok("타임페이퍼 생성 성공", "SUCCESS",
-                timePaperService.createTimePaper(timePaperCreateRequestDto,creatorEmail))
-
-    );
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ApiResponse
+            .ok("타임페이퍼 생성 성공",
+                "SUCCESS",
+                responseDto));
   }
 }
