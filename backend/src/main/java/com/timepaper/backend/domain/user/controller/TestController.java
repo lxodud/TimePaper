@@ -38,4 +38,16 @@ public class TestController {
     return "테스트 통과";
   }
 
+  @RequestMapping("/timepapers/postit")
+  @GetMapping
+  public String publicTest() {
+    return "public 경로 요청 테스트";
+  }
+
+  @RequestMapping("/timepapers")
+  @PostMapping
+  public String forbiddenTest() {
+    return "test";
+  }
+
 }
