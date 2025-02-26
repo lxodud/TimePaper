@@ -5,10 +5,13 @@ import com.timepaper.backend.domain.postit.repository.MockTimePaperRepository;
 import com.timepaper.backend.domain.postit.service.PostitService;
 import com.timepaper.backend.domain.timepaper.entity.TimePaper;
 import com.timepaper.backend.domain.user.entity.User;
+import com.timepaper.backend.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +30,7 @@ public class PostitController {
   private final MockTimePaperRepository mockTimePaperRepository;
 
   @PostMapping("/timepapers/{timePaperId}/postits")
-  public void createPostit(
+  public ResponseEntity<ApiResponse<Void>> createPostit(
       @PathVariable Long timePaperId,
       @AuthenticationPrincipal User user,
       @Valid @RequestPart(value = "data") PostitCreateRequestDto requestDto,
@@ -38,5 +41,7 @@ public class PostitController {
     mockTimePaperRepository.save(mock);
 
     postitService.createPostit(timePaperId, user, requestDto, image);
+    return ResponseEntity.status(HttpStatus.CREATED)
+               .body(ApiResponse.ok("포스트잇 생성 성공", "SUCCESS", null));
   }
 }
