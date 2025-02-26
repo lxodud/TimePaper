@@ -5,6 +5,7 @@ import com.timepaper.backend.domain.postit.repository.MockTimePaperRepository;
 import com.timepaper.backend.domain.postit.service.PostitService;
 import com.timepaper.backend.domain.timepaper.entity.TimePaper;
 import com.timepaper.backend.domain.user.entity.User;
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class PostitController {
   public void createPostit(
       @PathVariable Long timePaperId,
       @AuthenticationPrincipal User user,
-      @RequestPart(value = "data") PostitCreateRequestDto requestDto,
+      @Valid @RequestPart(value = "data") PostitCreateRequestDto requestDto,
       @RequestPart(value = "image", required = false) MultipartFile image
   ) {
     TimePaper mock = new TimePaper(user, "dsadsa", "dsadsa", LocalDateTime.now());
