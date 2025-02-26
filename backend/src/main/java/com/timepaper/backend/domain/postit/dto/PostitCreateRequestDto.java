@@ -1,21 +1,19 @@
 package com.timepaper.backend.domain.postit.dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 @Setter
-@Getter
 public class PostitCreateRequestDto {
 
   @NotEmpty
   @Length(max = 20)
-  String author;
+  private String author;
 
   @NotEmpty
   @Length(max = 155)
-  String content;
+  private String content;
 
-  String staticImagePath;
+  private String staticImagePath;
 }
