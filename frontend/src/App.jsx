@@ -3,7 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import router from './router';
 import './css/index.css'
 import store from "./store/store";
-import {Provider} from "react-redux";
+import { Provider } from "react-redux";
 
 
 export default function App() {
