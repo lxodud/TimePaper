@@ -24,10 +24,10 @@ public class PostitController {
   @PostMapping("/timepapers/{timepaperId}/postits")
   public void createPostit(
       @PathVariable Long timepaperId,
+      @AuthenticationPrincipal User user,
       @RequestPart(value = "data") PostitCreateRequestDto requestDto,
-      @RequestPart(value = "image", required = false) MultipartFile image,
-      @AuthenticationPrincipal User user
+      @RequestPart(value = "image", required = false) MultipartFile image
   ) {
-
+    postitService.createPostit(user, requestDto, image);
   }
 }

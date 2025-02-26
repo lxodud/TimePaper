@@ -18,5 +18,4 @@ public class PostitCreateRequestDto {
   String content;
 
   String staticImagePath;
-
 }
