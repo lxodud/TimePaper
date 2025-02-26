@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class JWTUtil {
 
   private static final Logger log = LoggerFactory.getLogger(JWTUtil.class);
-  private final long tokenValidityInMilliseconds = 1000L * 60 * 30; // 30분
+  private final long tokenValidityInMilliseconds = 1000L * 60 * 60 * 24 * 7; // 개발용 7일
 
   @Value("${jwt.secret}")
   private String secretKey;
