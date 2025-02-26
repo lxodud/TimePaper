@@ -37,4 +37,15 @@ public class TimePaper extends BaseTimeEntity {
 
   private LocalDateTime releaseDate;
 
+  public TimePaper(
+      User creator,
+      String title,
+      String recipientEmail,
+      LocalDateTime releaseDate
+  ) {
+    this.creator = creator;
+    this.title = title;
+    this.recipientEmail = recipientEmail;
+    this.releaseDate = releaseDate;
+  }
 }
