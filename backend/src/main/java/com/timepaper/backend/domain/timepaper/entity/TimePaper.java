@@ -12,9 +12,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,8 +26,9 @@ import lombok.NoArgsConstructor;
 public class TimePaper extends BaseTimeEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  private UUID id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "creator_id", nullable = false)
@@ -36,5 +40,12 @@ public class TimePaper extends BaseTimeEntity {
   private String recipientEmail;
 
   private LocalDateTime releaseDate;
+
+  @Builder
+  public TimePaper(User creator, String title, String recipientEmail) {
+    this.creator = creator;
+    this.title = title;
+    this.recipientEmail = recipientEmail;
+  }
 
 }
