@@ -1,0 +1,14 @@
+.bottomButton {
+  background-color: var(--orange-color);
+  font-family: var(--pretendard-regular);
+  font-size: var(--font-size-medium);
+  color: var(--black-color);
+  border: none;
+  width: 90%;
+  height: 55px;
+  border-radius: 10px;
+}
+
+.bottomButton:hover {
+  background-color: #d87728;
+}
