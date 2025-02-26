@@ -1,10 +1,12 @@
 package com.timepaper.backend.domain.postit.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 @Setter
+@Getter
 public class PostitCreateRequestDto {
 
   @NotEmpty
