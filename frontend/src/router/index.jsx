@@ -1,13 +1,13 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import RootLayout from '../layout/RootLayout.jsx';
-import Home from '../pages/Home';
-import Login from '../pages/Login';
+import Home from '../pages/home/Home';
+import Login from '../pages/login/Login.jsx';
 import Signup from '../pages/SignUp';
 import MyPage from '../pages/MyPage.jsx';
 import TimePaperDetail from '../pages/TimePaperDetail';
-import TimePaperIsLocked from '../pages/TimePaperIsLocked.jsx';
+import TimePaperIsLocked from '../pages/timepaperlocked/TimePaperIsLocked.jsx';
 import PostItCreate from '../pages/PostItCreate';
-import NotFound from '../pages/NotFound';
+import NotFound from '../pages/error/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
 import TimePaperCreate from '../pages/timepapercreate/TimePaperCreate.jsx';
 
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <Home />,
+                element: <Navigate to="/" replace />,
               },
               {
                 path: 'create',

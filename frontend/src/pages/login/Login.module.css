@@ -1,0 +1,58 @@
+.container {
+  margin-top: var(--top-margin);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: var(--top-margin);
+  width: 100%;
+}
+
+.inputId {
+  border-radius: 5px;
+  border: none;
+  width: 90%;
+  height: 49px;
+  padding-left: 5%;
+  box-sizing: border-box;
+}
+
+.inputPassword {
+  border-radius: 5px;
+  border: none;
+  width: 90%;
+  height: 46px;
+  margin-top: 3%;
+  padding-left: 5%;
+  box-sizing: border-box;
+}
+
+.inputId.inputPassword::placeholder {
+  color: #B1B1B1;
+  font-family: var(--pretendard-regular);
+  font-size: 17px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 7%;
+  width: 100%;
+}
+
+.signupButton {
+  width: 90%;
+  height: 55px;
+  background-color: #D9D9D9;
+  margin-top: 3%;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--pretendard-regular);
+  font-size: 17px;
+}

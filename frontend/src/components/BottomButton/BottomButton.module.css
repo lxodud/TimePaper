@@ -10,6 +10,6 @@
   cursor: pointer;
 }
 
-button:hover {
+.bottomButton:hover {
   background-color: #d87728;
 }
