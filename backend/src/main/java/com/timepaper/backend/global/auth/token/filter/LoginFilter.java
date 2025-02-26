@@ -1,9 +1,9 @@
-package com.timepaper.backend.global.auth.jwt.filter;
+package com.timepaper.backend.global.auth.token.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
-import com.timepaper.backend.global.auth.jwt.util.JWTUtil;
 import com.timepaper.backend.global.auth.token.service.RefreshTokenService;
+import com.timepaper.backend.global.auth.token.util.JWTUtil;
 import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
 import com.timepaper.backend.global.dto.ApiResponse;
 import jakarta.annotation.PostConstruct;

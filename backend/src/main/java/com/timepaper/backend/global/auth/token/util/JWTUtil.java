@@ -1,4 +1,4 @@
-package com.timepaper.backend.global.auth.jwt.util;
+package com.timepaper.backend.global.auth.token.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

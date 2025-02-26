@@ -1,6 +1,6 @@
-package com.timepaper.backend.global.auth.jwt.filter;
+package com.timepaper.backend.global.auth.token.filter;
 
-import com.timepaper.backend.global.auth.jwt.util.JWTUtil;
+import com.timepaper.backend.global.auth.token.util.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
