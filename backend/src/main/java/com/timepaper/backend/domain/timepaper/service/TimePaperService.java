@@ -15,16 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TimePaperService {
+
   private final TimePaperRepository timePaperRepository;
   private final UserRepository userRepository;
 
   @Transactional
-  public TimePaperResponseDto createTimePaper(TimePaperCreateRequestDto timePaperCreateRequestDto, Authentication authentication) {
+  public TimePaperResponseDto createTimePaper(TimePaperCreateRequestDto timePaperCreateRequestDto,
+      Authentication authentication) {
 
     String creatorEmail = authentication.getName();
 
     User creator = (User) userRepository.findByEmail(creatorEmail)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+                              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
     TimePaper timePaper = timePaperRepository.save(
         TimePaper.builder()
