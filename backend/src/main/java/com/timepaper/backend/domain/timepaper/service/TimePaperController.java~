@@ -1,4 +1,0 @@
-package com.timepaper.backend.domain.timepaper.service;
-
-public class TimePaperController {
-}

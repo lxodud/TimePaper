@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/timepaper")
+@RequestMapping("/api/timepapers")
 @RequiredArgsConstructor
 public class TimePaperController {
   private final TimePaperService timePaperService;

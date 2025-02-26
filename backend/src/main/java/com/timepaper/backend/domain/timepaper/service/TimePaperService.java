@@ -21,8 +21,12 @@ public class TimePaperService {
 
     User creator = (User) userRepository.findByEmail(creatorEmail)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
-    TimePaper timePaper = TimePaper.builder().creator(creator).title(timePaperCreateRequestDto.getTitle()).build();
-    timePaper = timePaperRepository.save(timePaper);
+    TimePaper timePaper = timePaperRepository.save(
+        TimePaper.builder()
+            .creator(creator)
+            .title(timePaperCreateRequestDto.getTitle())
+            .build()
+    );
     return TimePaperResponseDto.from(timePaper);
   }
 
