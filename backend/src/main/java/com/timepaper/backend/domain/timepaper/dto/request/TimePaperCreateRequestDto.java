@@ -19,14 +19,9 @@ public class TimePaperCreateRequestDto {
   @Size(max = 30, message = "타이틀은 최대 30자까지 허용됩니다.")
   private String title;
 
-  @NotBlank(message = "수신자 이메일은 필수입니다.")
-  @Email(message = "유효한 이메일 형식이어야 합니다.")
-  private String recipientEmail;
-
   public TimePaper toEntity() {
     return TimePaper.builder()
         .title(this.title)
-        .recipientEmail(this.recipientEmail)
         .build();
   }
 }
