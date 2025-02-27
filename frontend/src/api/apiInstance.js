@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '../store/store'
 
 const apiInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL
@@ -13,6 +14,7 @@ const NO_TOKEN_REQUIRED = [
 
 const GET_TIMEPAPER_REGEX = /^\/timepapers\/\d+$/;
 
+const state = store.getState()
 
 apiInstance.interceptors.request.use((config) => {
   

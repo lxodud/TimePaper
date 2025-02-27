@@ -19,7 +19,7 @@ export default function BottomButton({ title, onClick, isEnable }) {
     <button
       onClick={onClick}
       className={styles.bottomButton}
-      disabled={isEnable}
+      disabled={!isEnable}
       style={{ backgroundColor: isEnable ? buttonColor.enableColor : buttonColor.disableColor }}
     >
       {title}
