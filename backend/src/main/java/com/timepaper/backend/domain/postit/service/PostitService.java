@@ -57,4 +57,20 @@ public class PostitService {
 
     return PostitListResponseDto.from(postitsPage);
   }
+
+  @Transactional
+  public void deletePostit(Long postitId, Long userId) {
+    Postit postit = postitRepository.findById(postitId)
+                        .orElseThrow(() -> new IllegalArgumentException("포스트잇이 없습니다."));
+
+    if (postit.getAuthor().getId() != userId) {
+      throw new IllegalArgumentException("삭제 권한이 없습니다");
+    }
+
+    if (postit.getS3Key() != null) {
+      s3Service.deleteFile(postit.getS3Key());
+    }
+
+    postitRepository.delete(postit);
+  }
 }
