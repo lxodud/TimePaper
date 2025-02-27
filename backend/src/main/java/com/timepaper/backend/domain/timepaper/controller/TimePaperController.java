@@ -1,6 +1,8 @@
 package com.timepaper.backend.domain.timepaper.controller;
 
 import com.timepaper.backend.domain.timepaper.dto.request.TimePaperCreateRequestDto;
+import com.timepaper.backend.domain.timepaper.dto.request.TimePaperLockRequestDto;
+import com.timepaper.backend.domain.timepaper.dto.response.TimePaperLockResponseDto;
 import com.timepaper.backend.domain.timepaper.dto.response.TimePaperResponseDto;
 import com.timepaper.backend.domain.timepaper.service.TimePaperService;
 import com.timepaper.backend.global.dto.ApiResponse;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +38,7 @@ public class TimePaperController {
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(ApiResponse
             .ok("타임페이퍼 생성 성공",
-                "SUCCESS",
+                "CREATED",
                 responseDto));
   }
 
@@ -58,6 +61,14 @@ public class TimePaperController {
             .ok("타임페이퍼 삭제 성공",
                 "NO_CONTENT",
                 null));
+  }
+
+  @PatchMapping("/{timepaperId}/lock")
+  public ResponseEntity<ApiResponse<TimePaperLockResponseDto>> lockTimePaper(@PathVariable UUID timepaperId, @RequestBody TimePaperLockRequestDto timePaperLockRequestDto) {
+
+    TimePaperLockResponseDto responseDto = timePaperService.lockTimePaper(timepaperId, timePaperLockRequestDto);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(ApiResponse.ok("타임페이퍼 잠금 처리 성공", "OK", responseDto));
   }
 
 }

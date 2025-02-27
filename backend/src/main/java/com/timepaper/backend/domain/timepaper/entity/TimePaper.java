@@ -47,4 +47,9 @@ public class TimePaper extends BaseTimeEntity {
     this.title = title;
     this.recipientEmail = recipientEmail;
   }
+
+  public void setReleaseDate(String recipientEmail, LocalDateTime releaseDate) {
+    this.recipientEmail = recipientEmail;
+    this.releaseDate = releaseDate;
+  }
 }
