@@ -1,6 +1,7 @@
 package com.timepaper.backend.domain.postit.service;
 
 import com.timepaper.backend.domain.postit.dto.PostitCreateRequestDto;
+import com.timepaper.backend.domain.postit.dto.PostitListResponseDto;
 import com.timepaper.backend.domain.postit.entity.Postit;
 import com.timepaper.backend.domain.postit.repository.PostitRepository;
 import com.timepaper.backend.domain.timepaper.entity.TimePaper;
@@ -11,6 +12,8 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,7 +48,29 @@ public class PostitService {
                               .orElseThrow(() -> new IllegalArgumentException());
 
     Postit postit = requestDto.toEntity(timePaper, user, s3Key, s3ImageUrl);
-    
+
     postitRepository.save(postit);
+  }
+
+  public PostitListResponseDto getPostit(UUID timePaperId, Pageable pageable) {
+    Page<Postit> postitsPage = postitRepository.findAllByTimePaperId(timePaperId, pageable);
+
+    return PostitListResponseDto.from(postitsPage);
+  }
+
+  @Transactional
+  public void deletePostit(Long postitId, Long userId) {
+    Postit postit = postitRepository.findById(postitId)
+                        .orElseThrow(() -> new IllegalArgumentException("포스트잇이 없습니다."));
+
+    if (postit.getAuthor().getId() != userId) {
+      throw new IllegalArgumentException("삭제 권한이 없습니다");
+    }
+
+    if (postit.getS3Key() != null) {
+      s3Service.deleteFile(postit.getS3Key());
+    }
+
+    postitRepository.delete(postit);
   }
 }
