@@ -38,12 +38,18 @@ public class TimePaperService {
     return TimePaperResponseDto.from(timePaper);
   }
 
-  @Transactional(readOnly = true)
   public TimePaperResponseDto readTimePaperById(UUID timepaperId) {
 
     TimePaper timePaper = timePaperRepository.findById(timepaperId)
-        .orElseThrow(() -> new IllegalArgumentException("타임페이퍼를 찾을 수 없습니다."));
+        .orElseThrow(() -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
     return TimePaperResponseDto.from(timePaper);
+  }
+
+  @Transactional
+  public void deleteTimePaper(UUID timepaperId) {
+    TimePaper timePaper = timePaperRepository.findById(timepaperId)
+        .orElseThrow(() -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
+    timePaperRepository.delete(timePaper);
   }
 
 }
