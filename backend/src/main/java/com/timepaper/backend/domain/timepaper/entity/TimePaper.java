@@ -37,4 +37,5 @@ public class TimePaper extends BaseTimeEntity {
 
   private LocalDateTime releaseDate;
 
+
 }
