@@ -28,14 +28,13 @@ public class MyController {
   private final MyService myService;
 
   @GetMapping("/timepapers")
-  public List<MyTimepaperListResponseDto> readMyTimepapers(@AuthenticationPrincipal User authenticatedUser) {
-    List<MyTimepaperListResponseDto> response = myService.readMyTimepapers(authenticatedUser);
-    return response;
+  public ResponseEntity<ApiResponse<List<MyTimepaperListResponseDto>>> readMyTimepapers(@AuthenticationPrincipal User authenticatedUser) {
+    return ResponseEntity.ok(ApiResponse.ok(myService.readMyTimepapers(authenticatedUser)));
+
   }
 
   @GetMapping("/postits")
-  public List<MyPostitListResponseDto> readMyPostit(@AuthenticationPrincipal User authenticatedUser) {
-    List<MyPostitListResponseDto> response = myService.readMyPostits(authenticatedUser);
-    return response;   //@get userId by dint of RequestBody
-  }
+  public ResponseEntity<ApiResponse<List<MyPostitListResponseDto>>> readMyPostit(@AuthenticationPrincipal User authenticatedUser) {
+    return ResponseEntity.ok(ApiResponse.ok(myService.readMyPostits(authenticatedUser)));
+     }
 }
