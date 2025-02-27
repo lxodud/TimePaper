@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiInstance = axios.create({
-
+  baseURL: import.meta.env.VITE_API_URL
 })
 
 const NO_TOKEN_REQUIRED = [
@@ -27,7 +27,8 @@ apiInstance.interceptors.request.use((config) => {
   return config
 })
 
-apiInstance.interceptors.response.use((config) => { 
+apiInstance.interceptors.response.use((config) => {
+  return config
   // refresh token 핸들링
 })
 

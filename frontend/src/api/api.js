@@ -2,13 +2,13 @@ import { data } from "react-router-dom";
 import apiInstance from "./apiInstance";
 
 export const api = {
-  login: async (username, password) => { 
+  login: async (email, password) => { 
     const response = await apiInstance.post("/auth/login", {
-      data: {
-        username: username,
+        email: email,
         password: password
-      }
     })
+
+    return response
   },
 
   logout: async () => {
@@ -17,13 +17,11 @@ export const api = {
 
   signup: async (email, password, isPrivacyPolicyAccepted, isTermsAccepted, isEmailConsent) => {
     const response = await apiInstance.post("/auth/signup", {
-      data: {
         email: email,
         password: password,
         isPrivacyPolicyAccepted : isPrivacyPolicyAccepted,
         isTermsAccepted : isTermsAccepted,
         isEmailConsent : isEmailConsent
-      }
     })
   },
 
@@ -33,17 +31,13 @@ export const api = {
 
   requestEmailVerificationCode: async (email) => {
     const response = await apiInstance.post("/auth/email-verification-codes", {
-      data: {
         email: email
-      }
     })
   },
 
   checkEmailVerificationCode: async (authenticationCode) => { 
     const response = await apiInstance.post("/auth/email-verification-codes/validate", {
-      data: {
         authenticationCode: authenticationCode
-      }
     })
   },
 
@@ -53,9 +47,7 @@ export const api = {
 
   createTimepaper: async (title) => {
     const response = await apiInstance.post('/timepapers', {
-      data: {
         title: title
-      }
     })
   },
 
