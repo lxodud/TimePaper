@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.global.auth.token.entity.RefreshTokenInfo;
 import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
+import com.timepaper.backend.global.exception.InvalidRefreshTokenException;
 import java.time.Duration;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService {
@@ -51,10 +54,11 @@ public class RefreshTokenService {
 
   public Authentication validate(String refreshToken) {
     String emailKey = getEmailKey(refreshToken);
+    log.info("emailKey: {}", emailKey);
     String tokenInfoJson = redisTemplate.opsForValue().get(emailKey);
 
     if (tokenInfoJson == null) {
-      throw new IllegalArgumentException("Invalid RefreshToken");
+      throw new InvalidRefreshTokenException("refresh token 유효하지 않음");
     }
 
     try {
@@ -74,6 +78,8 @@ public class RefreshTokenService {
   }
 
   private String getEmailKey(String refreshToken) {
+    log.info("getEmail 부분");
+    log.info("refreshToken : {}", refreshToken);
     return refreshToken.split("-")[0];
   }
 }
