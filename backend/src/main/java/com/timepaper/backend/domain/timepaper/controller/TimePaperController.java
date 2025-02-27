@@ -4,7 +4,6 @@ import com.timepaper.backend.domain.timepaper.dto.request.TimePaperCreateRequest
 import com.timepaper.backend.domain.timepaper.dto.response.TimePaperResponseDto;
 import com.timepaper.backend.domain.timepaper.service.TimePaperService;
 import com.timepaper.backend.global.dto.ApiResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,10 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/timepapers")
 @RequiredArgsConstructor
 public class TimePaperController {
+
   private final TimePaperService timePaperService;
 
   @PostMapping
-  public ResponseEntity<ApiResponse<TimePaperResponseDto>> createTimePaper(@Valid @RequestBody TimePaperCreateRequestDto timePaperCreateRequestDto, Authentication authentication) {
+  public ResponseEntity<ApiResponse<TimePaperResponseDto>> createTimePaper(
+      @RequestBody TimePaperCreateRequestDto timePaperCreateRequestDto,
+      Authentication authentication) {
 
     TimePaperResponseDto responseDto =
         timePaperService.createTimePaper(timePaperCreateRequestDto, authentication);
@@ -34,4 +36,5 @@ public class TimePaperController {
                 "SUCCESS",
                 responseDto));
   }
+
 }

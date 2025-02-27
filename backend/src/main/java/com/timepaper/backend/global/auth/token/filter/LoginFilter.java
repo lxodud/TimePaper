@@ -2,9 +2,7 @@ package com.timepaper.backend.global.auth.token.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
-import com.timepaper.backend.global.auth.token.service.RefreshTokenService;
-import com.timepaper.backend.global.auth.token.util.JWTUtil;
-import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
+import com.timepaper.backend.global.auth.service.AuthService;
 import com.timepaper.backend.global.dto.ApiResponse;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
@@ -12,11 +10,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,9 +27,7 @@ import org.springframework.util.StringUtils;
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
   private final ObjectMapper objectMapper;
-  private final JWTUtil jwtUtil;
-  private final RefreshTokenUtil refreshTokenUtil;
-  private final RefreshTokenService refreshTokenService;
+  private final AuthService authService;
   private final AuthenticationManager authenticationManager;
 
 
@@ -74,17 +67,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
       FilterChain chain, Authentication authentication) throws IOException, ServletException {
 
-    String accessToken = jwtUtil.createToken(authentication);
-    log.info("로그인 검증 성공, accessToken : {}", accessToken);
-
-    String refreshToken = refreshTokenUtil.createRefreshToken(authentication.getName());
-    refreshTokenService.save(refreshToken, authentication);
-
-    ResponseCookie refreshTokenCookie = createCookie(refreshToken);
-
-    response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-    response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
-    response.setStatus(HttpServletResponse.SC_OK);
+    authService.setTokensResponse(response, authentication);
 
   }
 
@@ -111,13 +94,4 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
   }
 
-  private ResponseCookie createCookie(String refreshToken) {
-    return ResponseCookie.from("refresh_token", refreshToken)
-        .httpOnly(true)
-        .secure(false) //개발환경 false, 배포시 true
-        .sameSite("Strict")
-        .path("/api/auth/reissue")
-        .maxAge(Duration.ofDays(7))
-        .build();
-  }
 }

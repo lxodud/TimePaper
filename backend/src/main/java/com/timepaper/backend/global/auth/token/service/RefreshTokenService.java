@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.global.auth.token.entity.RefreshTokenInfo;
 import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
 import java.time.Duration;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,7 +49,31 @@ public class RefreshTokenService {
 
   }
 
-//  public boolean validate(String refreshToken) {
-//
-//  }
+  public Authentication validate(String refreshToken) {
+    String emailKey = getEmailKey(refreshToken);
+    String tokenInfoJson = redisTemplate.opsForValue().get(emailKey);
+
+    if (tokenInfoJson == null) {
+      throw new IllegalArgumentException("Invalid RefreshToken");
+    }
+
+    try {
+      RefreshTokenInfo refreshTokenInfo = objectMapper.readValue(tokenInfoJson,
+          RefreshTokenInfo.class);
+      String hashedRefreshToken = refreshTokenInfo.getHashedRefreshToken();
+      refreshTokenUtil.validateRefreshToken(refreshToken, hashedRefreshToken);
+
+      return new UsernamePasswordAuthenticationToken(refreshTokenInfo.getEmail(), null,
+          refreshTokenInfo.getRoles().stream().map(
+              SimpleGrantedAuthority::new).collect(Collectors.toList()));
+
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+
+  private String getEmailKey(String refreshToken) {
+    return refreshToken.split("-")[0];
+  }
 }
