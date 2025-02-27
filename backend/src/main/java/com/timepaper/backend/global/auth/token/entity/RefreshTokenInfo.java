@@ -1,6 +1,7 @@
 package com.timepaper.backend.global.auth.token.entity;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,16 +15,16 @@ import org.springframework.security.core.GrantedAuthority;
 public class RefreshTokenInfo {
 
   private String email;
-  private String role;
+  private List<String> roles;
   private String hashedRefreshToken;
   private Instant lastIssued;
 
   public static RefreshTokenInfo from(Authentication authentication, String hashedRefreshToken) {
     return RefreshTokenInfo.builder()
         .email(authentication.getName())
-        .role(authentication.getAuthorities().stream()
+        .roles(authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.joining(",")))
+            .collect(Collectors.toList()))
         .hashedRefreshToken(hashedRefreshToken)
         .lastIssued(Instant.now())
         .build();

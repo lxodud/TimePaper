@@ -1,4 +1,4 @@
-package com.timepaper.backend.global.auth.jwt.dto;
+package com.timepaper.backend.global.auth.token.dto;
 
 import lombok.Builder;
 import lombok.Getter;
