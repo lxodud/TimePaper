@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TimePaperResponseDto {
 
-  private final UUID id;
+  private final UUID timePaperId;
   private final String title;
   private final String recipientEmail;
   private final String writerEmail;
@@ -23,7 +23,7 @@ public class TimePaperResponseDto {
 
   public static TimePaperResponseDto from(TimePaper timePaper) {
     return TimePaperResponseDto.builder()
-        .id(timePaper.getId())
+        .timePaperId(timePaper.getId())
         .title(timePaper.getTitle())
         .recipientEmail(timePaper.getRecipientEmail())
         .writerEmail(timePaper.getCreator().getEmail())
