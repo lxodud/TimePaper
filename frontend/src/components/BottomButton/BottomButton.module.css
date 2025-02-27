@@ -1,5 +1,5 @@
 .bottomButton {
-  background-color: var(--orange-color);
+  background-color: var(--disable-gray-color);
   font-family: var(--pretendard-regular);
   font-size: var(--font-size-medium);
   color: var(--black-color);

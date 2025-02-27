@@ -3,15 +3,17 @@ import staticImagePath from '../../constant/staticImagePath';
 import styles from './Login.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import { api } from '../../api/api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/slices/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [inputData, setIntputData] = useState({ email: '', password: '' });
   const [isLoginButtonEnable, setIsLoginButtonEnable] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
   const handleLoginButtonClick = (event) => {
     setIsLoginButtonEnable(false);
@@ -20,8 +22,9 @@ export default function Login() {
       try {
         const response = await api.login(inputData.email, inputData.password);
         dispatch(login(response.headers.authorization));
-        navigate(-1);
-      } catch {
+        const next = location.state === null ? -1 : location.state.next
+        navigate(next, { replace: true });
+      } catch (error) {
         setIsLoginButtonEnable(true);
       }
     })();
@@ -42,6 +45,12 @@ export default function Login() {
     }
   }, [inputData]);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(-1);
+    }
+  }, []);
+
   return (
     <>
       <div className={styles.container}>
@@ -55,7 +64,7 @@ export default function Login() {
             onChange={handleInputChange}
           />
           <input
-            type="text"
+            type="password"
             name="password"
             placeholder="비밀번호"
             className={styles.inputPassword}

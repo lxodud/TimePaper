@@ -13,7 +13,11 @@ export default function Home() {
     if (isLoggedIn) {
       navigate('/timepaper/create');
     } else {
-      navigate('/login');
+      navigate('/login', {
+        state: {
+          next: '/timepaper/create',
+        },
+      });
     }
   };
 
