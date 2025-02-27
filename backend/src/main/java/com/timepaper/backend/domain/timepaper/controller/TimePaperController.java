@@ -27,10 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/timepapers")
 @RequiredArgsConstructor
 public class TimePaperController {
+
   private final TimePaperService timePaperService;
 
   @PostMapping
-  public ResponseEntity<ApiResponse<TimePaperResponseDto>> createTimePaper(@Valid @RequestBody TimePaperCreateRequestDto timePaperCreateRequestDto, Authentication authentication) {
+  public ResponseEntity<ApiResponse<TimePaperResponseDto>> createTimePaper(
+      @RequestBody TimePaperCreateRequestDto timePaperCreateRequestDto,
+      Authentication authentication) {
 
     TimePaperResponseDto responseDto =
         timePaperService.createTimePaper(timePaperCreateRequestDto, authentication);
