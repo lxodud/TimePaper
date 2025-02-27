@@ -12,7 +12,6 @@ export default function PostItCreate() {
   const templates = [staticImagePath.postitAfternoon, staticImagePath.postitNight];
 
   const handleImageUpload = (e) => {
-    console.log('이미지 업로드 처리 클릭');
     const file = e.target.files[0];
 
     if (file) {
@@ -30,14 +29,11 @@ export default function PostItCreate() {
   };
 
   const handleImageSelectClick = () => {
-    console.log('이미지 업로드 아이콘 클릭');
-    console.log(fileInputRef.current);
     fileInputRef.current.click();
   };
 
   const handleSaveBtn = (e) => {
     e.preventDefault();
-    console.log('등록 선택');
   };
 
   return (
