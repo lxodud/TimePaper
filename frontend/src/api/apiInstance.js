@@ -17,13 +17,11 @@ const GET_TIMEPAPER_REGEX = /^\/timepapers\/\d+$/;
 const state = store.getState()
 
 apiInstance.interceptors.request.use((config) => {
-  
   const isRequireToken = !NO_TOKEN_REQUIRED.includes(config.url);
   const isGetTimepaper = GET_TIMEPAPER_REGEX.test(config.url) && (config.method === "get");
 
   if (isRequireToken && !isGetTimepaper) {
-    // TODO: access token 가져오기
-    config.headers["Authorization"] = `Bearer `;
+    config.headers["Authorization"] = state.auth.accessToken;
   }
 
   return config

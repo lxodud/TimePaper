@@ -11,6 +11,13 @@ export const api = {
     return response
   },
 
+  reissue: async () => { 
+    const response = await apiInstance.post("/auth/reissue", {}, {
+      withCredentials: true
+    })
+    return response
+  },
+
   logout: async () => {
     const response = await apiInstance.delete("/auth/logout")
   },
