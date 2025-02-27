@@ -31,7 +31,9 @@ public class SecurityConfig {
         .sessionManagement(session -> session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/auth/login", "/api/auth/signup").permitAll()
+            .requestMatchers("/api/auth/login", "/api/auth/signup",
+                "/api/auth/email-verification-codes", "/api/auth/test/{email}",
+                "/api/auth/email-verification-codes/validate").permitAll()
             .anyRequest().authenticated()
         )
         .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
