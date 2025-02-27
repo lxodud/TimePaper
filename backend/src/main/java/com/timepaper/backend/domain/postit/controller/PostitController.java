@@ -63,6 +63,6 @@ public class PostitController {
   ) {
     postitService.deletePostit(postitId, user.getId());
     return ResponseEntity.status(HttpStatus.NO_CONTENT)
-               .body(ApiResponse.ok("포스트잇 생성 성공", "SUCCESS", null));
+               .body(ApiResponse.ok("포스트잇 삭제 성공", "NO_CONTENT", null));
   }
 }
