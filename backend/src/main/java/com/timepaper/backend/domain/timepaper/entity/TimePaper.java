@@ -41,6 +41,8 @@ public class TimePaper extends BaseTimeEntity {
 
   private LocalDateTime releaseDate;
 
+  private boolean isLocked;
+
   @Builder
   public TimePaper(User creator, String title, String recipientEmail) {
     this.creator = creator;
@@ -51,5 +53,12 @@ public class TimePaper extends BaseTimeEntity {
   public void setReleaseDate(String recipientEmail, LocalDateTime releaseDate) {
     this.recipientEmail = recipientEmail;
     this.releaseDate = releaseDate;
+  }
+
+  public boolean isLocked() {
+    if (releaseDate == null) {
+      return false;
+    }
+    return LocalDateTime.now().isBefore(releaseDate);
   }
 }
