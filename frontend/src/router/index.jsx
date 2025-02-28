@@ -10,6 +10,7 @@ import PostItCreate from '../pages/postitcreate/PostItCreate';
 import NotFound from '../pages/error/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
 import TimePaperCreate from '../pages/timepapercreate/TimePaperCreate.jsx';
+import TimePaperSetLock from '../pages/timepaperSetlocked/TimePaperSetLock.jsx';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
               {
                 path: ':timepaperId/lock',
                 element: <TimePaperIsLocked />,
+              },
+              {
+                path: ':timepaperId/capsule',
+                element: <TimePaperSetLock />,
               },
             ],
           },
