@@ -79,12 +79,12 @@ export default function TimePaperSetLock() {
             <div className={styles.dateInputContainer}>
               <p className={styles.whenPtag}>언제 열어보시겠어요?</p>
               <DatePicker
-                selected={selectedDate} // 선택된 날짜 상태
-                onChange={(date) => setSelectedDate(date)} // 날짜 변경 핸들러
-                minDate={new Date()} // 오늘 이후의 날짜만 선택 가능
-                dateFormat="yyyy-MM-dd" // 날짜 형식
-                className={styles.dateInput} // 커스텀 스타일 클래스
-                placeholderText="날짜를 선택하세요" // placeholder 텍스트
+                selected={selectedDate} 
+                onChange={(date) => setSelectedDate(date)} 
+                minDate={new Date()} 
+                dateFormat="yyyy-MM-dd" 
+                className={styles.dateInput} 
+                placeholderText="날짜를 선택하세요" 
               />
             </div>
           </div>
