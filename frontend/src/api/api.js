@@ -56,6 +56,8 @@ export const api = {
     const response = await apiInstance.post('/timepapers', {
         title: title
     })
+
+    return response
   },
 
   deleteTimepaper: async (timepaperId) => { 

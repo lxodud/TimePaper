@@ -47,9 +47,9 @@ export default function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate(-1);
+      navigate(-1, { replace: true });
     }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <>
