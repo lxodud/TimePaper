@@ -2,7 +2,8 @@ package com.timepaper.backend.domain.user.auth;
 
 import com.timepaper.backend.domain.javaemail.JavaEmailDto;
 import com.timepaper.backend.domain.javaemail.JavaEmailSender;
-import com.timepaper.backend.domain.user.auth.dto.EmailverificationRequestDto;
+import com.timepaper.backend.domain.user.auth.dto.CertificationNumberRequestDto;
+import com.timepaper.backend.domain.user.auth.dto.EmailCertificationRequestDto;
 import com.timepaper.backend.domain.user.auth.dto.SignupDto;
 import com.timepaper.backend.domain.user.auth.entity.Auth;
 import java.time.Duration;
@@ -20,7 +21,7 @@ public class AuthService {
   private final RedisTemplate<String, String> redisTemplate;
   private final JavaEmailSender javaEmailSender;
 
-  public boolean emailverification(EmailverificationRequestDto dto) {
+  public boolean emailverification(EmailCertificationRequestDto dto) {
     boolean emailcheck = authRepository.findByEmail(dto.getEmail());
 
     if (emailcheck) {
@@ -38,14 +39,19 @@ public class AuthService {
   }
 
   @Transactional
-  public boolean checkEmailVerificationCode(EmailverificationRequestDto dto) {
+  public boolean checkEmailVerificationCode(CertificationNumberRequestDto dto) {
     String randomCode = redisTemplate.opsForValue().get(dto.getEmail());
     return randomCode != null && randomCode.equals(dto.getCheckNum());
   }
 
   @Transactional
-  public void signUp(SignupDto dto) {
-    Auth auth = dto.toEntity(dto);
-    authRepository.save(auth);
+  public boolean signUp(SignupDto dto) {
+    try {
+      Auth auth = dto.toEntity(dto);
+      authRepository.save(auth);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
   }
 }
