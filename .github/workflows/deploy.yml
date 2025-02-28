@@ -1,0 +1,57 @@
+name: deploy service
+
+# 워크플로우를 자동으로 실행할 이벤트 정의
+on:
+  push:
+    branches:
+      - main
+
+# 실행될 작업들 정의
+jobs:
+  # 작업명
+  deploy:
+    runs-on: ubuntu-24.04
+    #실제 작업(job)의 단계들
+    steps:
+      # repo에서 소스코드 복사(checkout)
+      - name: Checkout Project
+        uses: actions/checkout@v4
+      
+      # github actions의 cache 저장소 사용을 하기 위한 action
+      - name: Use Cache for Build Image Layer Save
+        uses: actions/cache@v4.2.0
+        with:
+          #캐시 저장 경로
+          path: /tmp/.build-cache
+          # 캐시 저장시 사용될 식별자
+          key: build-image-layer-cache-${{ github.sha }}
+          restore-keys: build-image-layer-cache
+      
+      # EC2 ssh 접근을 위한 ssh 에이전트 키 등록 (검증은 아님, 잘못되도 에러 안남)
+      - name: Add ssh-agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # fingerPrint 작업
+      # workspace에 저장했다가 ec2가 보내는 키와 일치하는지 확인(workspace측 검증)
+      - name: Add Remote Server FingerPrint to Know Hosts
+        run: ssh-keyscan -H -p ${{secrets.SSH_PORT}} ${{secrets.SSH_HOST}} >> ~/.ssh/known_hosts || true
+
+      # 환경변수 파일 복사 (.env를 깃허브에 못 올리느까 깃헙액션 시크릿에 등록한걸 읽어서 workspace 환경으로 파일로 복사)
+      - name: Create .env file
+        run: |
+          echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
+          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
+          echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> .env
+          echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
+          echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
+          echo "CLIENT_ORIGIN=${{secrets.CLIENT_ORIGIN}}" >> .env
+          echo "JWT_SECRET=${{secrets.JWT_SECRET}}" >> .env
+          echo "SSH_PORT=${{secrets.SSH_PORT}}" >> .env
+          echo "REDIS_HOST=${{secrets.REDIS_HOST}}" >> .env
+          echo "REDIS_PORT=${{secrets.REDIS_PORT}}" >> .env
+       
