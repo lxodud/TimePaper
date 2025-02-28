@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './timePaperSetLock.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import UnderBarInput from '../../components/UnderBarInput/UnderBarInput';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const tempTimePaperSetLock = async (data) => {
   return new Promise((resolve) => {
@@ -17,6 +19,7 @@ export default function TimePaperSetLock() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('제목을 입력해주세요.');
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const navigate = useNavigate();
   const regEmail =
@@ -24,7 +27,7 @@ export default function TimePaperSetLock() {
 
   const handleEmailChange = (e) => {
     let newValue = e.target.value;
-    if (!regEmail.newValue) {
+    if (!regEmail.test(newValue)) {
       setError(true);
       setErrorMessage(' 올바른 이메일 형식을 입력해 주세요. ');
     } else {
@@ -44,16 +47,17 @@ export default function TimePaperSetLock() {
     setLoading(true);
 
     try {
-      const response = await tempPostTimePaper({ email });
+      const response = await tempTimePaperSetLock({ email });
       navigate(`/timepaper/${response.id}`);
     } catch (err) {
       console.error(err);
       setError(true);
-      setErrorMessage('타임페이퍼 캡슐화화 중 오류가 발생했습니다.');
+      setErrorMessage('타임페이퍼 캡슐화 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <>
@@ -72,9 +76,16 @@ export default function TimePaperSetLock() {
             >
               {errorMessage}
             </div>
-            <div>
-              <p>언제 열어보시겠어요?</p>
-              <input type="date" />
+            <div className={styles.dateInputContainer}>
+              <p className={styles.whenPtag}>언제 열어보시겠어요?</p>
+              <DatePicker
+                selected={selectedDate} // 선택된 날짜 상태
+                onChange={(date) => setSelectedDate(date)} // 날짜 변경 핸들러
+                minDate={new Date()} // 오늘 이후의 날짜만 선택 가능
+                dateFormat="yyyy-MM-dd" // 날짜 형식
+                className={styles.dateInput} // 커스텀 스타일 클래스
+                placeholderText="날짜를 선택하세요" // placeholder 텍스트
+              />
             </div>
           </div>
           <BottomButton
