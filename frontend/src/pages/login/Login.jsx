@@ -48,7 +48,8 @@ export default function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate(-1, { replace: true });
+      const next = location.state === null ? '/' : location.state.next
+      navigate(next, { replace: true });
     }
   }, [isLoggedIn]);
 
