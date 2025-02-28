@@ -1,14 +1,20 @@
 :root {
   /*color*/
   --orange-color: #f0842c;
-  --gray-color: #d9d9d9;
-  --background-color: #efe9db;
+  --gray-color: #c8c8c8;
+  --disable-gray-color: #e6e3e3;
+  --background-color: #f6f1e7;
+  --black-color: #000000;
 
   /*font*/
   --pretendard-regular: 'Pretendard-Regular';
   --pretendard-bold: 'Pretendard-Bold';
   --pretendard-semiBold: 'Pretendard-SemiBold';
   --pretendard-light: 'Pretendard-Light';
+  --font-size-small: 12px;
+  --font-size-medium: 18px;
+
+  --top-margin: 10%;
 }
 
 @font-face {
@@ -40,10 +46,19 @@
   margin: 0 auto;
   background-color: var(--background-color);
   width: 400px;
-  min-height: 900px;
+  padding-bottom: 30px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.logo-image {
+  width: 90%;
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+  user-select: none;
 }
 
 body {
   margin: 0px;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }

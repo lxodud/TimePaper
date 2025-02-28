@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f6f1e7;
+  gap: 20%;
+}
+
+.inputContainer {
+  width: 80%;
+}
+
+.errContainer {
+  text-align: center;
+  font-family: var(--pretendard-semiBold);
+  margin-top: 3%;
+}

@@ -12,14 +12,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "postits")
+@Builder
 public class Postit extends BaseTimeEntity {
 
   @Id
@@ -40,6 +49,17 @@ public class Postit extends BaseTimeEntity {
   @Column(length = 155)
   private String content;
 
+  @Column(nullable = false)
   private String imageUrl;
 
+  @Column(nullable = true)
+  private String s3Key;
+
+  @CreatedDate
+  @Column(nullable = true, updatable = false)
+  private LocalDateTime createdAt;
+
+  @LastModifiedDate
+  @Column(nullable = true)
+  private LocalDateTime updatedAt;
 }
