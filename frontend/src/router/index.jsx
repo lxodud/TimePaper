@@ -4,12 +4,15 @@ import Home from '../pages/home/Home';
 import Login from '../pages/login/Login.jsx';
 import Signup from '../pages/SignUp';
 import MyPage from '../pages/MyPage.jsx';
-import TimePaperDetail from '../pages/TimePaperDetail';
+import TimePaperDetail from '../pages/timepaperDetail/TimePaperDetail.jsx';
 import TimePaperIsLocked from '../pages/timepaperlocked/TimePaperIsLocked.jsx';
 import PostItCreate from '../pages/PostItCreate';
 import NotFound from '../pages/error/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
 import TimePaperCreate from '../pages/timepapercreate/TimePaperCreate.jsx';
+
+// 모달 테스트
+// import ModalTest from '../pages/modal/ModalTest.jsx';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +43,10 @@ const router = createBrowserRouter([
           {
             path: '/postit/create',
             element: <PostItCreate />,
+          },
+          {
+            path: '/test',
+            element: <Modal />,
           },
           {
             path: '/timepaper',
