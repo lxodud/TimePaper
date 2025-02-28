@@ -12,11 +12,9 @@
 }
 
 .modal {
-  background: white;
-  padding: 16px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
+  user-select: none;
 }
 
 .closeButton {
@@ -25,17 +23,38 @@
   right: 8px;
   border: none;
   background: none;
-  font-size: 24px;
+  font-size: 40px;
   cursor: pointer;
-  color: gray;
 }
 
 .closeButton:hover {
-  color: black;
+  color: rgb(95, 93, 93);
 }
 
-.image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
+.selectedImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.textarea {
+  position: absolute;
+  top: 200px;
+  left: 45px;
+  background-color: inherit;
+  border: none;
+  width: 85%;
+  height: 60%;
+  overflow: hidden;
+  resize: none;
+  outline: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+.logoImage {
+  width: 100%;
+  user-select: none;
+  pointer-events: none;
 }

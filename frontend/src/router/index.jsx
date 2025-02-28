@@ -11,9 +11,6 @@ import NotFound from '../pages/error/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
 import TimePaperCreate from '../pages/timepapercreate/TimePaperCreate.jsx';
 
-// 모달 테스트
-// import ModalTest from '../pages/modal/ModalTest.jsx';
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -43,10 +40,6 @@ const router = createBrowserRouter([
           {
             path: '/postit/create',
             element: <PostItCreate />,
-          },
-          {
-            path: '/test',
-            element: <Modal />,
           },
           {
             path: '/timepaper',
