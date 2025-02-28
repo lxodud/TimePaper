@@ -19,7 +19,7 @@ export default function TimePaperSetLock() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('제목을 입력해주세요.');
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [releaseDate, setReleaseDate] = useState(new Date());
 
   const navigate = useNavigate();
   const regEmail =
@@ -38,16 +38,18 @@ export default function TimePaperSetLock() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email.trim()) {
+
+    if (!email.trim() || !regEmail.test(email)) {
       setError(true);
-      setErrorMessage('수신 받을 Email을 입력해주세요.');
+      setErrorMessage('올바른 이메일 형식을 입력해 주세요.');
       return;
     }
+
     setError(false);
     setLoading(true);
 
     try {
-      const response = await tempTimePaperSetLock({ email });
+      const response = await tempTimePaperSetLock({ email, releaseDate });
       navigate(`/timepaper/${response.id}`);
     } catch (err) {
       console.error(err);
@@ -57,7 +59,6 @@ export default function TimePaperSetLock() {
       setLoading(false);
     }
   };
-
 
   return (
     <>
@@ -79,12 +80,13 @@ export default function TimePaperSetLock() {
             <div className={styles.dateInputContainer}>
               <p className={styles.whenPtag}>언제 열어보시겠어요?</p>
               <DatePicker
-                selected={selectedDate} 
-                onChange={(date) => setSelectedDate(date)} 
-                minDate={new Date()} 
-                dateFormat="yyyy-MM-dd" 
-                className={styles.dateInput} 
-                placeholderText="날짜를 선택하세요" 
+                selected={releaseDate}
+                onChange={(date) => setReleaseDate(date)}
+                minDate={new Date()}
+                dateFormat="yyyy-MM-dd"
+                className={styles.dateInput}
+                placeholderText="날짜를 선택하세요"
+                value={releaseDate}
               />
             </div>
           </div>
