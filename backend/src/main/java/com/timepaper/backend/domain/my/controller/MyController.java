@@ -1,5 +1,6 @@
 package com.timepaper.backend.domain.my.controller;
 
+import com.timepaper.backend.domain.my.dto.response.MyInfoResponseDto;
 import com.timepaper.backend.domain.my.dto.response.MyPostitListResponseDto;
 import com.timepaper.backend.domain.my.dto.response.MyTimepaperListResponseDto;
 import com.timepaper.backend.domain.my.service.MyService;
@@ -30,11 +31,17 @@ public class MyController {
   @GetMapping("/timepapers")
   public ResponseEntity<ApiResponse<List<MyTimepaperListResponseDto>>> readMyTimepapers(@AuthenticationPrincipal User authenticatedUser) {
     return ResponseEntity.ok(ApiResponse.ok(myService.readMyTimepapers(authenticatedUser)));
-
   }
 
   @GetMapping("/postits")
   public ResponseEntity<ApiResponse<List<MyPostitListResponseDto>>> readMyPostit(@AuthenticationPrincipal User authenticatedUser) {
     return ResponseEntity.ok(ApiResponse.ok(myService.readMyPostits(authenticatedUser)));
      }
-}
+
+  @GetMapping("/myinfo")
+  public ResponseEntity<ApiResponse<MyInfoResponseDto>> readMyInfo(@AuthenticationPrincipal User authenticatedUser) {
+    return ResponseEntity.ok(ApiResponse.ok(myService.readMyInfo(authenticatedUser)));
+  }
+
+  }
+
