@@ -2,13 +2,14 @@ package com.timepaper.backend.domain.my.dto.response;
 
 import com.timepaper.backend.domain.timepaper.entity.TimePaper;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
 public class MyTimepaperListResponseDto {
-  private final Long rollingPaperId;
+  private final UUID rollingPaperId;
   private final String creator;
   private final String title;
   private final LocalDateTime createdAt;
