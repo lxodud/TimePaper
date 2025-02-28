@@ -1,8 +1,11 @@
 import axios from 'axios';
+import store from '../store/store'
+import { api } from './api'
+import { login } from '../store/slices/authSlice';
 
 const apiInstance = axios.create({
-
-})
+  baseURL: import.meta.env.VITE_API_URL
+});
 
 const NO_TOKEN_REQUIRED = [
   "/auth/login",
@@ -13,23 +16,40 @@ const NO_TOKEN_REQUIRED = [
 
 const GET_TIMEPAPER_REGEX = /^\/timepapers\/\d+$/;
 
-
 apiInstance.interceptors.request.use((config) => {
-  
+  const state = store.getState();
   const isRequireToken = !NO_TOKEN_REQUIRED.includes(config.url);
   const isGetTimepaper = GET_TIMEPAPER_REGEX.test(config.url) && (config.method === "get");
 
   if (isRequireToken && !isGetTimepaper) {
-    // TODO: access token 가져오기
-    config.headers["Authorization"] = `Bearer `;
+    config.headers["Authorization"] = state.auth.accessToken;
   }
 
   return config
 })
 
-apiInstance.interceptors.response.use((config) => { 
-  // refresh token 핸들링
-})
+apiInstance.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  async (error) => {
+    const response = error.response;
+    if (response.data?.code === 3001) {
+      console.log(response.data.code)
+      try {
+        const response = await api.reissue();
+        const accessToken = response.headers.authorization;
+        store.dispatch(login(accessToken))
+        originalRequest.headers['Authorization'] = accessToken;
+        return apiInstance(originalRequest);
+      } catch {
+        return Promise.reject(error);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+)
 
 
 export default apiInstance
