@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - chore/SSD-95-배포-세팅
 
 jobs:
   deploy:
@@ -39,7 +40,6 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "BUCKET_NAME=${{ secrets.BUCKET_NAME }}" >> .env
           echo "REGION=${{ secrets.REGION }}" >> .env
-
 
       - name: Add ssh-agent
         uses: webfactory/ssh-agent@v0.9.0
