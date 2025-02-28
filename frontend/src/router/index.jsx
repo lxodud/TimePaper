@@ -6,7 +6,7 @@ import Signup from '../pages/SignUp';
 import MyPage from '../pages/MyPage.jsx';
 import TimePaperDetail from '../pages/timepaperDetail/TimePaperDetail';
 import TimePaperIsLocked from '../pages/timepaperlocked/TimePaperIsLocked.jsx';
-import PostItCreate from '../pages/PostItCreate';
+import PostItCreate from '../pages/postitcreate/PostItCreate';
 import NotFound from '../pages/error/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
 import TimePaperCreate from '../pages/timepapercreate/TimePaperCreate.jsx';
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
-    errorElement: <NotFound />,
+    // errorElement: <NotFound />,
     children: [
       {
         index: true,
