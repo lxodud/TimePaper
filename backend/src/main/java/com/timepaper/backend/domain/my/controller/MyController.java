@@ -28,7 +28,7 @@ public class MyController {
   }
 
   @GetMapping("/postits")
-  public ResponseEntity<ApiResponse<List<MyPostitListResponseDto>>> readMyPostit(
+  public ResponseEntity<ApiResponse<List<MyPostitListResponseDto>>> getMyPostits(
       @AuthenticationPrincipal User authenticatedUser) {
     return ResponseEntity.ok(ApiResponse.ok(myService.getMyPostits(authenticatedUser)));
   }
