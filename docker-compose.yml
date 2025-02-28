@@ -64,6 +64,8 @@ services:
       args:
         VITE_API_URL: ${VITE_API_URL}
     image: yejinoh58/timepaper-client-image:latest
+    environment:
+      - DOMAIN=${DOMAIN}
     volumes:
       - /etc/letsencrypt/live/${DOMAIN}/privkey.pem:/etc/letsencrypt/live/${DOMAIN}/privkey.pem:ro
       - /etc/letsencrypt/live/${DOMAIN}/fullchain.pem:/etc/letsencrypt/live/${DOMAIN}/fullchain.pem:ro
