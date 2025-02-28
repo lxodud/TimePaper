@@ -7,7 +7,7 @@ import { setPageTitle } from '../../store/slices/headerSlice';
 const tempPostTimePaper = async (data) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve({ title: '2022년도 졸업식' });
+      resolve({ title: '2022년도 졸업식입니다, 작별 인사를 남겨주세요.' });
     }, 1000);
   });
 };
@@ -81,7 +81,7 @@ export default function TimePaperDetail() {
   }, [timepaperId, dispatch]);
   return (
     <div className={styles.container}>
-      <h2>2022년도 졸업식</h2>
+      <h2>2022년도 졸업식입니다, 작별 인사를 남겨주세요.</h2>
 
       <ul className={styles.timepaperList}>
         {postIt.map((paper) => (
