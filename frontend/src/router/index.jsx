@@ -4,7 +4,7 @@ import Home from '../pages/home/Home';
 import Login from '../pages/login/Login.jsx';
 import Signup from '../pages/SignUp';
 import MyPage from '../pages/MyPage.jsx';
-import TimePaperDetail from '../pages/TimePaperDetail';
+import TimePaperDetail from '../pages/timepaperDetail/TimePaperDetail';
 import TimePaperIsLocked from '../pages/timepaperlocked/TimePaperIsLocked.jsx';
 import PostItCreate from '../pages/PostItCreate';
 import NotFound from '../pages/error/NotFound';

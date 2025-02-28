@@ -233,4 +233,4 @@ gradle-app.setting
 .history
 #로컬 개발시 테스트용
 src/test/java/com/timepaper/backend/http/
-src/main/java/com/timepaper/backend/domain/user/controller/TestController.java
+#src/main/java/com/timepaper/backend/domain/user/controller/TestController.java
