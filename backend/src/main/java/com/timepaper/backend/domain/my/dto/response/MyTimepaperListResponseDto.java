@@ -9,13 +9,14 @@ import lombok.Getter;
 @Getter
 @Builder
 public class MyTimepaperListResponseDto {
+
   private final UUID rollingPaperId;
   private final String creator;
   private final String title;
   private final LocalDateTime createdAt;
   private final boolean isLocked;
 
-  public static MyTimepaperListResponseDto from(TimePaper entity){
+  public static MyTimepaperListResponseDto from(TimePaper entity) {
     return MyTimepaperListResponseDto.builder()
         .rollingPaperId(entity.getId())
         .creator(String.valueOf(entity.getCreator()))
