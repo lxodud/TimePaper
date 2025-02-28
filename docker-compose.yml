@@ -14,7 +14,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
-
   redis:
     container_name: redis-container
     image: redis:latest
@@ -31,7 +30,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-
   api:
     container_name: api-container
     build:
@@ -53,7 +51,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-
   client:
     container_name: client-container
     build:

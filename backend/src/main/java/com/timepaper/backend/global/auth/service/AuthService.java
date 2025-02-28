@@ -41,11 +41,11 @@ public class AuthService {
 
   private ResponseCookie createCookie(String refreshToken) {
     return ResponseCookie.from("refresh_token", refreshToken)
-        .httpOnly(true)
-        .secure(false) //개발환경 false, 배포시 true
-        .sameSite("Strict")
-        .path("/api/auth/reissue")
-        .maxAge(Duration.ofDays(7))
-        .build();
+               .httpOnly(true)
+               .secure(true) //개발환경 false, 배포시 true
+               .sameSite("None")
+               .path("/api/auth/reissue")
+               .maxAge(Duration.ofDays(7))
+               .build();
   }
 }
