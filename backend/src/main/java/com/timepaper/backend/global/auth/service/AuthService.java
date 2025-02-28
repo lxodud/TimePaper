@@ -43,7 +43,7 @@ public class AuthService {
     return ResponseCookie.from("refresh_token", refreshToken)
                .httpOnly(true)
                .secure(true) //개발환경 false, 배포시 true
-               .sameSite("Strict")
+               .sameSite("None")
                .path("/api/auth/reissue")
                .maxAge(Duration.ofDays(7))
                .build();

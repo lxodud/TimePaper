@@ -21,6 +21,7 @@ export default function Login() {
     (async () => {
       try {
         const response = await api.login(inputData.email, inputData.password);
+
         dispatch(login(response.headers.authorization));
         const next = location.state === null ? -1 : location.state.next
         navigate(next, { replace: true });
