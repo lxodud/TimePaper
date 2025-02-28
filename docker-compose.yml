@@ -14,13 +14,12 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
-  
   redis:
     container_name: redis-container
     image: redis:latest
     volumes:
       - redis-volume:/data
-    command: ["redis-server", "--appendonly", "yes"]  
+    command: ["redis-server", "--appendonly", "yes"]
     env_file:
       - .env
     networks:
@@ -31,7 +30,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-  
   api:
     container_name: api-container
     build:
@@ -39,6 +37,7 @@ services:
       #이미지 레이어 캐싱 적용
       cache_to:
         - type=local,dest=/tmp/.build-cache/api,mode=max
+      cache_from:
         - type=local,src=/tmp/.build-cache/api
     image: yejinoh58/timepaper-api-image:latest
     env_file:
@@ -52,7 +51,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-  
   client:
     container_name: client-container
     build:
@@ -64,6 +62,8 @@ services:
       args:
         VITE_API_URL: ${VITE_API_URL}
     image: yejinoh58/timepaper-client-image:latest
+    env_file:
+      - .env
     environment:
       - DOMAIN=${DOMAIN}
     volumes:
