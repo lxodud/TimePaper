@@ -10,7 +10,7 @@ import PostItCreate from '../pages/PostItCreate';
 import NotFound from '../pages/error/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
 import TimePaperCreate from '../pages/timepapercreate/TimePaperCreate.jsx';
-import TimePaperSetLock from '../pages/timepaperislocked/TimePaperSetLock.jsx';
+import TimePaperSetLock from '../pages/timepaperSetlocked/TimePaperSetLock.jsx';
 
 const router = createBrowserRouter([
   {
