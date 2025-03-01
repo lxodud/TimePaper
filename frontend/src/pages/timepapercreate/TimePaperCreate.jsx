@@ -5,6 +5,8 @@ import BottomButton from '../../components/BottomButton/BottomButton';
 import UnderBarInput from '../../components/UnderBarInput/UnderBarInput';
 import { api } from '../../api/api';
 import { useSelector } from 'react-redux';
+import { setPageTitle } from '../../store/slices/headerSlice';
+import { useDispatch } from 'react-redux';
 
 export default function TimePaperCreate() {
   const [title, setTitle] = useState('');
@@ -12,8 +14,9 @@ export default function TimePaperCreate() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('제목을 입력해주세요.');
   const [isLoginButtonEnable, setIsLoginButtonEnable] = useState(false);
-  const { isLoggedIn} = useSelector((state) => state.auth)
+  const { isLoggedIn } = useSelector((state) => state.auth)
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleTitleChange = (e) => {
@@ -67,6 +70,10 @@ export default function TimePaperCreate() {
       });
     }
   }, [isLoggedIn])
+  
+   useEffect(() => {
+    dispatch(setPageTitle('타임페이퍼 생성'));
+  }, []);
 
   return (
     <>

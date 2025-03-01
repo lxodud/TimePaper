@@ -1,6 +1,8 @@
 package com.timepaper.backend.domain.timepaper.service;
 
 import com.timepaper.backend.domain.timepaper.dto.request.TimePaperCreateRequestDto;
+import com.timepaper.backend.domain.timepaper.dto.request.TimePaperLockRequestDto;
+import com.timepaper.backend.domain.timepaper.dto.response.TimePaperLockResponseDto;
 import com.timepaper.backend.domain.timepaper.dto.response.TimePaperResponseDto;
 import com.timepaper.backend.domain.timepaper.entity.TimePaper;
 import com.timepaper.backend.domain.timepaper.repository.TimePaperRepository;
@@ -50,6 +52,15 @@ public class TimePaperService {
     TimePaper timePaper = timePaperRepository.findById(timepaperId)
         .orElseThrow(() -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
     timePaperRepository.delete(timePaper);
+  }
+
+  @Transactional
+  public TimePaperLockResponseDto lockTimePaper(UUID timepaperId, TimePaperLockRequestDto timePaperLockRequestDto) {
+
+    TimePaper timePaper = timePaperRepository.findById(timepaperId)
+        .orElseThrow(() -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
+    timePaper.setReleaseDate(timePaperLockRequestDto.getRecipientEmail(), timePaperLockRequestDto.getReleaseDate());
+    return TimePaperLockResponseDto.from(timePaper);
   }
 
 }
