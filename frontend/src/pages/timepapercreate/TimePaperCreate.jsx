@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './timePaperCreate.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import UnderBarInput from '../../components/UnderBarInput/UnderBarInput';
-
+import { setPageTitle } from '../../store/slices/headerSlice';
+import { useDispatch } from 'react-redux';
 // 가짜 Api 함수
 const tempPostTimePaper = async (data) => {
   return new Promise((resolve) => {
@@ -18,6 +19,11 @@ export default function TimePaperCreate() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('제목을 입력해주세요.');
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setPageTitle('타임페이퍼 생성'));
+  }, [dispatch]);
 
   const navigate = useNavigate();
 
