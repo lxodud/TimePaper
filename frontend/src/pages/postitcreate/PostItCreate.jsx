@@ -8,15 +8,16 @@ import { useParams } from 'react-router-dom';
 
 export default function PostItCreate() {
   const { timepaperId } = useParams();
-  const fileInputRef = useRef(null); //파일 input 요소에 대한 참조
+  const fileInputRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const templates = [staticImagePath.postitAfternoon, staticImagePath.postitNight];
+  const [errors, setErrors] = useState({});
 
   const INITIAL_FORM_DATA = {
-    timepaperId: timepaperId, //URL에서 가져온 값 저장
+    timepaperId: timepaperId,
     authorName: '',
     content: '',
-    imageUrl: staticImagePath.postitAfternoon, // static 경로만 보냄, upload라면 null
+    imageUrl: staticImagePath.postitAfternoon,
   };
 
   const [inputData, setInputData] = useState(INITIAL_FORM_DATA);
@@ -28,13 +29,12 @@ export default function PostItCreate() {
 
   const INITIAL_IMAGE_STATE = {
     imageType: IMAGE_TYPES.STATIC,
-    preview: staticImagePath.postitAfternoon, //미리보기URL (Base64)
-    imageData: staticImagePath.postitAfternoon, // 이미지 경로 혹은 File객체
+    preview: staticImagePath.postitAfternoon,
+    imageData: staticImagePath.postitAfternoon,
   };
 
   const [imageState, setImageState] = useState(INITIAL_IMAGE_STATE);
 
-  //url에서 timepaperId가 변경될 때 inputData 업데이트
   useEffect(() => {
     setInputData((prev) => ({
       ...prev,
@@ -43,7 +43,6 @@ export default function PostItCreate() {
     }));
   }, [timepaperId, imageState.imageType, imageState.imageData]);
 
-  //입력 필드 변경될 때 inputData 업데이트
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputData((prev) => ({
@@ -52,14 +51,13 @@ export default function PostItCreate() {
     }));
   };
 
-  //정적인 이미지를 선택하는 경우
   const handleStaticImage = (src) => () => {
     console.log(src);
     setImageState((prev) => ({
       ...prev,
       imageType: IMAGE_TYPES.STATIC,
-      preview: src, //정적 이미지 경로
-      imageData: src, //서버로 보낼 이미지 경로
+      preview: src,
+      imageData: src,
     }));
   };
 
@@ -67,34 +65,78 @@ export default function PostItCreate() {
     fileInputRef.current.click();
   };
 
-  //파일 업로드 이벤트 처리
   const handleImageFileUpload = (e) => {
-    const file = e.target.files[0]; //선택된 첫 번째 파일 가져오기
+    const file = e.target.files[0];
 
-    if (file) {
-      //미리보기 업로드
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setImageState((prev) => ({
-          ...prev,
-          imageType: IMAGE_TYPES.UPLOAD,
-          preview: event.target.result, //미리보기용URL
-          imageData: file, //실제 파일 데이터
-        }));
-      };
-      reader.readAsDataURL(file); //미리보기 출력
+    if (!file) return;
+
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!validImageTypes.includes(file.type)) {
+      alert('이미지 파일만 업로드 가능합니다.');
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setImageState((prev) => ({
+        ...prev,
+        imageType: IMAGE_TYPES.UPLOAD,
+        preview: event.target.result,
+        imageData: file,
+      }));
+    };
+    reader.readAsDataURL(file);
   };
 
-  //등록 (서버 호출)
+  const handleBlur = () => {
+    console.log('handleBlur 동작');
+    setErrors(validateInput(inputData));
+  };
+
+  const validateInput = (data) => {
+    const errors = {};
+
+    if (!data.content.trim()) {
+      errors.content = '포스트잇 내용을 입력해주세요.';
+    } else if (data.content.length > 155) {
+      errors.content = '최대 155자까지 입력할 수 있습니다.';
+    }
+
+    if (!data.authorName.trim()) {
+      console.log('authorName 유효성 검증');
+      errors.authorName = '작성자 이름을 입력해주세요.';
+      console.log(errors);
+    } else if (data.authorName.length > 20) {
+      errors.authorName = '최대 20자까지 입력할 수 있습니다.';
+    }
+
+    return errors;
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
 
     const updatedInputData = {
       ...inputData,
       imageUrl: imageState.imageType === IMAGE_TYPES.STATIC ? imageState.imageData : null,
     };
+
+    const validationErros = validateInput(updatedInputData);
+
+    if (Object.keys(validationErros).length > 0) {
+      setErrors(validationErros);
+      console.log('유효성 검증 통과 실패');
+
+      Object.values(validationErros).forEach((errorMessage) => {
+        alert(errorMessage); // 각 에러 메시지를 alert로 출력
+      });
+
+      return;
+    }
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
 
     const formData = new FormData();
 
@@ -103,7 +145,6 @@ export default function PostItCreate() {
       new Blob([JSON.stringify(updatedInputData)], { type: 'application/json' }),
     );
 
-    //사용자가 파일 업로드한 경우 추가
     if (imageState.imageType === IMAGE_TYPES.UPLOAD && imageState.imageData) {
       formData.append('image', imageState.imageData);
     }
@@ -128,11 +169,21 @@ export default function PostItCreate() {
             onChange={handleOnChange}
             name="authorName"
             placeholder="작성자 입력"
+            onBlur={handleBlur}
           ></UnderBarInput>
+          {errors.authorName && <p className={styles.error}>{errors.authorName}</p>}
         </div>
         <div className={styles.selectedImage}>
           <img src={imageState.preview} className="logo-image" alt="선택된 포스트잇 이미지" />
-          <textarea onChange={handleOnChange} name="content" className={styles.textarea}></textarea>
+          <div className={styles.textareaContainer}>
+            <textarea
+              onChange={handleOnChange}
+              onBlur={handleBlur}
+              name="content"
+              className={styles.textarea}
+            ></textarea>
+            {errors.content && <p className={styles.textareaError}>{errors.content}</p>}
+          </div>
         </div>
         <section className={styles.imageContainer}>
           {templates.map((src, index) => (
