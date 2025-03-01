@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
 import './css/index.css';
-import { useDispatch, useSelector } from 'react-redux'; // 리덕스 조회
+import { useDispatch, useSelector } from 'react-redux';
 import { login, loadUser } from './store/slices/authSlice';
 import { api } from './api/api';
 
