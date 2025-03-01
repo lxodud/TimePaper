@@ -36,14 +36,13 @@ public class PostitService {
       MultipartFile image
   ) {
     String s3ImageUrl = null;
-    String s3Key = null; // s3 객체 키
+    String s3Key = null;
 
     if (image != null) {
       Map<String, String> uploadResult = s3Service.uploadFile(image);
       s3ImageUrl = uploadResult.get("imageUrl");
       s3Key = uploadResult.get("s3Key");
     }
-    // s3에 업로드해서 이미지url이랑 s3key 받음
 
     TimePaper timePaper = timePaperRepository.findById(timePaperId)
         .orElseThrow(() -> new IllegalArgumentException());
