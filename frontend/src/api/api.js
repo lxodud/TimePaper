@@ -92,5 +92,9 @@ export const api = {
 
   getMyTimePapers: async () => { 
     const response = await apiInstance.get(`/my/timepapers`)
+  },
+
+  getMyInfo: async () => {
+    return await apiInstance.get(`/my`)
   }
 }
