@@ -85,7 +85,7 @@ export const api = {
         "Content-Type": "multipart/form-data",
       }
     });
-    return response.data;
+    return response;
   },
 
   deletePostit: async (postitId) => { 

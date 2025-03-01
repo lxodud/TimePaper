@@ -4,7 +4,7 @@ import styles from './PostItCreate.module.css';
 import UnderBarInput from '../../components/UnderBarInput/UnderBarInput';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import { api } from '../../api/api';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function PostItCreate() {
   const { timepaperId } = useParams();
@@ -12,6 +12,7 @@ export default function PostItCreate() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const templates = [staticImagePath.postitAfternoon, staticImagePath.postitNight];
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const INITIAL_FORM_DATA = {
     timepaperId: timepaperId,
@@ -52,7 +53,6 @@ export default function PostItCreate() {
   };
 
   const handleStaticImage = (src) => () => {
-    console.log(src);
     setImageState((prev) => ({
       ...prev,
       imageType: IMAGE_TYPES.STATIC,
@@ -89,7 +89,6 @@ export default function PostItCreate() {
   };
 
   const handleBlur = () => {
-    console.log('handleBlur 동작');
     setErrors(validateInput(inputData));
   };
 
@@ -103,9 +102,7 @@ export default function PostItCreate() {
     }
 
     if (!data.authorName.trim()) {
-      console.log('authorName 유효성 검증');
       errors.authorName = '작성자 이름을 입력해주세요.';
-      console.log(errors);
     } else if (data.authorName.length > 20) {
       errors.authorName = '최대 20자까지 입력할 수 있습니다.';
     }
@@ -125,7 +122,6 @@ export default function PostItCreate() {
 
     if (Object.keys(validationErros).length > 0) {
       setErrors(validationErros);
-      console.log('유효성 검증 통과 실패');
 
       Object.values(validationErros).forEach((errorMessage) => {
         alert(errorMessage); // 각 에러 메시지를 alert로 출력
@@ -152,9 +148,11 @@ export default function PostItCreate() {
     (async () => {
       try {
         const response = await api.createPostit(timepaperId, formData);
-        console.log(response);
+        if (response.status === 201) {
+          navigate(`/timepaper/${timepaperId}`);
+        }
       } catch (error) {
-        console.error(error);
+        alert('등록에 실패했습니다.');
       } finally {
         setIsSubmitting(false);
       }
