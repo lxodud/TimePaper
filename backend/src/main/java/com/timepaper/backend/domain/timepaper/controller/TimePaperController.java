@@ -6,7 +6,6 @@ import com.timepaper.backend.domain.timepaper.dto.response.TimePaperLockResponse
 import com.timepaper.backend.domain.timepaper.dto.response.TimePaperResponseDto;
 import com.timepaper.backend.domain.timepaper.service.TimePaperService;
 import com.timepaper.backend.global.dto.ApiResponse;
-import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,39 +38,44 @@ public class TimePaperController {
         timePaperService.createTimePaper(timePaperCreateRequestDto, authentication);
 
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(ApiResponse
-            .ok("타임페이퍼 생성 성공",
-                "CREATED",
-                responseDto));
+               .body(ApiResponse
+                         .ok("타임페이퍼 생성 성공",
+                             "CREATED",
+                             responseDto));
   }
 
   @GetMapping("/{timepaperId}")
-  public ResponseEntity<ApiResponse<TimePaperResponseDto>> readTimePaperById(@PathVariable UUID timepaperId) {
+  public ResponseEntity<ApiResponse<TimePaperResponseDto>> readTimePaperById(
+      @PathVariable UUID timepaperId) {
 
     TimePaperResponseDto responseDto = timePaperService.readTimePaperById(timepaperId);
     return ResponseEntity.status(HttpStatus.OK)
-        .body(ApiResponse
-            .ok("타임페이퍼 조회 성공",
-                "OK",
-                responseDto));
+               .body(ApiResponse
+                         .ok("타임페이퍼 조회 성공",
+                             "OK",
+                             responseDto));
   }
 
   @DeleteMapping("/{timepaperId}")
   public ResponseEntity<ApiResponse<Void>> deleteTimePaper(@PathVariable UUID timepaperId) {
     timePaperService.deleteTimePaper(timepaperId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT)
-        .body(ApiResponse
-            .ok("타임페이퍼 삭제 성공",
-                "NO_CONTENT",
-                null));
+               .body(ApiResponse
+                         .ok("타임페이퍼 삭제 성공",
+                             "NO_CONTENT",
+                             null));
   }
 
-  @PatchMapping("/{timepaperId}/lock")
-  public ResponseEntity<ApiResponse<TimePaperLockResponseDto>> lockTimePaper(@PathVariable UUID timepaperId, @RequestBody TimePaperLockRequestDto timePaperLockRequestDto) {
+  @PatchMapping("/{timePaperId}/lock")
+  public ResponseEntity<ApiResponse<TimePaperLockResponseDto>> lockTimePaper(
+      @PathVariable UUID timePaperId,
+      @RequestBody TimePaperLockRequestDto timePaperLockRequestDto
+  ) {
 
-    TimePaperLockResponseDto responseDto = timePaperService.lockTimePaper(timepaperId, timePaperLockRequestDto);
+    TimePaperLockResponseDto responseDto = timePaperService.lockTimePaper(timePaperId,
+        timePaperLockRequestDto);
     return ResponseEntity.status(HttpStatus.OK)
-        .body(ApiResponse.ok("타임페이퍼 잠금 처리 성공", "OK", responseDto));
+               .body(ApiResponse.ok("타임페이퍼 잠금 처리 성공", "OK", responseDto));
   }
 
 }
