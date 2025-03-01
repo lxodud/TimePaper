@@ -23,7 +23,7 @@ export default function Login() {
         const response = await api.login(inputData.email, inputData.password);
 
         dispatch(login(response.headers.authorization));
-        const next = location.state === null ? -1 : location.state.next
+        const next = location.state?.next ?? -1
         navigate(next, { replace: true });
       } catch (error) {
         setIsLoginButtonEnable(true);
@@ -48,7 +48,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      const next = location.state === null ? '/' : location.state.next
+      const next = location.state?.next ?? '/'
       navigate(next, { replace: true });
     }
   }, [isLoggedIn]);
