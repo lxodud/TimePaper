@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RefreshTokenService {
 
-  private static final long PERSISTENT_VALIDITY_DAYS = 7;
+  private static final long PERSISTENT_VALIDITY_DAYS = 7; //개발용 7일, 배포시 30분
   private final StringRedisTemplate redisTemplate;
   private final RefreshTokenUtil refreshTokenUtil;
   private final ObjectMapper objectMapper;
@@ -77,9 +77,27 @@ public class RefreshTokenService {
 
   }
 
+  public void delete(String refreshToken) {
+    try {
+      String emailKey = getEmailKey(refreshToken);
+      log.info("emailKey: {}", emailKey);
+      Boolean delete = redisTemplate.delete(emailKey);
+      log.info(delete.toString());
+    } catch (InvalidRefreshTokenException e) {
+      //예외 처리 고민
+    }
+
+  }
+
   private String getEmailKey(String refreshToken) {
-    log.info("getEmail 부분");
-    log.info("refreshToken : {}", refreshToken);
-    return refreshToken.split("-")[0];
+    try {
+      if (refreshToken == null || !refreshToken.contains("-")) {
+        throw new InvalidRefreshTokenException("refreshToken이 없거나 유효하지 않음");
+      }
+      return refreshToken.split("-")[0];
+    } catch (IllegalArgumentException e) {
+      log.error("refreshToken이 만료되거나 없는 유효하지 않은 경우");
+      throw e;
+    }
   }
 }
