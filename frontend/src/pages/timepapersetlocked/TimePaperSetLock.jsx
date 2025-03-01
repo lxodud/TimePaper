@@ -61,7 +61,7 @@ export default function TimePaperSetLock() {
   }, [email, releaseDate]);
 
   if (!location.state?.authorEmail) {
-    // return <Navigate to="/404" replace />;
+    return <Navigate to="/404" replace />;
   }
 
   return (

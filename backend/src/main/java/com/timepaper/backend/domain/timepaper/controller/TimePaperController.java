@@ -5,6 +5,7 @@ import com.timepaper.backend.domain.timepaper.dto.request.TimePaperLockRequestDt
 import com.timepaper.backend.domain.timepaper.dto.response.TimePaperLockResponseDto;
 import com.timepaper.backend.domain.timepaper.dto.response.TimePaperResponseDto;
 import com.timepaper.backend.domain.timepaper.service.TimePaperService;
+import com.timepaper.backend.domain.user.entity.User;
 import com.timepaper.backend.global.dto.ApiResponse;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -69,11 +71,12 @@ public class TimePaperController {
   @PatchMapping("/{timePaperId}/lock")
   public ResponseEntity<ApiResponse<TimePaperLockResponseDto>> lockTimePaper(
       @PathVariable UUID timePaperId,
-      @RequestBody TimePaperLockRequestDto timePaperLockRequestDto
+      @RequestBody TimePaperLockRequestDto timePaperLockRequestDto,
+      @AuthenticationPrincipal User requester
   ) {
 
     TimePaperLockResponseDto responseDto = timePaperService.lockTimePaper(timePaperId,
-        timePaperLockRequestDto);
+        timePaperLockRequestDto, requester.getId());
     return ResponseEntity.status(HttpStatus.OK)
                .body(ApiResponse.ok("타임페이퍼 잠금 처리 성공", "OK", responseDto));
   }

@@ -57,12 +57,20 @@ public class TimePaperService {
   }
 
   @Transactional
-  public TimePaperLockResponseDto lockTimePaper(UUID timePaperId,
-      TimePaperLockRequestDto timePaperLockRequestDto) {
+  public TimePaperLockResponseDto lockTimePaper(
+      UUID timePaperId,
+      TimePaperLockRequestDto timePaperLockRequestDto,
+      Long requesterId
+  ) {
 
     TimePaper timePaper = timePaperRepository.findById(timePaperId)
                               .orElseThrow(
                                   () -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
+
+    if (!timePaper.getCreator().getId().equals(requesterId)) {
+      throw new IllegalArgumentException("잠금 권한이 없습니다.");
+    }
+
     timePaper.setReleaseDate(timePaperLockRequestDto.getRecipientEmail(),
         timePaperLockRequestDto.getReleaseDate());
     return TimePaperLockResponseDto.from(timePaper);
