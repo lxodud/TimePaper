@@ -18,7 +18,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    console.log(accessToken);
     if (accessToken) {
       (async () => {
         const response = await api.getMyInfo();
