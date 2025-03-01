@@ -1,5 +1,9 @@
 import React from 'react';
 
+const mockMyInfo = {
+  recipientEmail: "testuser@example.com",
+};
+
 const MyInfo = ({ info }) => {
   return (
     <div>
