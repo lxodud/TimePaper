@@ -77,6 +77,7 @@ export const api = {
     const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`)
   },
 
+  
   createPostit: async (timepaperId, author, content, image) => { 
     // TODO: multi-part form 데이터
     const response = await apiInstance.post(`/timepapers/${timepaperId}/postits`)
@@ -84,6 +85,11 @@ export const api = {
 
   deletePostit: async (postitId) => { 
     const response = await apiInstance.delete(`/postits/${postitId}`)
+  },
+
+  getMyInfo: async () => {
+    const response = await apiInstance.get('/my/myinfo');
+    return response.data;
   },
 
   getMyPostits: async () => { 

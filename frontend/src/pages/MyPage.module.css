@@ -1,0 +1,21 @@
+.my-page {
+   font-family: Arial, sans-serif;
+   padding: 20px;
+ }
+ 
+ .header {
+   text-align: center;
+ }
+ 
+ .tabs button {
+   margin: 5px;
+ }
+ 
+ .content h2 {
+   margin-top: 20px;
+ }
+ 
+ .footer button {
+   margin: 10px;
+ }
+ 
