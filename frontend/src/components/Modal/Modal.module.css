@@ -35,26 +35,56 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   width: 100%;
-}
-
-.textarea {
-  position: absolute;
-  top: 200px;
-  left: 45px;
-  background-color: inherit;
-  border: none;
-  width: 85%;
-  height: 60%;
-  overflow: hidden;
-  resize: none;
-  outline: none;
-  pointer-events: none;
-  user-select: none;
 }
 
 .logoImage {
   width: 100%;
   user-select: none;
   pointer-events: none;
+}
+
+.block {
+  width: 40%;
+  height: 7%;
+  background-color: transparent;
+  position: absolute;
+  top: 515px;
+  right: 50px;
+  text-align: center;
+  color: var(--black-color);
+  font-family: var(--pretendard-regular);
+  font-size: var(--font-size-medium);
+  border: none;
+  border-bottom: 1px solid var(--black-color);
+  padding-bottom: 5px;
+}
+
+.block > p {
+  height: 100%;
+  width: 100%;
+  font-size: 25px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-75%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.textareaWrapper {
+  position: absolute;
+  top: 200px;
+  left: 45px;
+  width: 85%;
+  height: auto;
+  max-height: calc(14 * 1.42em);
+  overflow: hidden;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 15;
 }
