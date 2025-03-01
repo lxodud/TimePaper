@@ -75,7 +75,7 @@ export const api = {
       releaseDate: releaseDate
     })
 
-    return lockTimepaper
+    return response
   },
 
   getPostits: async (timepaperId) => { 
