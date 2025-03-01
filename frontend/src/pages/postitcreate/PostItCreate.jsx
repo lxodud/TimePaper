@@ -124,7 +124,7 @@ export default function PostItCreate() {
       setErrors(validationErros);
 
       Object.values(validationErros).forEach((errorMessage) => {
-        alert(errorMessage); // 각 에러 메시지를 alert로 출력
+        alert(errorMessage);
       });
 
       return;
