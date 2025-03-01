@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 export default function PostItCreate() {
   const { timepaperId } = useParams();
   const fileInputRef = useRef(null); //파일 input 요소에 대한 참조
-  const [isRegisterButtonEnable, setIsRegisterButtonEnable] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const templates = [staticImagePath.postitAfternoon, staticImagePath.postitNight];
 
   const INITIAL_FORM_DATA = {
@@ -39,24 +39,9 @@ export default function PostItCreate() {
     setInputData((prev) => ({
       ...prev,
       timepaperId,
+      imageUrl: imageState.imageType === IMAGE_TYPES.STATIC ? imageState.imageData : null,
     }));
-  }, [timepaperId]);
-
-  //포스트잇 이미지를 템플릿으로 선택할 때 상태 관리 -> imageUrl에 경로 저장
-  //정적이라면 -> imageUrl에 null 저장
-  useEffect(() => {
-    if (imageState.imageType === IMAGE_TYPES.STATIC) {
-      setInputData((prev) => ({
-        ...prev,
-        imageUrl: imageState.imageData,
-      }));
-    } else {
-      setInputData((prev) => ({
-        ...prev,
-        imageUrl: null,
-      }));
-    }
-  }, [imageState.imageData]);
+  }, [timepaperId, imageState.imageType, imageState.imageData]);
 
   //입력 필드 변경될 때 inputData 업데이트
   const handleOnChange = (e) => {
@@ -65,6 +50,21 @@ export default function PostItCreate() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  //정적인 이미지를 선택하는 경우
+  const handleStaticImage = (src) => () => {
+    console.log(src);
+    setImageState((prev) => ({
+      ...prev,
+      imageType: IMAGE_TYPES.STATIC,
+      preview: src, //정적 이미지 경로
+      imageData: src, //서버로 보낼 이미지 경로
+    }));
+  };
+
+  const handleUploadImageClick = () => {
+    fileInputRef.current.click();
   };
 
   //파일 업로드 이벤트 처리
@@ -86,49 +86,27 @@ export default function PostItCreate() {
     }
   };
 
-  //정적인 이미지를 선택하는 경우
-  const handleStaticImage = (src) => () => {
-    console.log(src);
-    setImageState((prev) => ({
-      ...prev,
-      imageType: IMAGE_TYPES.STATIC,
-      preview: src, //정적 이미지 경로
-      imageData: null, //서버로 보낼 이미지 경로
-    }));
-  };
-
-  const handleImageSelectClick = () => {
-    fileInputRef.current.click();
-  };
-
   //등록 (서버 호출)
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsRegisterButtonEnable(false); //중복 등록 방지
+    setIsSubmitting(true);
 
     const updatedInputData = {
       ...inputData,
       imageUrl: imageState.imageType === IMAGE_TYPES.STATIC ? imageState.imageData : null,
     };
-    console.log(updatedInputData);
 
-    const formData = new FormData(); //FormData 객체
+    const formData = new FormData();
 
-    //json 데이터
     formData.append(
       'data',
       new Blob([JSON.stringify(updatedInputData)], { type: 'application/json' }),
     );
-    console.log(updatedInputData);
 
     //사용자가 파일 업로드한 경우 추가
-    console.log(imageState.imageType);
-    console.log(imageState.imageData);
     if (imageState.imageType === IMAGE_TYPES.UPLOAD && imageState.imageData) {
       formData.append('image', imageState.imageData);
     }
-
-    console.log('FormData 전송 데이터');
 
     (async () => {
       try {
@@ -137,7 +115,7 @@ export default function PostItCreate() {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsRegisterButtonEnable(true);
+        setIsSubmitting(false);
       }
     })();
   };
@@ -169,7 +147,7 @@ export default function PostItCreate() {
           <img
             src={staticImagePath.imageSelectIcon}
             className={styles.templateThumbnail}
-            onClick={handleImageSelectClick}
+            onClick={handleUploadImageClick}
             alt="사용자가 선택한 이미지"
           />
           <input
@@ -182,11 +160,7 @@ export default function PostItCreate() {
             onChange={handleImageFileUpload}
           />
         </section>
-        <BottomButton
-          title={'등록'}
-          onClick={handleSubmit}
-          isEnable={isRegisterButtonEnable}
-        ></BottomButton>
+        <BottomButton title={'등록'} onClick={handleSubmit} isEnable={!isSubmitting}></BottomButton>
       </form>
     </>
   );
