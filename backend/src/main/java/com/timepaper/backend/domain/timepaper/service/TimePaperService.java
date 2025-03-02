@@ -1,6 +1,8 @@
 package com.timepaper.backend.domain.timepaper.service;
 
 import com.timepaper.backend.domain.timepaper.dto.request.TimePaperCreateRequestDto;
+import com.timepaper.backend.domain.timepaper.dto.request.TimePaperLockRequestDto;
+import com.timepaper.backend.domain.timepaper.dto.response.TimePaperLockResponseDto;
 import com.timepaper.backend.domain.timepaper.dto.response.TimePaperResponseDto;
 import com.timepaper.backend.domain.timepaper.entity.TimePaper;
 import com.timepaper.backend.domain.timepaper.repository.TimePaperRepository;
@@ -27,7 +29,7 @@ public class TimePaperService {
     String creatorEmail = authentication.getName();
 
     User creator = (User) userRepository.findByEmail(creatorEmail)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+                              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
     TimePaper timePaper = timePaperRepository.save(
         TimePaper.builder()
@@ -41,15 +43,37 @@ public class TimePaperService {
   public TimePaperResponseDto readTimePaperById(UUID timepaperId) {
 
     TimePaper timePaper = timePaperRepository.findById(timepaperId)
-        .orElseThrow(() -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
+                              .orElseThrow(
+                                  () -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
     return TimePaperResponseDto.from(timePaper);
   }
 
   @Transactional
   public void deleteTimePaper(UUID timepaperId) {
     TimePaper timePaper = timePaperRepository.findById(timepaperId)
-        .orElseThrow(() -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
+                              .orElseThrow(
+                                  () -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
     timePaperRepository.delete(timePaper);
+  }
+
+  @Transactional
+  public TimePaperLockResponseDto lockTimePaper(
+      UUID timePaperId,
+      TimePaperLockRequestDto timePaperLockRequestDto,
+      Long requesterId
+  ) {
+
+    TimePaper timePaper = timePaperRepository.findById(timePaperId)
+                              .orElseThrow(
+                                  () -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
+
+    if (!timePaper.getCreator().getId().equals(requesterId)) {
+      throw new IllegalArgumentException("잠금 권한이 없습니다.");
+    }
+
+    timePaper.setReleaseDate(timePaperLockRequestDto.getRecipientEmail(),
+        timePaperLockRequestDto.getReleaseDate());
+    return TimePaperLockResponseDto.from(timePaper);
   }
 
 }
