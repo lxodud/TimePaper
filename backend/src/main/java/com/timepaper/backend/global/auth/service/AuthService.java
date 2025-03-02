@@ -26,7 +26,7 @@ public class AuthService {
     String refreshToken = refreshTokenUtil.createRefreshToken(authentication.getName());
     refreshTokenService.save(refreshToken, authentication);
 
-    ResponseCookie refreshTokenCookie = createCookie(refreshToken);
+    ResponseCookie refreshTokenCookie = createCookie(refreshToken, false);
     response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
     response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
     response.setStatus(HttpServletResponse.SC_OK);
@@ -39,13 +39,30 @@ public class AuthService {
     setTokensResponse(response, authentication);
   }
 
-  private ResponseCookie createCookie(String refreshToken) {
-    return ResponseCookie.from("refresh_token", refreshToken)
-               .httpOnly(true)
-               .secure(true) //개발환경 false, 배포시 true
-               .sameSite("None")
-               .path("/api/auth/reissue")
-               .maxAge(Duration.ofDays(7))
-               .build();
+
+  public void logout(HttpServletResponse response, String refreshToken,
+      Authentication authentication) {
+
+    refreshTokenService.delete(authentication.getName());
+
+    ResponseCookie expiredRefreshTokenCookie = createCookie(refreshToken, true);
+    response.setHeader(HttpHeaders.SET_COOKIE, expiredRefreshTokenCookie.toString());
+    response.setStatus(HttpServletResponse.SC_NO_CONTENT);
   }
+
+  private ResponseCookie createCookie(String refreshToken, boolean isExpired) {
+
+    Duration maxAge = isExpired ? Duration.ZERO : Duration.ofDays(7);
+    String path = "/api/auth";
+
+    return ResponseCookie.from("refresh_token", refreshToken)
+        .httpOnly(true)
+        .secure(true) //개발환경 false, 배포시 true
+        .sameSite("None")
+        .path(path)
+        .maxAge(maxAge)
+        .build();
+  }
+
+
 }
