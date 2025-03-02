@@ -80,11 +80,30 @@
   top: 200px;
   left: 45px;
   width: 85%;
-  height: auto;
-  max-height: calc(14 * 1.42em);
-  overflow: hidden;
+  height: 54%;
+  resize: none;
+  overflow: auto;
   overflow-wrap: break-word;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 15;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: none;
+  background: transparent;
+  font-size: var(--font-size-medium);
+  font-family: var(--pretendard-regular);
+  padding: 10px;
+  box-sizing: border-box;
+  outline: none; /* 포커스 시 외곽선 숨김 */
+
+  /* 스크롤 바 숨기기 */
+  scrollbar-width: none; /* Firefox */
+}
+
+.textareaWrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* 텍스트 선택 및 드래그 방지 */
+.textareaWrapper {
+  user-select: none;
+  pointer-events: auto; /* 클릭은 가능해야 스크롤 가능 */
 }

@@ -1,10 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styles from './Modal.module.css';
-import UnderBarButton from '../UnderBarButton/UnderBarButton';
 
 function Modal({ isOpen, onClose, imageUrl, modalContent, from }) {
-  const textRef = useRef(null);
-
   if (!isOpen) return null;
 
   return (
@@ -15,9 +12,14 @@ function Modal({ isOpen, onClose, imageUrl, modalContent, from }) {
         </button>
         <div className={styles.selectedImage}>
           <img src={imageUrl} className={styles.logoImage} alt="선택된 포스트잇 이미지" />
-          <div className={styles.textareaWrapper} ref={textRef}>
+          <textarea
+            className={styles.textareaWrapper}
+            readOnly
+            onDragStart={(e) => e.preventDefault()} // ✅ 드래그 방지
+            onMouseDown={(e) => e.preventDefault()} // ✅ 마우스 클릭 드래그 방지
+          >
             {modalContent}
-          </div>
+          </textarea>
           <div className={styles.block}>
             <p>From. &nbsp;{from}</p>
           </div>
