@@ -1,0 +1,5 @@
+.footerContainer {
+  position: relative;
+  justify-items: center;
+  bottom: -150px;
+}
