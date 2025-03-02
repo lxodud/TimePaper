@@ -1,11 +1,32 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import UnderBarButton from '../components/UnderBarButton/UnderBarButton';
+import { api } from '../../api/api';
 
 export default function RootLayout() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    //로그아웃 api 호출
+    (async () => {
+      try {
+        const response = await api.logout();
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  };
+
   return (
     <>
       <Outlet></Outlet>
-      <footer></footer>
+      {/* 개발 편의성을 위한 임시 로그아웃 버튼입니다. */}
+      <footer>
+        {isLoggedIn && <UnderBarButton onClick={handleLogout} title={로그아웃}></UnderBarButton>}
+      </footer>
     </>
   );
 }

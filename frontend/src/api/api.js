@@ -1,4 +1,3 @@
-import { data } from "react-router-dom";
 import apiInstance from "./apiInstance";
 
 export const api = {
@@ -24,7 +23,14 @@ export const api = {
   },
 
   logout: async () => {
-    const response = await apiInstance.delete("/auth/logout")
+    const response = await apiInstance.delete(
+      '/auth/logout',
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+    return response;
   },
 
   signup: async (email, password, isPrivacyPolicyAccepted, isTermsAccepted, isEmailConsent) => {
