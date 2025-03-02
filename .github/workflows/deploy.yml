@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - fix/SSD-117-CI-CD-빌드-에러-수정
 
 jobs:
   deploy:
