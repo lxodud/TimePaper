@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './timePaperCreate.module.css';
+import styles from './TimePaperCreate.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import UnderBarInput from '../../components/UnderBarInput/UnderBarInput';
 import { api } from '../../api/api';
