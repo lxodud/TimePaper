@@ -3,7 +3,9 @@
   text-align: center; /* 전체 콘텐츠 가운데 정렬 */
   padding: 20px; /* 컨테이너 내부 여백 추가 */
 }
-
+.timepaperDetail {
+  text-align: center;
+}
 .timepaperList {
   display: flex;
   flex-wrap: wrap; /* 줄바꿈 허용 */

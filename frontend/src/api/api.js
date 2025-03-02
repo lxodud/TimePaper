@@ -74,6 +74,7 @@ export const api = {
 
   deleteTimepaper: async (timepaperId) => { 
     const response = await apiInstance.delete(`/timepapers/${timepaperId}`)
+    return response
   },
 
   lockTimepaper: async (timepaperId) => { 
