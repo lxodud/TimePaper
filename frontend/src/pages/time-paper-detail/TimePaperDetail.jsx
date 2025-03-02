@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../store/slices/headerSlice';
 import { api } from '../../api/api';
-import styles from './TimePaperDetail.module.module.css';
+import styles from './TimePaperDetail.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 
 export default function TimePaperDetail() {
@@ -11,8 +11,7 @@ export default function TimePaperDetail() {
   const dispatch = useDispatch();
   const [timepaper, setTimepaper] = useState(null);
   const [postits, setPostits] = useState([]);
-  // Redux에서 현재 로그인한 사용자의 이메일 가져오기
-  // const userEmail = useSelector((state) => state.auth.email || '');
+
   useEffect(() => {
     const fetchTimepaper = async () => {
       try {
