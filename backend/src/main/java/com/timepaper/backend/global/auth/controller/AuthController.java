@@ -30,6 +30,7 @@ public class AuthController {
   public void logout(HttpServletResponse response,
       @CookieValue(value = "refresh_token", required = false) String refreshToken,
       Authentication authentication) {
+    log.info("refreshToken : {}", refreshToken);
     authService.logout(response, refreshToken, authentication);
   }
 
