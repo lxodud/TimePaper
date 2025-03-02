@@ -1,98 +1,90 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styles from './timepaperdetail.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPageTitle } from '../../store/slices/headerSlice';
+import { api } from '../../api/api';
+import styles from './timepaperdetail.module.css';
+import BottomButton from '../../components/BottomButton/BottomButton';
 
-const tempPostTimePaper = async (data) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ title: '2022년도 졸업식입니다, 작별 인사를 남겨주세요.' });
-    }, 1000);
-  });
-};
 export default function TimePaperDetail() {
   const { timepaperId } = useParams();
-  const [postIt, setPostIt] = useState([
-    {
-      id: 1,
-      title: '감사합니다.',
-      post: '/images/createPostit.png',
-    },
-    {
-      id: 2,
-      title: '고맙습니다',
-      post: '/images/postitD.png',
-    },
-    {
-      id: 3,
-      title: '날씨가 춥습니다',
-      post: '/images/postitN.png',
-    },
-    {
-      id: 4,
-      title: '벌써 새해가 밝았습니다.',
-      post: '/images/postitD.png',
-    },
-    {
-      id: 5,
-      title: '지난해에는 ....',
-      post: '/images/postitN.png',
-    },
-    {
-      id: 6,
-      title: '어쩌다 마주친....',
-      post: '/images/postitD.png',
-    },
-    {
-      id: 7,
-      title: '사랑스러운 센세이....',
-      post: '/images/postitN.png',
-    },
-    {
-      id: 8,
-      title: '영원한 이별은 없습니다.다시...',
-      post: '/images/postitD.png',
-    },
-    {
-      id: 9,
-      title: '이별의 슬품은....',
-      post: '/images/postitN.png',
-    },
-    {
-      id: 10,
-      title: '너와 내가 이제는...',
-      post: '/images/postitD.png',
-    },
-  ]);
   const dispatch = useDispatch();
-
+  const [timepaper, setTimepaper] = useState(null);
+  const [postits, setPostits] = useState([]);
+  // Redux에서 현재 로그인한 사용자의 이메일 가져오기
+  // const userEmail = useSelector((state) => state.auth.email || '');
   useEffect(() => {
-    const updateHeaderTitle = async () => {
+    const fetchTimepaper = async () => {
       try {
-        // 필요시 timepaperId 등 data를 전달합니다.
-        const data = await tempPostTimePaper({ timepaperId });
-        dispatch(setPageTitle(data.title)); // 전역 상태에 타이틀 업데이트
+        const response = await api.getTimepaper(timepaperId);
+        if (response && response.data && response.data.data) {
+          const timePaperData = response.data.data;
+          setTimepaper(timePaperData);
+          dispatch(setPageTitle(timePaperData.title));
+        } else {
+          console.error('타임페이퍼 데이터가 없습니다.');
+        }
       } catch (error) {
-        console.error('Error fetching timepaper data:', error);
+        console.error('타임페이퍼 조회 에러:', error);
       }
     };
-    updateHeaderTitle();
+
+    fetchTimepaper();
   }, [timepaperId, dispatch]);
+
+  useEffect(() => {
+    const fetchPostits = async () => {
+      try {
+        const response = await api.getPostits(timepaperId);
+        if (response && response.data && response.data.data && response.data.data.postits) {
+          setPostits(response.data.data.postits);
+        } else {
+          console.error('포스트잇 데이터가 없습니다.');
+        }
+      } catch (error) {
+        console.error('포스트잇 조회 에러:', error);
+      }
+    };
+
+    fetchPostits();
+  }, [timepaperId]);
+  // console.log('타임페이퍼 생성자 이메일', timepaper?.writerEmail);
+  // console.log('유저 이메일', userEmail);
   return (
     <div className={styles.container}>
-      <h2>2022년도 졸업식입니다, 작별 인사를 남겨주세요.</h2>
+      {timepaper ? (
+        <div className={styles.timepaperDetail}>
+          <h2>{timepaper.title}</h2>
+        </div>
+      ) : (
+        <div>타임페이퍼 데이터를 불러오는 중...</div>
+      )}
 
-      <ul className={styles.timepaperList}>
-        {postIt.map((paper) => (
-          <li key={paper.id} className={styles.timepaperItem}>
-            <h3>{paper.title}</h3>
-            {/* 이미지 경로를 src 속성에 전달 */}
-            <img src={paper.post} alt={paper.title} />
-          </li>
-        ))}
-      </ul>
-      <button className={styles.addButton}>롤링페이퍼 잠굼</button>
+      <div className={styles.postitsSection}>
+        {postits && postits.length > 0 ? (
+          <ul className={styles.timepaperList}>
+            {postits.map((postit) => (
+              <li key={postit.postitId} className={styles.timepaperItem}>
+                <div
+                  className={styles.postitBackground}
+                  style={{ backgroundImage: `url(${encodeURI(postit.imageUrl)})` }}
+                >
+                  <div className={styles.overlay}>
+                    <p className={styles.postitContent}>{postit.content}</p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div>포스트잇이 없습니다.</div>
+        )}
+        <BottomButton title="타임페이퍼 캡슐화"></BottomButton>
+        {/* {timepaper &&
+          timepaper.writerEmail.trim().toLowerCase() === userEmail.trim().toLowerCase() && (
+            <BottomButton title="타임페이퍼 캡슐화" />
+          )} */}
+      </div>
     </div>
   );
 }

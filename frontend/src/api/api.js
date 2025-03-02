@@ -55,6 +55,7 @@ export const api = {
 
   getTimepaper: async (timepaperId) => {
     const response = await apiInstance.get(`/timepapers/${timepaperId}`)
+    return response;
   },
 
   createTimepaper: async (title) => {
@@ -75,6 +76,7 @@ export const api = {
 
   getPostits: async (timepaperId) => { 
     const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`)
+    return response;
   },
 
   createPostit: async (timepaperId, author, content, image) => { 
