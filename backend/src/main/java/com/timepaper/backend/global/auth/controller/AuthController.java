@@ -4,6 +4,7 @@ import com.timepaper.backend.global.auth.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +28,9 @@ public class AuthController {
 
   @PostMapping("/auth/logout")
   public void logout(HttpServletResponse response,
-      @CookieValue(value = "refresh_token", required = false) String refreshToken) {
-    authService.logout(response, refreshToken);
+      @CookieValue(value = "refresh_token", required = false) String refreshToken,
+      Authentication authentication) {
+    authService.logout(response, refreshToken, authentication);
   }
 
 }

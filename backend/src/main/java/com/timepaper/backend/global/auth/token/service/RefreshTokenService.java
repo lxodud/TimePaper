@@ -29,7 +29,7 @@ public class RefreshTokenService {
   public void save(String refreshToken, Authentication authentication) {
 
     String hashedToken = refreshTokenUtil.hashToken(refreshToken);
-    String emailKey = refreshTokenUtil.createEmailKey(authentication.getName());
+    String emailKey = refreshTokenUtil.encodeEmailToKey(authentication.getName());
 
     RefreshTokenInfo tokenInfo = RefreshTokenInfo.from(authentication, hashedToken);
 
@@ -77,27 +77,15 @@ public class RefreshTokenService {
 
   }
 
-  public void delete(String refreshToken) {
-    try {
-      String emailKey = getEmailKey(refreshToken);
-      log.info("emailKey: {}", emailKey);
-      Boolean delete = redisTemplate.delete(emailKey);
-      log.info(delete.toString());
-    } catch (InvalidRefreshTokenException e) {
-      //예외 처리 고민
-    }
+  public void delete(String email) {
+    String emailKey = refreshTokenUtil.encodeEmailToKey(email);
 
+    Boolean isDeleted = redisTemplate.delete(emailKey);
+    log.info(isDeleted.toString());
   }
 
+
   private String getEmailKey(String refreshToken) {
-    try {
-      if (refreshToken == null || !refreshToken.contains("-")) {
-        throw new InvalidRefreshTokenException("refreshToken이 없거나 유효하지 않음");
-      }
-      return refreshToken.split("-")[0];
-    } catch (IllegalArgumentException e) {
-      log.error("refreshToken이 만료되거나 없는 유효하지 않은 경우");
-      throw e;
-    }
+    return refreshToken.split("-")[0];
   }
 }
