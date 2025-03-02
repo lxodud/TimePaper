@@ -9,13 +9,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 export default function PostItCreate() {
   const { timepaperId } = useParams();
   const fileInputRef = useRef(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitable, setIsSubmitable] = useState(false);
   const templates = [staticImagePath.postitAfternoon, staticImagePath.postitNight];
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const INITIAL_FORM_DATA = {
-    timepaperId: timepaperId,
     authorName: '',
     content: '',
     imageUrl: staticImagePath.postitAfternoon,
@@ -39,10 +38,9 @@ export default function PostItCreate() {
   useEffect(() => {
     setInputData((prev) => ({
       ...prev,
-      timepaperId,
       imageUrl: imageState.imageType === IMAGE_TYPES.STATIC ? imageState.imageData : null,
     }));
-  }, [timepaperId, imageState.imageType, imageState.imageData]);
+  }, [imageState.imageType, imageState.imageData]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -94,18 +92,30 @@ export default function PostItCreate() {
 
   const validateInput = (data) => {
     const errors = {};
+    let isValid = true;
 
     if (!data.content.trim()) {
       errors.content = '포스트잇 내용을 입력해주세요.';
+      isValid = false;
     } else if (data.content.length > 155) {
       errors.content = '최대 155자까지 입력할 수 있습니다.';
+      isValid = false;
     }
 
     if (!data.authorName.trim()) {
       errors.authorName = '작성자 이름을 입력해주세요.';
+      isValid = false;
     } else if (data.authorName.length > 20) {
       errors.authorName = '최대 20자까지 입력할 수 있습니다.';
+      isValid = false;
     }
+
+    if (imageState.imageType === IMAGE_TYPES.UPLOAD && !imageState.imageData) {
+      errors.image = '이미지를 업로드해주세요.';
+      isValid = false;
+    }
+
+    setIsSubmitable(isValid);
 
     return errors;
   };
@@ -130,10 +140,6 @@ export default function PostItCreate() {
       return;
     }
 
-    if (isSubmitting) return;
-
-    setIsSubmitting(true);
-
     const formData = new FormData();
 
     formData.append(
@@ -149,12 +155,12 @@ export default function PostItCreate() {
       try {
         const response = await api.createPostit(timepaperId, formData);
         if (response.status === 201) {
-          navigate(`/timepaper/${timepaperId}`);
+          navigate(`/timepaper/${timepaperId}`, { replace: true });
         }
       } catch (error) {
         alert('등록에 실패했습니다.');
       } finally {
-        setIsSubmitting(false);
+        isSubmitable(false);
       }
     })();
   };
@@ -209,7 +215,7 @@ export default function PostItCreate() {
             onChange={handleImageFileUpload}
           />
         </section>
-        <BottomButton title={'등록'} onClick={handleSubmit} isEnable={!isSubmitting}></BottomButton>
+        <BottomButton title={'등록'} onClick={handleSubmit} isEnable={isSubmitable}></BottomButton>
       </form>
     </>
   );
