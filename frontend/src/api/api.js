@@ -23,7 +23,7 @@ export const api = {
   },
 
   logout: async () => {
-    const response = await apiInstance.delete(
+    const response = await apiInstance.post(
       '/auth/logout',
       {},
       {
