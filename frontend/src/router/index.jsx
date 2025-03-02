@@ -41,7 +41,7 @@ const router = createBrowserRouter([
 
           {
             path: '/my/myinfo',
-            element: <MyPage />,
+            element: <MyPage section="myinfo" />,
           },
           {
             path: '/my/postits',

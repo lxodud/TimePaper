@@ -99,6 +99,8 @@ export const api = {
     return response.data;
   },
 
+
+
   getMyPostits: async () => {
     const response = await apiInstance.get(`/my/postits`);
   },
