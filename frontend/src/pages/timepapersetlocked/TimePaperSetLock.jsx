@@ -6,7 +6,8 @@ import UnderBarInput from '../../components/UnderBarInput/UnderBarInput';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { api } from '../../api/api';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setPageTitle } from '../../store/slices/headerSlice';
 
 export default function TimePaperSetLock() {
   const [email, setEmail] = useState('');
@@ -18,6 +19,7 @@ export default function TimePaperSetLock() {
   const { timepaperId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const regEmail =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -59,6 +61,10 @@ export default function TimePaperSetLock() {
       setIsLoginButtonEnable(false);
     }
   }, [email, releaseDate]);
+
+  useEffect(() => {
+    dispatch(setPageTitle('타임캡슐 생성'));
+  }, []);
 
   if (!location.state?.authorEmail) {
     return <Navigate to="/404" replace />;
