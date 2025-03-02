@@ -18,6 +18,8 @@ const authSlice = createSlice({
     logout: (state, action) => {
       state.accessToken = null;
       state.isLoggedIn = false;
+      state.email = null;
+      state.role = null;
     },
     loadUser: (state, action) => {
       const { email, role } = action.payload;

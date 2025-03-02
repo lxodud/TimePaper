@@ -21,7 +21,7 @@ export default function App() {
     if (accessToken) {
       (async () => {
         const response = await api.getMyInfo();
-        dispatch(loadUser(response.data));
+        dispatch(loadUser(response.data.data));
       })();
     }
   }, [accessToken]);
