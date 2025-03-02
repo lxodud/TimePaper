@@ -2,25 +2,35 @@ import React, { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
 import './css/index.css';
-import { Provider, useDispatch } from 'react-redux';
-import { login } from './store/slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, loadUser } from './store/slices/authSlice';
 import { api } from './api/api';
 
 export default function App() {
-  const dispatch = useDispatch()
-  
+  const dispatch = useDispatch();
+  const accessToken = useSelector((state) => state.auth.accessToken);
+
   useEffect(() => {
-  (async () => {
-    const response = await api.reissue()
-    dispatch(login(response.headers.authorization))
-  })()
-  }, [])
-  
+    (async () => {
+      const response = await api.reissue();
+      dispatch(login(response.headers.authorization));
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (accessToken) {
+      (async () => {
+        const response = await api.getMyInfo();
+        dispatch(loadUser(response.data));
+      })();
+    }
+  }, [accessToken]);
+
   return (
     <>
-        <div className="main-container">
-          <RouterProvider router={router}></RouterProvider>
-        </div>
+      <div className="main-container">
+        <RouterProvider router={router}></RouterProvider>
+      </div>
     </>
   );
 }

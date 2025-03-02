@@ -1,4 +1,3 @@
-import { data } from "react-router-dom";
 import apiInstance from "./apiInstance";
 
 export const api = {
@@ -62,6 +61,7 @@ export const api = {
 
   getTimepaper: async (timepaperId) => {
     const response = await apiInstance.get(`/timepapers/${timepaperId}`)
+    return response;
   },
 
   createTimepaper: async (title) => {
@@ -82,6 +82,7 @@ export const api = {
 
   getPostits: async (timepaperId) => { 
     const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`)
+    return response;
   },
 
   createPostit: async (timepaperId, author, content, image) => { 
@@ -99,5 +100,9 @@ export const api = {
 
   getMyTimePapers: async () => { 
     const response = await apiInstance.get(`/my/timepapers`)
+  },
+
+  getMyInfo: async () => {
+    return await apiInstance.get(`/my`)
   }
 }
