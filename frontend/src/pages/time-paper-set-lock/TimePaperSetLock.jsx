@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation, Navigate } from 'react-router-dom';
-import styles from './timePaperSetLock.module.css';
+import styles from './TimePaperSetLock.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import UnderBarInput from '../../components/UnderBarInput/UnderBarInput';
 import DatePicker from 'react-datepicker';
