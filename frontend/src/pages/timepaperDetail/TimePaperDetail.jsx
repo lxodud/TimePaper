@@ -12,7 +12,7 @@ export default function TimePaperDetail() {
   const [timepaper, setTimepaper] = useState(null);
   const [postits, setPostits] = useState([]);
   // Redux에서 현재 로그인한 사용자의 이메일 가져오기
-  // const userEmail = useSelector((state) => state.auth.email || '');
+  const userEmail = useSelector((state) => state.auth.email || '');
   useEffect(() => {
     const fetchTimepaper = async () => {
       try {
@@ -48,8 +48,8 @@ export default function TimePaperDetail() {
 
     fetchPostits();
   }, [timepaperId]);
-  // console.log('타임페이퍼 생성자 이메일', timepaper?.writerEmail);
-  // console.log('유저 이메일', userEmail);
+  console.log('타임페이퍼 생성자 이메일', timepaper?.writerEmail);
+  console.log('유저 이메일', userEmail);
   return (
     <div className={styles.container}>
       {timepaper ? (
@@ -79,11 +79,11 @@ export default function TimePaperDetail() {
         ) : (
           <div>포스트잇이 없습니다.</div>
         )}
-        <BottomButton title="타임페이퍼 캡슐화"></BottomButton>
-        {/* {timepaper &&
+        {/* <BottomButton title="타임페이퍼 캡슐화"></BottomButton> */}
+        {timepaper &&
           timepaper.writerEmail.trim().toLowerCase() === userEmail.trim().toLowerCase() && (
             <BottomButton title="타임페이퍼 캡슐화" />
-          )} */}
+          )}
       </div>
     </div>
   );
