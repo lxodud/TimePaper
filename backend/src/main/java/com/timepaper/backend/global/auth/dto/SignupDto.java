@@ -1,4 +1,4 @@
-package com.timepaper.backend.domain.auth.dto;
+package com.timepaper.backend.global.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.timepaper.backend.domain.user.entity.User;

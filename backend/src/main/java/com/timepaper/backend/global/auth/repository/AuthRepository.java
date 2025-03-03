@@ -1,4 +1,4 @@
-package com.timepaper.backend.domain.auth;
+package com.timepaper.backend.global.auth.repository;
 
 import com.timepaper.backend.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
