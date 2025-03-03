@@ -53,6 +53,13 @@ public class PostitService {
   }
 
   public PostitListResponseDto getPostit(UUID timePaperId, Pageable pageable) {
+    TimePaper timePaper = timePaperRepository.findById(timePaperId)
+                              .orElseThrow(() -> new IllegalArgumentException());
+
+    if (timePaper.isLocked()) {
+      throw new IllegalArgumentException("포스트잇 접근 권한이 없습니다.");
+    }
+
     Page<Postit> postitsPage = postitRepository.findAllByTimePaperId(timePaperId, pageable);
 
     return PostitListResponseDto.from(postitsPage);
