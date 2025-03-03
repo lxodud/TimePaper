@@ -78,10 +78,10 @@ public class AuthService {
 
 
   public boolean emailverification(EmailCertificationRequestDto dto) {
-    boolean emailcheck = authRepository.findByEmail(dto.getEmail());
+    boolean emailExistence = authRepository.findByEmail(dto.getEmail());
 
-    if (emailcheck) {
-      return false;
+    if (emailExistence) {
+      return true;
     } else {
       String randomCode = UUID.randomUUID().toString().replace("-", "").substring(0, 6)
           .toUpperCase();
@@ -92,24 +92,41 @@ public class AuthService {
 //      JavaEmailDto javaEmailDto = new JavaEmailDto(dto.getEmail(), "TimePaper", randomCode);
 //
 //      javaEmailSender.sendJavaEmail(javaEmailDto);
-      return true;
+      return false;
     }
   }
 
   @Transactional
   public boolean checkEmailVerificationCode(CertificationNumberRequestDto dto) {
     String randomCode = redisTemplate.opsForValue().get(dto.getEmail());
+    String approvalStatus;
     System.out.println(randomCode);
-    return randomCode != null && randomCode.equals(dto.getCheckNum());
+    boolean verification = randomCode != null && randomCode.equals(dto.getCheckNum());
+
+    if (verification) {
+      approvalStatus = "approval";
+      redisTemplate.opsForValue().set(dto.getEmail(), approvalStatus, Duration.ofMinutes(5));
+      return true;
+    } else {
+      approvalStatus = "rejection";
+      redisTemplate.opsForValue().set(dto.getEmail(), approvalStatus, Duration.ofMinutes(5));
+      return false;
+    }
   }
 
   @Transactional
   public boolean signUp(SignupDto dto) {
-    try {
-      User auth = dto.toEntity(dto);
-      authRepository.save(auth);
-      return true;
-    } catch (Exception e) {
+
+    String approvalStatus = redisTemplate.opsForValue().get(dto.getEmail());
+    if (approvalStatus.equals("approval")) {
+      try {
+        User auth = dto.toEntity(dto);
+        authRepository.save(auth);
+        return true;
+      } catch (Exception e) {
+        return false;
+      }
+    } else {
       return false;
     }
   }
