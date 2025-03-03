@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPageTitle } from '../../store/slices/headerSlice';
 import { api } from '../../api/api';
-import styles from './timepaperdetail.module.css';
+import styles from './TimePaperDetail.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import ConfirmModal from '../../components/confirmmodal/ConfirmModal';
 

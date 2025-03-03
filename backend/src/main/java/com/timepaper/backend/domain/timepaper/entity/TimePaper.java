@@ -41,8 +41,6 @@ public class TimePaper extends BaseTimeEntity {
 
   private LocalDateTime releaseDate;
 
-  private boolean isLocked;
-
   @Builder
   public TimePaper(User creator, String title, String recipientEmail) {
     this.creator = creator;

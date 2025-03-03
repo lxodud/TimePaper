@@ -1,30 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './timePaperCreate.module.css';
+import styles from './TimePaperCreate.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import UnderBarInput from '../../components/UnderBarInput/UnderBarInput';
+import { api } from '../../api/api';
+import { useSelector } from 'react-redux';
 import { setPageTitle } from '../../store/slices/headerSlice';
 import { useDispatch } from 'react-redux';
-// 가짜 Api 함수
-const tempPostTimePaper = async (data) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ id: 'dummyId' });
-    }, 1000);
-  });
-};
 
 export default function TimePaperCreate() {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('제목을 입력해주세요.');
+  const [isLoginButtonEnable, setIsLoginButtonEnable] = useState(false);
+  const { isLoggedIn } = useSelector((state) => state.auth)
+
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setPageTitle('타임페이퍼 생성'));
-  }, [dispatch]);
-
   const navigate = useNavigate();
 
   const handleTitleChange = (e) => {
@@ -50,7 +42,7 @@ export default function TimePaperCreate() {
     setLoading(true);
 
     try {
-      const response = await tempPostTimePaper({ title });
+      const response = await api.createTimepaper(title);
       navigate(`/timepaper/${response.id}`);
     } catch (err) {
       console.error(err);
@@ -61,9 +53,31 @@ export default function TimePaperCreate() {
     }
   };
 
+  useEffect(() => {
+    if (title.trim().length !== 0) {
+      setIsLoginButtonEnable(true);
+    } else {
+      setIsLoginButtonEnable(false);
+    }
+  }, [title]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login', {
+        state: {
+          next: '/timepaper/create',
+        },
+      });
+    }
+  }, [isLoggedIn])
+  
+   useEffect(() => {
+    dispatch(setPageTitle('타임페이퍼 생성'));
+  }, []);
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className={styles.container}>
           <div className={styles.inputContainer}>
             <UnderBarInput
@@ -81,6 +95,7 @@ export default function TimePaperCreate() {
           <BottomButton
             title={loading ? '추억거리 생성 중...' : '타임페이퍼 생성'}
             onClick={handleSubmit}
+            isEnable={isLoginButtonEnable}
           />
         </div>
       </form>

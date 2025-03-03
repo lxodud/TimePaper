@@ -77,8 +77,13 @@ export const api = {
     return response
   },
 
-  lockTimepaper: async (timepaperId) => { 
-    const response = await apiInstance.patch(`/timepapers/${timepaperId}/lock`)
+  lockTimepaper: async (timepaperId, email, releaseDate) => { 
+    const response = await apiInstance.patch(`/timepapers/${timepaperId}/lock`, {
+      recipientEmail: email,
+      releaseDate: releaseDate
+    })
+
+    return response
   },
 
   getPostits: async (timepaperId) => { 

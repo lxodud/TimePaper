@@ -35,7 +35,6 @@ apiInstance.interceptors.response.use(
   async (error) => {
     const response = error.response;
     if (response.data?.code === 3001) {
-      console.log(response.data.code)
       try {
         const response = await api.reissue();
         const accessToken = response.headers.authorization;
