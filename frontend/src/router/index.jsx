@@ -4,12 +4,13 @@ import Home from '../pages/home/Home';
 import Login from '../pages/login/Login.jsx';
 import Signup from '../pages/SignUp';
 import MyPage from '../pages/MyPage.jsx';
-import TimePaperCreate from '../pages/TimePaperCreate';
-import TimePaperDetail from '../pages/TimePaperDetail';
-import TimePaperIsLocked from '../pages/timepaperlocked/TimePaperIsLocked.jsx';
-import PostItCreate from '../pages/PostItCreate';
+import TimePaperDetail from '../pages/time-paper-detail/TimePaperDetail.jsx';
+import TimePaperIsLocked from '../pages/time-paper-is-locked/TimePaperIsLocked.jsx';
+import PostItCreate from '../pages/postit-create/PostItCreate.jsx';
 import NotFound from '../pages/error/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
+import TimePaperCreate from '../pages/time-paper-create/TimePaperCreate.jsx';
+import TimePaperSetLock from '../pages/time-paper-set-lock/TimePaperSetLock.jsx';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
               {
                 path: ':timepaperId/lock',
                 element: <TimePaperIsLocked />,
+              },
+              {
+                path: ':timepaperId/capsule',
+                element: <TimePaperSetLock />,
               },
             ],
           },

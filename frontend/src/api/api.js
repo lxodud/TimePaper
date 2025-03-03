@@ -1,29 +1,45 @@
-import { data } from "react-router-dom";
 import apiInstance from "./apiInstance";
 
 export const api = {
-  login: async (username, password) => { 
+  login: async (email, password) => { 
     const response = await apiInstance.post("/auth/login", {
-      data: {
-        username: username,
+        email: email,
         password: password
+    }, {
+      withCredentials: true
+    })
+
+    return response
+  },
+
+  reissue: async () => { 
+    const response = await apiInstance.post("/auth/reissue", {}, {
+      withCredentials: true,
+      headers: {
+        'Access-Control-Allow-Origin': `${import.meta.env.VITE_API_URL}` 
       }
     })
+    return response
   },
 
   logout: async () => {
-    const response = await apiInstance.delete("/auth/logout")
+    const response = await apiInstance.post(
+      '/auth/logout',
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+    return response;
   },
 
   signup: async (email, password, isPrivacyPolicyAccepted, isTermsAccepted, isEmailConsent) => {
     const response = await apiInstance.post("/auth/signup", {
-      data: {
         email: email,
         password: password,
         isPrivacyPolicyAccepted : isPrivacyPolicyAccepted,
         isTermsAccepted : isTermsAccepted,
         isEmailConsent : isEmailConsent
-      }
     })
   },
 
@@ -33,42 +49,45 @@ export const api = {
 
   requestEmailVerificationCode: async (email) => {
     const response = await apiInstance.post("/auth/email-verification-codes", {
-      data: {
         email: email
-      }
     })
   },
 
   checkEmailVerificationCode: async (authenticationCode) => { 
     const response = await apiInstance.post("/auth/email-verification-codes/validate", {
-      data: {
         authenticationCode: authenticationCode
-      }
     })
   },
 
   getTimepaper: async (timepaperId) => {
     const response = await apiInstance.get(`/timepapers/${timepaperId}`)
+    return response;
   },
 
   createTimepaper: async (title) => {
     const response = await apiInstance.post('/timepapers', {
-      data: {
         title: title
-      }
     })
+
+    return response
   },
 
   deleteTimepaper: async (timepaperId) => { 
     const response = await apiInstance.delete(`/timepapers/${timepaperId}`)
   },
 
-  lockTimepaper: async (timepaperId) => { 
-    const response = await apiInstance.patch(`/timepapers/${timepaperId}/lock`)
+  lockTimepaper: async (timepaperId, email, releaseDate) => { 
+    const response = await apiInstance.patch(`/timepapers/${timepaperId}/lock`, {
+      recipientEmail: email,
+      releaseDate: releaseDate
+    })
+
+    return response
   },
 
   getPostits: async (timepaperId) => { 
     const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`)
+    return response;
   },
 
   createPostit: async (timepaperId, author, content, image) => { 
@@ -86,5 +105,9 @@ export const api = {
 
   getMyTimePapers: async () => { 
     const response = await apiInstance.get(`/my/timepapers`)
+  },
+
+  getMyInfo: async () => {
+    return await apiInstance.get(`/my`)
   }
 }

@@ -5,10 +5,12 @@
   padding-bottom: 5px;
   text-align: center;
   outline: none;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
 }
-
 input::placeholder {
-  color: #B1B1B1;
+  color: #b1b1b1;
   font-family: var(--pretendard-light);
   font-size: var(--font-size-small);
 }

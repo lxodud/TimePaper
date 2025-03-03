@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "husky": "^9.1.7"
+    "axios": "^1.8.1",
+    "husky": "^9.1.7",
+    "react-router-dom": "^7.2.0"
   },
   "scripts": {
     "prepare": "husky"
