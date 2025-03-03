@@ -23,12 +23,14 @@
 
 .buttonGroup {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  gap: 25%;
 }
 
 .confirmButton {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--orange-color);
+  color: black;
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
@@ -36,7 +38,7 @@
 }
 
 .cancelButton {
-  background-color: #f1f1f1;
+  background-color: #ffd7b6;
   color: black;
   border: none;
   padding: 10px 20px;
@@ -45,9 +47,9 @@
 }
 
 .confirmButton:hover {
-  background-color: #0056b3;
+  background-color: #d87728;
 }
 
 .cancelButton:hover {
-  background-color: #e0e0e0;
+  background-color: #f0c098;
 }
