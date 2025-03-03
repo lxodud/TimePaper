@@ -1,21 +1,94 @@
-.my-page {
+/* MyPage.module.css */
+
+/* 전체 컨테이너 */
+.container {
    font-family: Arial, sans-serif;
+   background-color: #f8f5e9; /* 배경색 */
    padding: 20px;
+   max-width: 400px;
+   margin: 0 auto;
  }
  
+ /* 헤더 */
  .header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 20px;
+ }
+ 
+ .backButton,
+ .homeButton {
+   background-color: transparent;
+   border: none;
+   font-size: 20px;
+ }
+ 
+ .title {
+   font-size: 18px;
+   font-weight: bold;
+ }
+ 
+ /* 이메일 섹션 */
+ .email {
    text-align: center;
+   font-size: 16px;
+   margin-bottom: 20px;
  }
  
- .tabs button {
-   margin: 5px;
+ /* 탭 스타일 */
+ .tabs {
+   display: flex;
+   justify-content: space-around;
+   border-bottom: 1px solid #ccc; /* 탭 하단 구분선 */
  }
  
- .content h2 {
-   margin-top: 20px;
+ .tabButton {
+   flex: 1;
+   text-align: center;
+   padding: 10px;
+   font-size: 14px;
+   cursor: pointer;
  }
  
- .footer button {
-   margin: 10px;
+ .tabButton.active {
+   border-bottom: 2px solid black; /* 활성화된 탭 표시 */
+ }
+ 
+ /* 콘텐츠 섹션 */
+ .content ul {
+   list-style-type: none; /* 불릿 제거 */
+   padding-left: 0;
+ }
+ 
+ .content li {
+   background-color: #e0e0e0; /* 리스트 항목 배경색 */
+   margin-bottom: 10px;
+   padding: 10px;
+ }
+ 
+ /* 드롭다운 컨테이너 */
+ .dropdownContainer {
+   position: relative; /* 드롭다운 메뉴를 버튼 기준으로 배치 */
+ }
+ 
+ .dropdownButton {
+   background-color: transparent;
+   border: none;
+   font-size: 20px;
+ }
+ 
+ .dropdownMenu {
+   position: absolute; /* 드롭다운 메뉴를 버튼 아래에 배치 */
+   right: -10px; /* 오른쪽 정렬 */
+   top: calc(100% + 5px); /* 버튼 아래로 약간 띄움 */
+   background-color: #d3d3d3; /* 드롭다운 배경색 */
+   border-radius: 5px; /* 모서리 둥글게 처리 */
+ }
+ 
+ .dropdownItem {
+   display: block; /* 버튼을 블록 형태로 표시 */
+   padding: 10px;
+   width: max-content; /* 버튼 크기를 내용에 맞춤 */
  }
  

@@ -1,3 +1,5 @@
+
+/* 전체 컨테이너 */
 .container {
    font-family: Arial, sans-serif;
    background-color: #f8f5e9;
@@ -6,6 +8,7 @@
    margin: 0 auto;
  }
  
+ /* 이메일 섹션 */
  .emailSection {
    margin-bottom: 20px;
  }
@@ -20,6 +23,7 @@
    color: #333;
  }
  
+ /* 탭 스타일 */
  .tabs {
    display: flex;
    justify-content: space-around;
@@ -32,44 +36,18 @@
    border: none;
    background-color: #d3d3d3;
    cursor: pointer;
-   border-radius: 5px;
-   transition: background-color 0.3s ease;
  }
  
  .tabButton.active {
    background-color: #a8a8a8;
-   color: white;
  }
  
- .tabButton:hover {
-   background-color: #b0b0b0;
- }
- 
+ /* 콘텐츠 섹션 */
  .content ul {
    list-style-type: none;
-   padding-left: 0;
  }
  
  .content li {
    background-color: #e0e0e0;
-   margin-bottom: 10px;
-   padding: 10px;
-   border-radius: 5px;
  }
  
- .content h2 {
-   font-size: 20px;
-   margin-bottom: 15px;
- }
- 
- .content p {
-   font-size: 16px;
-   color: #555;
- }
- 
- .listItem {
-   background-color: #f0f0f0;
-   padding: 10px;
-   border-radius: 5px;
-   margin-bottom: 10px;
- }
