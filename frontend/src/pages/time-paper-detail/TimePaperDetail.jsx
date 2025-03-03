@@ -111,15 +111,12 @@ export default function TimePaperDetail() {
           )}
           {timepaper &&
             timepaper.writerEmail.trim().toLowerCase() === userEmail.trim().toLowerCase() && (
-              <BottomButton
-                title="타임페이퍼 캡슐화"
-                onClick={handleCapsuleClick}
-                isEnable={true}
-              />
-            )}
-          {timepaper &&
-            timepaper.writerEmail.trim().toLowerCase() === userEmail.trim().toLowerCase() && (
-              <>
+              <div className={styles.buttonGroup}>
+                <BottomButton
+                  title="타임페이퍼 캡슐화"
+                  onClick={handleCapsuleClick}
+                  isEnable={true}
+                />
                 <BottomButton
                   title="타임페이퍼 삭제"
                   onClick={() => setShowConfirmModal(true)} // 모달 열기
@@ -133,7 +130,7 @@ export default function TimePaperDetail() {
                     onCancel={() => setShowConfirmModal(false)} // 취소 클릭 시 모달 닫기
                   />
                 )}
-              </>
+              </div>
             )}
         </div>
       </div>

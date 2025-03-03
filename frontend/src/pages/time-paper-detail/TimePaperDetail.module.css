@@ -81,16 +81,9 @@
   scrollbar-color: var(--orange-color) #f1f1f1; /* thumb 색상과 트랙 배경색 설정 */
 }
 
-.addButton {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-.addButton:hover {
-  background-color: #0056b3;
+.buttonGroup {
+  display: flex; /* 버튼들을 가로로 배치 */
+  gap: 5%; /* 버튼 사이 간격 설정 */
+  justify-content: center; /* 버튼들을 가운데 정렬 */
+  margin-top: 20px; /* 위쪽 여백 추가 */
 }
