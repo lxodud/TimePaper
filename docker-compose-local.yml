@@ -1,0 +1,82 @@
+services:
+  mysql:
+    container_name: mysql-container
+    image: mysql:8.0
+    volumes:
+      - db-volume:/var/lib/mysql
+    env_file:
+      - .env.local
+    networks:
+      - db-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+  redis:
+    container_name: redis-container
+    image: redis:latest
+    volumes:
+      - redis-volume:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    env_file:
+      - .env.local
+    networks:
+      - cache-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+  api:
+    container_name: api-container
+    build:
+      context: ./backend
+      #이미지 레이어 캐싱 적용
+      cache_to:
+        - type=local,dest=/tmp/.build-cache/api,mode=max
+      cache_from:
+        - type=local,src=/tmp/.build-cache/api
+    image: yejinoh58/timepaper-api-image:local
+    env_file:
+      - .env.local
+    networks:
+      - db-network
+      - cache-network
+      - web-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  client:
+    container_name: client-container
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.local
+      cache_to:
+        - type=local,dest=/tmp/.build-cache/client,mode=max
+      cache_from:
+        - type=local,src=/tmp/.build-cache/client
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    image: yejinoh58/timepaper-client-image:local
+    env_file:
+      - .env.local
+    ports:
+      - "80:80"
+    networks:
+      - web-network
+    depends_on:
+      - api
+
+volumes:
+  db-volume:
+  redis-volume:
+
+networks:
+  db-network:
+  cache-network:
+  web-network:
