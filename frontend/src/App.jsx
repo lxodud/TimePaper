@@ -18,7 +18,7 @@ export default function App() {
   
   return (
     <>
-        <div className="main-container">
+        <div className="main-container mypage-container"  >
           <RouterProvider router={router}></RouterProvider>
         </div>
     </>
