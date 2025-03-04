@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPageTitle } from '../../store/slices/headerSlice';
 import { api } from '../../api/api';
 import styles from './TimePaperDetail.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
+import ConfirmModal from '../../components/confirmmodal/ConfirmModal';
 
 export default function TimePaperDetail() {
   const { timepaperId } = useParams();
   const dispatch = useDispatch();
   const [timepaper, setTimepaper] = useState(null);
   const [postits, setPostits] = useState([]);
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // 모달 창 상태 관리
+  const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태
+  const navigate = useNavigate();
+
+  // Redux에서 현재 로그인한 사용자의 이메일 가져오기
+  const userEmail = useSelector((state) => state.auth.email || '');
 
   useEffect(() => {
     const fetchTimepaper = async () => {
@@ -20,18 +27,23 @@ export default function TimePaperDetail() {
           const timePaperData = response.data.data;
           setTimepaper(timePaperData);
           dispatch(setPageTitle(timePaperData.title));
-        } else {
-          console.error('타임페이퍼 데이터가 없습니다.');
         }
       } catch (error) {
-        console.error('타임페이퍼 조회 에러:', error);
+        if (error.response && error.response.status === 404) {
+          setErrorMessage('해당 타임페이퍼는 존재하지 않습니다.');
+        } else {
+          console.log(error.response.status);
+          console.error('타임페이퍼 조회 에러:', error);
+          setErrorMessage('타임페이퍼 데이터를 불러오는 중 오류가 발생했습니다.');
+        }
       }
     };
-
     fetchTimepaper();
   }, [timepaperId, dispatch]);
 
+  // 포스트잇 데이터 가져오기
   useEffect(() => {
+    if (!timepaper) return; // 타임페이퍼가 없으면 포스트잇 데이터를 가져오지 않음
     const fetchPostits = async () => {
       try {
         const response = await api.getPostits(timepaperId);
@@ -46,11 +58,40 @@ export default function TimePaperDetail() {
     };
 
     fetchPostits();
-  }, [timepaperId]);
-  // console.log('타임페이퍼 생성자 이메일', timepaper?.writerEmail);
-  // console.log('유저 이메일', userEmail);
+  }, [timepaper, timepaperId]);
+
+  const handleCapsuleClick = () => {
+    navigate(`/timepaper/${timepaperId}/capsule`, {
+      state: { authorEmail: userEmail },
+    });
+  };
+
+  const handleDeleteClick = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handlePostItCreateClick = () => {
+    navigate(`/timepaper/${timepaperId}/postit/create`);
+  };
+
+  const handleDeleteTimepaper = async () => {
+    try {
+      await api.deleteTimepaper(timepaperId); // 삭제 API 호출
+      alert('타임페이퍼가 성공적으로 삭제되었습니다.');
+      navigate('/'); // 삭제 후 목록 페이지로 이동
+    } catch (error) {
+      console.error('타임페이퍼 삭제 실패:', error);
+      alert('타임페이퍼를 삭제하는 데 실패했습니다.');
+    }
+    setShowConfirmModal(false); // 모달 닫기
+  };
+
+  if (errorMessage) {
+    return <div className={styles.error}>{errorMessage}</div>; // 에러 메시지 표시
+  }
+
   return (
-    <div className={styles.container}>
+    <>
       {timepaper ? (
         <div className={styles.timepaperDetail}>
           <h2>{timepaper.title}</h2>
@@ -58,32 +99,53 @@ export default function TimePaperDetail() {
       ) : (
         <div>타임페이퍼 데이터를 불러오는 중...</div>
       )}
-
-      <div className={styles.postitsSection}>
-        {postits && postits.length > 0 ? (
-          <ul className={styles.timepaperList}>
-            {postits.map((postit) => (
-              <li key={postit.postitId} className={styles.timepaperItem}>
-                <div
-                  className={styles.postitBackground}
-                  style={{ backgroundImage: `url(${encodeURI(postit.imageUrl)})` }}
-                >
-                  <div className={styles.overlay}>
-                    <p className={styles.postitContent}>{postit.content}</p>
+      <div className={styles.container}>
+        <div className={styles.postitsSection}>
+          {postits && postits.length > 0 ? (
+            <ul className={styles.timepaperList}>
+              {postits.map((postit) => (
+                <li key={postit.postitId} className={styles.timepaperItem}>
+                  <div
+                    className={styles.postitBackground}
+                    style={{ backgroundImage: `url(${encodeURI(postit.imageUrl)})` }}
+                  >
+                    <div className={styles.overlay}>
+                      <p className={styles.postitContent}>{postit.content}</p>
+                    </div>
                   </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div>포스트잇이 없습니다.</div>
-        )}
-        <BottomButton title="타임페이퍼 캡슐화"></BottomButton>
-        {/* {timepaper &&
-          timepaper.writerEmail.trim().toLowerCase() === userEmail.trim().toLowerCase() && (
-            <BottomButton title="타임페이퍼 캡슐화" />
-          )} */}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div>포스트잇이 없습니다.</div>
+          )}
+          {timepaper &&
+            timepaper.writerEmail.trim().toLowerCase() === userEmail.trim().toLowerCase() && (
+              <div className={styles.buttonGroup}>
+                <BottomButton
+                  title="타임페이퍼 캡슐화"
+                  onClick={handleCapsuleClick}
+                  isEnable={true}
+                />
+                <BottomButton title="타임페이퍼 삭제" onClick={handleDeleteClick} isEnable={true} />
+                <BottomButton
+                  title="포스트잇 작성"
+                  onClick={handlePostItCreateClick}
+                  isEnable={true}
+                />
+
+                {/* 확인 모달 */}
+                {showConfirmModal && (
+                  <ConfirmModal
+                    message="정말로 이 타임페이퍼를 삭제하시겠습니까?"
+                    onConfirm={handleDeleteTimepaper} // 확인 클릭 시 삭제 처리
+                    onCancel={() => setShowConfirmModal(false)} // 취소 클릭 시 모달 닫기
+                  />
+                )}
+              </div>
+            )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

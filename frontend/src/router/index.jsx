@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import RootLayout from '../layout/RootLayout.jsx';
+import SignUp from '../pages/signup/SignUp.jsx';
 import Home from '../pages/home/Home';
 import Login from '../pages/login/Login.jsx';
-import Signup from '../pages/SignUp';
 import MyPage from '../pages/MyPage.jsx';
 import TimePaperDetail from '../pages/time-paper-detail/TimePaperDetail.jsx';
 import TimePaperIsLocked from '../pages/time-paper-is-locked/TimePaperIsLocked.jsx';
@@ -32,15 +32,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/signup',
-            element: <Signup />,
+            element: <SignUp></SignUp>,
           },
           {
             path: '/my',
             element: <MyPage />,
-          },
-          {
-            path: '/postit/create',
-            element: <PostItCreate />,
           },
           {
             path: '/timepaper',
@@ -64,6 +60,10 @@ const router = createBrowserRouter([
               {
                 path: ':timepaperId/capsule',
                 element: <TimePaperSetLock />,
+              },
+              {
+                path: ':timepaperId/postit/create',
+                element: <PostItCreate />,
               },
             ],
           },

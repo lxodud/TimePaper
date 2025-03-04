@@ -45,7 +45,7 @@ public class PostitService {
     }
 
     TimePaper timePaper = timePaperRepository.findById(timePaperId)
-                              .orElseThrow(() -> new IllegalArgumentException());
+        .orElseThrow(() -> new IllegalArgumentException());
 
     Postit postit = requestDto.toEntity(timePaper, user, s3Key, s3ImageUrl);
 
@@ -61,7 +61,7 @@ public class PostitService {
   @Transactional
   public void deletePostit(Long postitId, Long userId) {
     Postit postit = postitRepository.findById(postitId)
-                        .orElseThrow(() -> new IllegalArgumentException("포스트잇이 없습니다."));
+        .orElseThrow(() -> new IllegalArgumentException("포스트잇이 없습니다."));
 
     if (postit.getAuthor().getId() != userId) {
       throw new IllegalArgumentException("삭제 권한이 없습니다");

@@ -47,10 +47,9 @@ public class TimePaperController {
   }
 
   @GetMapping("/{timepaperId}")
-  public ResponseEntity<ApiResponse<TimePaperResponseDto>> readTimePaperById(
-      @PathVariable UUID timepaperId) {
+  public ResponseEntity<ApiResponse<TimePaperResponseDto>> getTimePaperById(@PathVariable UUID timepaperId) {
 
-    TimePaperResponseDto responseDto = timePaperService.readTimePaperById(timepaperId);
+    TimePaperResponseDto responseDto = timePaperService.getTimePaperById(timepaperId);
     return ResponseEntity.status(HttpStatus.OK)
                .body(ApiResponse
                          .ok("타임페이퍼 조회 성공",

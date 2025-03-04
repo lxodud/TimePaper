@@ -1,0 +1,147 @@
+.signUpContainer {
+  margin-bottom: 3rem;
+  display: flex;
+  margin: 0 auto;
+}
+
+.signUpForm {
+  min-width: 390px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 10px;
+  margin: 0 auto 10% 0;
+}
+.signUpForm label {
+  display: block;
+}
+.signUpForm > div {
+  width: 95%;
+  margin-left: 6%;
+}
+
+.fields {
+  font-size: var(--font-size-small);
+  padding-bottom: 5px;
+  padding-left: 3px;
+}
+
+.fieldsInput {
+  border: none;
+  font-size: 16px;
+  width: 70%;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.fieldsInputLock {
+  border: none;
+  font-size: 16px;
+  width: 70%;
+  height: 25px;
+  border-radius: 5px;
+  pointer-events: none; /* 클릭 및 입력 방지 */
+  opacity: 0.5; /* 반투명하게 회색 느낌 */
+  background-color: #c8c8c8 !important; /* ✅ 강제 적용 */
+  cursor: not-allowed;
+  color: gray;
+}
+
+.fieldsInput::placeholder {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.emailCheckBut {
+  margin-left: 1rem;
+  padding: 6px 20px;
+  font-size: var(--font-size-small);
+  background-color: var(--orange-color);
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+}
+.butLock {
+  margin-left: 1rem;
+  padding: 6px 20px;
+  font-size: var(--font-size-small);
+  background-color: var(--orange-color);
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  pointer-events: none; /* 클릭 및 입력 방지 */
+  opacity: 0.5; /* 반투명하게 회색 느낌 */
+  background-color: #c8c8c8; /* 연한 회색 */
+  cursor: not-allowed; /* 마우스 커서 비활성화 */
+  color: gray; /* 글자색 회색 */
+}
+
+.checkboxText {
+  font-size: 7px;
+}
+
+.checkboxlabel {
+  vertical-align: 4px;
+  cursor: pointer;
+}
+
+.checkBoxDiv > div {
+  font-size: var(--font-size-small);
+}
+
+.checkBoxDiv {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 auto 2rem auto;
+}
+
+.isPrivacyPolicyAccepted,
+.isTermsAccepted {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.signUpBut {
+  width: 80%;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background-color: var(--orange-color);
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: var(--top-margin);
+}
+
+.authentication {
+  font-size: 10px;
+  padding-left: 3px;
+}
+
+.visibilityVisible {
+  color: red;
+  font-size: 12px;
+  visibility: hidden;
+}
+.visibilityHidden {
+  color: red;
+  font-size: 12px;
+  visibility: visible;
+}
+
+.marginBox {
+  margin-bottom: 8px;
+}
+
+/* 전체 요소에 드래그 방지 적용 */
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.bottomBox {
+  text-align: center;
+}
