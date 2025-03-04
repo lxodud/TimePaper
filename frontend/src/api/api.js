@@ -1,4 +1,3 @@
-import { data } from "react-router-dom";
 import apiInstance from "./apiInstance";
 
 export const api = {
@@ -32,7 +31,14 @@ export const api = {
   },
 
   logout: async () => {
-    const response = await apiInstance.delete('/auth/logout');
+    const response = await apiInstance.post(
+      '/auth/logout',
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+    return response;
   },
 
   signup: async (email, password, isPrivacyPolicyAccepted, isTermsAccepted, isEmailConsent) => {
@@ -62,7 +68,8 @@ export const api = {
   },
 
   getTimepaper: async (timepaperId) => {
-    const response = await apiInstance.get(`/timepapers/${timepaperId}`);
+    const response = await apiInstance.get(`/timepapers/${timepaperId}`)
+    return response;
   },
 
   createTimepaper: async (title) => {
@@ -73,25 +80,32 @@ export const api = {
     return response;
   },
 
-  deleteTimepaper: async (timepaperId) => {
-    const response = await apiInstance.delete(`/timepapers/${timepaperId}`);
+  deleteTimepaper: async (timepaperId) => { 
+    const response = await apiInstance.delete(`/timepapers/${timepaperId}`)
+    return response
   },
 
-  lockTimepaper: async (timepaperId) => {
-    const response = await apiInstance.patch(`/timepapers/${timepaperId}/lock`);
+  lockTimepaper: async (timepaperId, email, releaseDate) => { 
+    const response = await apiInstance.patch(`/timepapers/${timepaperId}/lock`, {
+      recipientEmail: email,
+      releaseDate: releaseDate
+    })
+
+    return response
   },
 
-  getPostits: async (timepaperId) => {
-    const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`);
+  getPostits: async (timepaperId) => { 
+    const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`)
+    return response;
   },
 
-  createPostit: async (timepaperId, author, content, image) => {
-    // TODO: multi-part form 데이터
-    const response = await apiInstance.post(`/timepapers/${timepaperId}/postits`);
-  },
-
-  deletePostit: async (postitId) => {
-    const response = await apiInstance.delete(`/postits/${postitId}`);
+  createPostit: async (timepaperId, data) => { 
+    const response = await apiInstance.post(`/timepapers/${timepaperId}/postits`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    });
+    return response;
   },
 
   getMyInfo: async () => {
@@ -99,13 +113,12 @@ export const api = {
     return response.data;
   },
 
-
-
   getMyPostits: async () => {
     const response = await apiInstance.get(`/my/postits`);
   },
 
-  getMyTimePapers: async () => {
-    const response = await apiInstance.get(`/my/timepapers`);
+
+  getMyTimePapers: async () => { 
+    const response = await apiInstance.get(`/my/timepapers`)
   },
-};
+}

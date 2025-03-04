@@ -41,13 +41,22 @@ public class User extends BaseTimeEntity implements UserDetails {
   @Enumerated(EnumType.STRING)
   private ROLE role;
 
+  private boolean isPrivacyPolicyAccepted;
+
+  private boolean isTermsAccepted;
+
+  private boolean isEmailConsent;
+
   @Builder
-  public User(String email, String password, ROLE role) {
+  public User(String email, String password, ROLE role
+      , boolean isPrivacyPolicyAccepted, boolean isTermsAccepted, boolean isEmailConsent) {
     this.email = email;
     this.password = password;
     this.role = role;
+    this.isPrivacyPolicyAccepted = isPrivacyPolicyAccepted;
+    this.isTermsAccepted = isTermsAccepted;
+    this.isEmailConsent = isEmailConsent;
   }
-
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
