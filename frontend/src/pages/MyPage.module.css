@@ -40,12 +40,15 @@
 /* 탭 스타일 */
 .tabs {
   display: flex;
+  gap:20px;
   justify-content: space-around;
-  border-bottom: 1px solid #ccc; /* 탭 하단 구분선 */
+  /* border-bottom: 1px solid #ccc; */
+   /* 탭 하단 구분선 */
 }
 
 .tabButton {
   flex: 1;
+  border:none;
   text-align: center;
   padding: 10px;
   font-size: 14px;
@@ -54,6 +57,8 @@
 
 .tabButton.active {
   border-bottom: 2px solid black; /* 활성화된 탭 표시 */
+  background-color: #007bff; /* 활성화된 탭 배경색 */
+  color: white; /* 활성화된 탭 텍스트 색상 */
 }
 
 /* 콘텐츠 섹션 */
