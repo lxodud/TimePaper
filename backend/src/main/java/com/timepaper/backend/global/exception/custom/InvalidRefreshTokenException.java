@@ -1,4 +1,4 @@
-package com.timepaper.backend.global.exception;
+package com.timepaper.backend.global.exception.custom;
 
 
 public class InvalidRefreshTokenException extends RuntimeException {
