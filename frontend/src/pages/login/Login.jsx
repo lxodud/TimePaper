@@ -23,7 +23,7 @@ export default function Login() {
         const response = await api.login(inputData.email, inputData.password);
 
         dispatch(login(response.headers.authorization));
-        const next = location.state?.next ?? -1
+        const next = location.state?.next ?? -1;
         navigate(next, { replace: true });
       } catch (error) {
         setIsLoginButtonEnable(true);
@@ -38,6 +38,11 @@ export default function Login() {
     });
   };
 
+  const handleSignUpButtonClick = (event) => {
+    event.preventDefault();
+    navigate('/signup')
+  }
+
   useEffect(() => {
     if (inputData.email.trim().length !== 0 && inputData.password.trim().length !== 0) {
       setIsLoginButtonEnable(true);
@@ -48,7 +53,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      const next = location.state?.next ?? '/'
+      const next = location.state?.next ?? '/';
       navigate(next, { replace: true });
     }
   }, [isLoggedIn]);
@@ -78,7 +83,7 @@ export default function Login() {
               onClick={handleLoginButtonClick}
               isEnable={isLoginButtonEnable}
             ></BottomButton>
-            <button className={styles.signupButton}>회원가입</button>
+            <button className={styles.signupButton} onClick={handleSignUpButtonClick}>회원가입</button>
           </div>
         </form>
       </div>

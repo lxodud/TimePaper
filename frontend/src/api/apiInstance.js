@@ -8,10 +8,10 @@ const apiInstance = axios.create({
 });
 
 const NO_TOKEN_REQUIRED = [
-  "/auth/login",
-  "/auth/signup",
-  "/auth/email-verification-codes",
-  "/auth/email-verification-codes/validate"
+  '/auth/login',
+  '/auth/signup',
+  '/auth/email-verification-codes',
+  '/auth/email-verification-codes/validate',
 ];
 
 const GET_TIMEPAPER_REGEX = /^\/timepapers\/\d+$/;
@@ -19,18 +19,18 @@ const GET_TIMEPAPER_REGEX = /^\/timepapers\/\d+$/;
 apiInstance.interceptors.request.use((config) => {
   const state = store.getState();
   const isRequireToken = !NO_TOKEN_REQUIRED.includes(config.url);
-  const isGetTimepaper = GET_TIMEPAPER_REGEX.test(config.url) && (config.method === "get");
+  const isGetTimepaper = GET_TIMEPAPER_REGEX.test(config.url) && config.method === 'get';
 
   if (isRequireToken && !isGetTimepaper) {
-    config.headers["Authorization"] = state.auth.accessToken;
+    config.headers['Authorization'] = state.auth.accessToken;
   }
 
-  return config
-})
+  return config;
+});
 
 apiInstance.interceptors.response.use(
   (response) => {
-    return response
+    return response;
   },
   async (error) => {
     const response = error.response;
@@ -38,7 +38,7 @@ apiInstance.interceptors.response.use(
       try {
         const response = await api.reissue();
         const accessToken = response.headers.authorization;
-        store.dispatch(login(accessToken))
+        store.dispatch(login(accessToken));
         originalRequest.headers['Authorization'] = accessToken;
         return apiInstance(originalRequest);
       } catch {
@@ -47,8 +47,7 @@ apiInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
-)
-
+  },
+);
 
 export default apiInstance

@@ -33,7 +33,7 @@ public class TimePaperService {
     String creatorEmail = authentication.getName();
 
     User creator = (User) userRepository.findByEmail(creatorEmail)
-                              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
     TimePaper timePaper = timePaperRepository.save(
         TimePaper.builder()
@@ -47,7 +47,8 @@ public class TimePaperService {
   public TimePaperResponseDto getTimePaperById(UUID timepaperId) {
 
     TimePaper timePaper = timePaperRepository.findById(timepaperId)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 타임페이퍼는 존재하지 않습니다."));
+        .orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 타임페이퍼는 존재하지 않습니다."));
     return TimePaperResponseDto.from(timePaper);
   }
 
@@ -72,8 +73,8 @@ public class TimePaperService {
   ) {
 
     TimePaper timePaper = timePaperRepository.findById(timePaperId)
-                              .orElseThrow(
-                                  () -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
+        .orElseThrow(
+            () -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
 
     if (!timePaper.getCreator().getId().equals(requesterId)) {
       throw new IllegalArgumentException("잠금 권한이 없습니다.");

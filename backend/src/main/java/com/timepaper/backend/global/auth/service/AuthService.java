@@ -1,10 +1,10 @@
 package com.timepaper.backend.global.auth.service;
 
 import com.timepaper.backend.domain.user.entity.User;
+import com.timepaper.backend.domain.user.repository.UserRepository;
 import com.timepaper.backend.global.auth.dto.CertificationNumberRequestDto;
 import com.timepaper.backend.global.auth.dto.EmailCertificationRequestDto;
 import com.timepaper.backend.global.auth.dto.SignupDto;
-import com.timepaper.backend.global.auth.repository.AuthRepository;
 import com.timepaper.backend.global.auth.token.service.RefreshTokenService;
 import com.timepaper.backend.global.auth.token.util.JWTUtil;
 import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
@@ -30,7 +30,7 @@ public class AuthService {
   private final RefreshTokenService refreshTokenService;
   private final JWTUtil jwtUtil;
   private final RefreshTokenUtil refreshTokenUtil;
-  private final AuthRepository authRepository;
+  private final UserRepository userRepository;
   private final RedisTemplate<String, String> redisTemplate;
   private final EmailSendManager emailSendManager;
   private final PasswordEncoder passwordEncoder;
@@ -69,25 +69,25 @@ public class AuthService {
     String path = "/api/auth";
 
     return ResponseCookie.from("refresh_token", refreshToken)
-               .httpOnly(true)
-               .secure(true) //개발환경 false, 배포시 true
-               .sameSite("None")
-               .path(path)
-               .maxAge(maxAge)
-               .build();
+        .httpOnly(true)
+        .secure(true) //개발환경 false, 배포시 true
+        .sameSite("None")
+        .path(path)
+        .maxAge(maxAge)
+        .build();
   }
 
   public void requestEmailVerificationCode(EmailCertificationRequestDto dto) {
-    boolean isEmailExistence = authRepository.findByEmail(dto.getEmail());
+    boolean isEmailExistence = userRepository.isExistEmail(dto.getEmail());
 
     if (isEmailExistence) {
       throw new IllegalArgumentException("존재하는 이메일입니다.");
     }
 
     String authenticationCode = UUID.randomUUID().toString()
-                                    .replace("-", "")
-                                    .substring(0, 6)
-                                    .toUpperCase();
+        .replace("-", "")
+        .substring(0, 6)
+        .toUpperCase();
     redisTemplate.opsForValue().set(dto.getEmail(), authenticationCode, Duration.ofMinutes(5));
 
     emailSendManager.sendEmail(dto.getEmail(), "타임페이퍼 인증코드", authenticationCode);
@@ -124,8 +124,8 @@ public class AuthService {
 
     String encodedPassword = passwordEncoder.encode(dto.getPassword());
 
-    User auth = dto.toEntity(encodedPassword);
-    authRepository.save(auth);
+    User user = dto.toEntity(encodedPassword);
+    userRepository.save(user);
   }
 
 }
