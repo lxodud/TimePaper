@@ -18,13 +18,15 @@ export default function ModalTest() {
       >
         Open Image Modal
       </button>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        imageUrl={imageUrl}
-        modalContent={modalContent}
-        from={from}
-      />
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setModalOpen(false)}
+          imageUrl={imageUrl}
+          modalContent={modalContent}
+          from={from}
+        />
+      )}
     </div>
   );
 }
