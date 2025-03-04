@@ -6,14 +6,17 @@ import { api } from '../../api/api';
 import styles from './TimePaperDetail.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import ConfirmModal from '../../components/confirmmodal/ConfirmModal';
+import Modal from '../../components/Modal/Modal';
 
 export default function TimePaperDetail() {
   const { timepaperId } = useParams();
   const dispatch = useDispatch();
   const [timepaper, setTimepaper] = useState(null);
   const [postits, setPostits] = useState([]);
-  const [showConfirmModal, setShowConfirmModal] = useState(false); // 모달 창 상태 관리
-  const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // 삭제 모달 창 상태 관리
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedPostit, setSelectedPostit] = useState(null); // 선택된 포스트잇 저장
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   // Redux에서 현재 로그인한 사용자의 이메일 가져오기
@@ -69,6 +72,11 @@ export default function TimePaperDetail() {
   const handleDeleteClick = () => {
     setShowConfirmModal(true);
   };
+  // 포스트잇 클릭 시 해당 포스트잇의 데이터를 상태로 저장 후 모달 열기
+  const handlePostitClick = (postit) => {
+    setSelectedPostit(postit);
+    setModalOpen(true);
+  };
 
   const handlePostItCreateClick = () => {
     navigate(`/timepaper/${timepaperId}/postit/create`);
@@ -104,7 +112,11 @@ export default function TimePaperDetail() {
           {postits && postits.length > 0 ? (
             <ul className={styles.timepaperList}>
               {postits.map((postit) => (
-                <li key={postit.postitId} className={styles.timepaperItem}>
+                <li
+                  key={postit.postitId}
+                  className={styles.timepaperItem}
+                  onClick={() => handlePostitClick(postit)}
+                >
                   <div
                     className={styles.postitBackground}
                     style={{ backgroundImage: `url(${encodeURI(postit.imageUrl)})` }}
@@ -140,6 +152,18 @@ export default function TimePaperDetail() {
                     message="정말로 이 타임페이퍼를 삭제하시겠습니까?"
                     onConfirm={handleDeleteTimepaper} // 확인 클릭 시 삭제 처리
                     onCancel={() => setShowConfirmModal(false)} // 취소 클릭 시 모달 닫기
+                  />
+                )}
+                {/* 클릭한 포스트잇에 대한 정보를 이용해 모달 한 번만 렌더링 */}
+                {isModalOpen && selectedPostit && (
+                  <Modal
+                    onClose={() => {
+                      setModalOpen(false);
+                      setSelectedPostit(null);
+                    }}
+                    imageUrl={selectedPostit.imageUrl}
+                    modalContent={selectedPostit.content}
+                    from={selectedPostit.author}
                   />
                 )}
               </div>

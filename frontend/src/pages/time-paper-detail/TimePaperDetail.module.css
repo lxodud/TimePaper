@@ -47,7 +47,6 @@
   justify-content: flex-start;
   align-items: flex-start;
   overflow: auto;
-  /* text-overflow: ellipsis; */
   padding: 16px;
   box-sizing: border-box;
 }
