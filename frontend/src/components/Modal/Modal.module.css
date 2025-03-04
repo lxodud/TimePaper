@@ -63,10 +63,10 @@
   padding-bottom: 5px;
 }
 
-.block > p {
+.fromText {
   height: 100%;
   width: 100%;
-  font-size: 25px;
+  font-size: 18px;
   position: absolute;
   top: 50%;
   transform: translateY(-75%);
@@ -74,6 +74,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.fromText:focus {
+  text-overflow: ellipsis; /* 텍스트 잘림 효과 */
+  white-space: normal; /* 텍스트 줄바꿈 허용 */
+  overflow-wrap: break-word; /* 단어가 길 경우 줄바꿈 */
+  word-break: break-word; /* 단어를 강제로 줄바꿈 */
 }
 
 .textareaWrapper {

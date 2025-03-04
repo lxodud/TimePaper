@@ -14,7 +14,9 @@ function Modal({ onClose, imageUrl, modalContent, from }) {
             {modalContent}
           </textarea>
           <div className={styles.block} data-fulltext={from}>
-            <p>From. &nbsp;{from}</p>
+            <p className={styles.fromText} tabIndex="0">
+              From. &nbsp;{from}
+            </p>
           </div>
         </div>
       </div>
