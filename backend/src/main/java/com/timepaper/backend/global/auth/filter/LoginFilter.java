@@ -5,6 +5,7 @@ import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
 import com.timepaper.backend.global.auth.exception.LoginValidationException;
 import com.timepaper.backend.global.auth.service.AuthService;
 import com.timepaper.backend.global.dto.ApiResponse;
+import com.timepaper.backend.global.exception.ErrorCode;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -53,7 +55,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
       //여기 예외처리 어떻게 하징
       throw new RuntimeException("LoginRequestDto 파싱 중 에러 발생 ", e);
     }
-    // 이메일 형식 유효성 검증
+
     validateLoginRequest(requestDto);
 
     String email = requestDto.getEmail();
@@ -91,6 +93,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
       apiResponse = ApiResponse.error(exception.getErrorCode().getMessage(),
           exception.getErrorCode().getCode());
       status = exception.getErrorCode().getStatus();
+      
+    } else if (failed instanceof BadCredentialsException) {
+      log.info("BadCredentialsException");
+      apiResponse = ApiResponse.error(ErrorCode.INVALID_CREDENTIALS.getMessage(),
+          ErrorCode.INVALID_CREDENTIALS.getCode());
+      status = ErrorCode.INVALID_CREDENTIALS.getStatus();
     }
 
     response.setContentType("application/json");
