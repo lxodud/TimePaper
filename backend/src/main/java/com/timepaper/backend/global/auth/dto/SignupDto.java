@@ -1,6 +1,7 @@
 package com.timepaper.backend.global.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.timepaper.backend.domain.user.entity.ROLE;
 import com.timepaper.backend.domain.user.entity.User;
 import lombok.Getter;
 
@@ -17,10 +18,11 @@ public class SignupDto {
 
   public User toEntity(String encodedPassword) {
     return User.builder()
-               .email(email)
-               .password(encodedPassword)
-               .isPrivacyPolicyAccepted(isPrivacyPolicyAccepted())
-               .isTermsAccepted(isTermsAccepted())
-               .build();
+        .email(email)
+        .password(encodedPassword)
+        .isPrivacyPolicyAccepted(isPrivacyPolicyAccepted())
+        .isTermsAccepted(isTermsAccepted())
+        .role(ROLE.ROLE_USER)
+        .build();
   }
 }
