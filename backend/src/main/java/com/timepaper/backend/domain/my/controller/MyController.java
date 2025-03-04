@@ -1,6 +1,5 @@
 package com.timepaper.backend.domain.my.controller;
 
-import com.timepaper.backend.domain.my.dto.response.MyInfoResponseDto;
 import com.timepaper.backend.domain.my.dto.response.MyPostitListResponseDto;
 import com.timepaper.backend.domain.my.dto.response.MyTimepaperListResponseDto;
 import com.timepaper.backend.domain.my.service.MyService;
@@ -31,13 +30,6 @@ public class MyController {
   public ResponseEntity<ApiResponse<List<MyPostitListResponseDto>>> getMyPostits(
       @AuthenticationPrincipal User authenticatedUser) {
     return ResponseEntity.ok(ApiResponse.ok(myService.getMyPostits(authenticatedUser)));
-  }
-
-  @GetMapping()
-  public ResponseEntity<ApiResponse<MyInfoResponseDto>> getMyInfo(
-      @AuthenticationPrincipal User authenticatedUser) {
-    return ResponseEntity.ok(
-        ApiResponse.ok(myService.getMyInfo(authenticatedUser)));
   }
 
 }
