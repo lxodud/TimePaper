@@ -37,7 +37,8 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 100%;
+  width: 600px;
+  height: 600px;
 }
 
 .logoImage {
@@ -69,7 +70,6 @@
   position: absolute;
   top: 50%;
   transform: translateY(-75%);
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

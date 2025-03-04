@@ -13,7 +13,7 @@ function Modal({ onClose, imageUrl, modalContent, from }) {
           <textarea className={styles.textareaWrapper} readOnly>
             {modalContent}
           </textarea>
-          <div className={styles.block}>
+          <div className={styles.block} data-fulltext={from}>
             <p>From. &nbsp;{from}</p>
           </div>
         </div>
