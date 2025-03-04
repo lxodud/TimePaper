@@ -1,4 +1,4 @@
-package com.timepaper.backend.global.auth.token.filter;
+package com.timepaper.backend.global.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
