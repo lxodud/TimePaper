@@ -16,7 +16,7 @@ public class RefreshTokenUtil {
 
   public String createRefreshToken(String email) {
 
-    String emailKey = createEmailKey(email);
+    String emailKey = encodeEmailToKey(email);
 
     byte[] tokenBytes = new byte[16];
     secureRandom.nextBytes(tokenBytes);
@@ -33,7 +33,7 @@ public class RefreshTokenUtil {
     return passwordEncoder.matches(rawRefreshToken, hashedRefreshToken);
   }
 
-  public String createEmailKey(String email) {
+  public String encodeEmailToKey(String email) {
     return Base64.getUrlEncoder().withoutPadding()
         .encodeToString(email.getBytes(StandardCharsets.UTF_8));
   }

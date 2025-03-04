@@ -18,11 +18,11 @@ public class MyTimepaperListResponseDto {
 
   public static MyTimepaperListResponseDto from(TimePaper entity) {
     return MyTimepaperListResponseDto.builder()
-        .rollingPaperId(entity.getId())
-        .creator(String.valueOf(entity.getCreator()))
-        .title(entity.getTitle())
-        .createdAt(entity.getCreatedAt())
-        .isLocked(entity.getReleaseDate().isAfter(LocalDateTime.now()))
-        .build();
+               .rollingPaperId(entity.getId())
+               .creator(String.valueOf(entity.getCreator()))
+               .title(entity.getTitle())
+               .createdAt(entity.getCreatedAt())
+               .isLocked(entity.getReleaseDate().isAfter(LocalDateTime.now()))
+               .build();
   }
 }
