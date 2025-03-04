@@ -55,4 +55,5 @@
   border-radius: 10px;
   font-family: var(--pretendard-regular);
   font-size: 17px;
+  cursor: pointer;
 }
