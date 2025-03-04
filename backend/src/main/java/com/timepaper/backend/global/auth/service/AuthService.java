@@ -9,6 +9,10 @@ import com.timepaper.backend.global.auth.token.service.RefreshTokenService;
 import com.timepaper.backend.global.auth.token.util.JWTUtil;
 import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
 import com.timepaper.backend.global.emailsender.EmailSendManager;
+import com.timepaper.backend.global.exception.custom.auth.DuplicateEmailException;
+import com.timepaper.backend.global.exception.custom.auth.ExpiredAuthCodeException;
+import com.timepaper.backend.global.exception.custom.auth.ExpiredEmailVerificationException;
+import com.timepaper.backend.global.exception.custom.auth.InvalidAuthCodeException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import java.util.UUID;
@@ -81,7 +85,7 @@ public class AuthService {
     boolean isEmailExistence = userRepository.isExistEmail(dto.getEmail());
 
     if (isEmailExistence) {
-      throw new IllegalArgumentException("존재하는 이메일입니다.");
+      throw new DuplicateEmailException();
     }
 
     String authenticationCode = UUID.randomUUID().toString()
@@ -98,13 +102,13 @@ public class AuthService {
     String authenticationCode = redisTemplate.opsForValue().get(dto.getEmail());
 
     if (authenticationCode == null) {
-      throw new IllegalArgumentException("인증 코드가 없습니다.");
+      throw new ExpiredAuthCodeException();
     }
 
     boolean isVerificationCodeEqual = authenticationCode.equals(dto.getAuthenticationCode());
 
     if (!isVerificationCodeEqual) {
-      throw new IllegalArgumentException("인증 코드가 일치하지 않습니다.");
+      throw new InvalidAuthCodeException();
     }
 
     redisTemplate.opsForValue()
@@ -119,7 +123,7 @@ public class AuthService {
     );
 
     if (!isAuthenticatedEmail) {
-      throw new IllegalArgumentException("이메일 인증이 필요합니다.");
+      throw new ExpiredEmailVerificationException();
     }
 
     String encodedPassword = passwordEncoder.encode(dto.getPassword());
