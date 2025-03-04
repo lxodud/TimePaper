@@ -1,21 +1,21 @@
-package com.timepaper.backend.domain.javaemail;
+package com.timepaper.backend.global.emailsender;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service  // Spring Bean 등록
+@Component  // Spring Bean 등록
 @RequiredArgsConstructor
-public class JavaEmailSender {
+public class EmailSendManager {
 
   private final JavaMailSender javaMailSender;
 
-  public void sendJavaEmail(JavaEmailDto dto) {
+  public void sendEmail(String email, String title, String content) {
     SimpleMailMessage message = new SimpleMailMessage();
-    message.setTo(dto.getEmail());
-    message.setSubject(dto.getTitle());
-    message.setText(dto.getMessage());
+    message.setTo(email);
+    message.setSubject(title);
+    message.setText(content);
 
     javaMailSender.send(message);  // 이메일 전송
   }
