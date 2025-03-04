@@ -14,7 +14,7 @@ export default function TimePaperCreate() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('제목을 입력해주세요.');
   const [isLoginButtonEnable, setIsLoginButtonEnable] = useState(false);
-  const { isLoggedIn } = useSelector((state) => state.auth)
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,7 +43,8 @@ export default function TimePaperCreate() {
 
     try {
       const response = await api.createTimepaper(title);
-      navigate(`/timepaper/${response.id}`);
+      console.log(response);
+      navigate(`/timepaper/${response.data.data.timePaperId}`);
     } catch (err) {
       console.error(err);
       setError(true);
@@ -69,9 +70,9 @@ export default function TimePaperCreate() {
         },
       });
     }
-  }, [isLoggedIn])
-  
-   useEffect(() => {
+  }, [isLoggedIn]);
+
+  useEffect(() => {
     dispatch(setPageTitle('타임페이퍼 생성'));
   }, []);
 
