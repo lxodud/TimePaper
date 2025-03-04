@@ -63,6 +63,7 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows
 
 .env
+.env.local
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,visualstudiocode
