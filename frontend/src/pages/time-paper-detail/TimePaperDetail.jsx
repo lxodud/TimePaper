@@ -61,7 +61,9 @@ export default function TimePaperDetail() {
   }, [timepaper, timepaperId]);
 
   const handleCapsuleClick = () => {
-    navigate(`/timepaper/${timepaperId}/capsule`);
+    navigate(`/timepaper/${timepaperId}/capsule`, {
+      state: { authorEmail: userEmail },
+    });
   };
 
   const handleDeleteTimepaper = async () => {
