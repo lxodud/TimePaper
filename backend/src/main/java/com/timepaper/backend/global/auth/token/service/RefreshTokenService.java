@@ -2,9 +2,9 @@ package com.timepaper.backend.global.auth.token.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.timepaper.backend.global.auth.exception.InvalidRefreshTokenException;
 import com.timepaper.backend.global.auth.token.entity.RefreshTokenInfo;
 import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
-import com.timepaper.backend.global.exception.custom.InvalidRefreshTokenException;
 import java.time.Duration;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +58,7 @@ public class RefreshTokenService {
     String tokenInfoJson = redisTemplate.opsForValue().get(emailKey);
 
     if (tokenInfoJson == null) {
-      throw new InvalidRefreshTokenException("refresh token 유효하지 않음");
+      throw new InvalidRefreshTokenException();
     }
 
     try {
