@@ -14,6 +14,7 @@ public enum ErrorCode {
 
   //1000번 공통
   INVALID_INPUT(HttpStatus.BAD_REQUEST, "1000", "입력값이 올바르지 않습니다."),
+  SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "1001", "서버 내부 오류가 발생했습니다"),
 
   //회원 관련 오류 (2000)
   DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "2000", "이미 사용 중인 이메일입니다."),
@@ -29,7 +30,8 @@ public enum ErrorCode {
   INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "3000", "아이디 또는 비밀번호가 일치하지 않습니다"),
   INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "3001", "유효하지 않은 JWT TOKEN 입니다."),
   FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN, "3002", "접근 권한이 없습니다"),
-  INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "3003", "유효하지 않은 REFRESH TOKEN 입니다.");
+  INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "3003", "유효하지 않은 REFRESH TOKEN 입니다."),
+  EMAIL_PASSWORD_REQUIRED(HttpStatus.BAD_REQUEST, "3004", "이메일 비밀번호는 필수입니다.");
 
 
   private final HttpStatus status;
