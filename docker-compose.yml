@@ -46,6 +46,8 @@ services:
       - db-network
       - cache-network
       - web-network
+    ports:
+      - "587:587"
     depends_on:
       mysql:
         condition: service_healthy
