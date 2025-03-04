@@ -20,15 +20,26 @@ export default function TimePaperCreate() {
   const navigate = useNavigate();
 
   const handleTitleChange = (e) => {
-    let newValue = e.target.value;
+    const newValue = e.target.value;
+    setTitle(newValue);
+
+    if (newValue === '') {
+      setError(false);
+      return;
+    }
+    if (newValue && newValue.trim().length === 0) {
+      setError(true);
+      setErrorMessage('공백만으로 이루어진 제목은 사용할 수 없습니다.');
+      return;
+    }
     if (newValue.length > 30) {
-      newValue = newValue.slice(0, 30);
+      const trimmedValue = newValue.slice(0, 30);
+      setTitle(trimmedValue);
       setError(true);
       setErrorMessage('제목의 최대 글자 수는 30자 입니다.');
-    } else {
-      setError(false);
+      return;
     }
-    setTitle(newValue);
+    setError(false);
   };
 
   const handleSubmit = async (e) => {
@@ -38,7 +49,6 @@ export default function TimePaperCreate() {
       setErrorMessage('제목을 입력해주세요.');
       return;
     }
-    setError(false);
     setLoading(true);
 
     try {
