@@ -1,64 +1,83 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './SignUp.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
+import { api } from '../../api/api';
 
 export default function SignUp() {
-  const [placeholdersVisible, setPlaceholdersVisible] = useState([true, true, true, true]);
-  const [email, setEmail] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
-  const [verificationCodeCheck, setverificationCodeCheck] = useState(false);
-  const [inputCode, setInputCode] = useState('');
-  const [isCodeSent, setIsCodeSent] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [passwordInput, setpasswordInput] = useState(false);
-  const [passwordInputNum, setpasswordInputNum] = useState('');
-  const [passwordCheckInput, setpasswordCheckInput] = useState(false);
-  const form = useRef();
+  const [placeholdersVisible, setPlaceholdersVisible] = useState([true, true, true, true]); // input
+  const [email, setEmail] = useState(''); // 이메일 입력값 저장
+  const [authenticationCode, setauthenticationCode] = useState(''); //인증번호 input창 데이터 저장
+  const [isCodeSent, setIsCodeSent] = useState(false); // 인증번호 입력창 노출을 위한 useState
+  const [timeLeft, setTimeLeft] = useState(0); // 인증시간 관련 useState
+  const [password, setPassword] = useState(''); // 비밀번호input의 값을 넣을 useState
+  const [passwordCheck, setPasswordCheck] = useState(false); //비밀번호확인 input의 값을 넣을 useState
 
-  // 6자리 랜덤 코드 생성
-  const generateVerificationCode = () => {
-    return Math.random().toString(36).substring(2, 8).toUpperCase(); // 영어 + 숫자 조합 (6자리)
-  };
+  const [verification, setVerification] = useState({
+    passwordConstraints: false, // 비밀번호 제약조건 성립여부
+    passwordCheckConstraints: false, // 비밀번호확인 제약조건 성립여부
+    verificationCodeCheck: false, // 인증코드 인증여부 true/false
+    isPrivacyPolicyAccepted: false, // 개인정보 약관 동의 true/false
+    isTermsAccepted: false, // 이용 약관 동의 true/false
+  });
 
-  const emailCheck = (e) => {
+  const email_format = /^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[cC][oO][mM]$/;
+
+  const emailCertification = async (e) => {
     e.preventDefault();
 
-    let email_format = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
     if (!email || !email_format.test(email)) {
       alert('이메일 형식이 올바르지 않습니다.');
       return;
+    } else {
+      try {
+        /////////////////////////여기/////////////////////////////
+        const response = await api.requestEmailVerificationCode(email);
+        const data = response.data;
+        const boolean = data.data;
+        console.log(boolean);
+        if (!boolean) {
+          alert('인증 메일이 전송되었습니다.');
+          setIsCodeSent(true);
+        } else {
+          alert('이미 가입된 이메일입니다.');
+          return;
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
-
-    const code = generateVerificationCode();
-    setVerificationCode(code);
-
-    const templateParams = {
-      to_name: email,
-      message: code,
-      from_name: 'timepaper',
-    };
-
-    emailjs.send('service_4n5mcry', 'template_j25i3xn', templateParams, 'E2uVL_UZRQC6xI7Nu').then(
-      () => {
-        console.log('인증 코드 전송 성공!');
-        setIsCodeSent(true);
-        alert('인증 코드가 이메일로 전송되었습니다.');
-        setIsCodeSent(true);
-        setTimeLeft(300);
-      },
-      (error) => {
-        console.log('이메일 전송 실패...', error.text);
-        alert('이메일 전송에 실패했습니다.');
-      },
-    );
   };
+
+  const emailverificationCodeCheck = async () => {
+    try {
+      ////////////////////여기///////////////////////
+      const response = await api.checkEmailVerificationCode(email, authenticationCode);
+      console.log(response);
+      const data = response.data;
+      const boolean = data.data;
+      console.log(boolean);
+      if (boolean) {
+        alert('인증되었습니다.');
+        // setverificationCodeCheck(true);
+        setVerification((prev) => ({ ...prev, verificationCodeCheck: true }));
+      } else {
+        alert('인증번호가 맞지 않습니다.');
+      }
+    } catch (error) {
+      console.error('인증 확인 중 오류 발생:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (isCodeSent) {
+      setTimeLeft(300);
+    }
+  }, [isCodeSent]);
 
   useEffect(() => {
     if (timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
-    } else {
-      setverificationCodeCheck(false);
     }
   }, [timeLeft]);
 
@@ -76,48 +95,58 @@ export default function SignUp() {
     setPlaceholdersVisible(newPlaceholdersVisible);
   };
 
-  const ChengeverificationCode = (e) => {
-    const value = e.target.value.replace(/(\s*)/g, '');
-    setInputCode(value);
-    if (value === verificationCode) {
-      setverificationCodeCheck(true);
-      console.log('성공');
-    } else {
-      setverificationCodeCheck(false);
-    }
-  };
-
   const ChengePassword = (e) => {
     const value = e.target.value.replace(/(\s*)/g, '');
-    setpasswordInputNum(value);
+    setPassword(value);
 
     const check = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
 
     if (check.test(value) && value.length >= 8) {
-      setpasswordInput(true);
+      setVerification((prev) => ({
+        ...prev,
+        passwordConstraints: true,
+      }));
     } else {
-      setpasswordInput(false);
+      setVerification((prev) => ({
+        ...prev,
+        passwordConstraints: false,
+      }));
     }
   };
 
   const ChengePasswordCheck = (e) => {
     const value = e.target.value.replace(/(\s*)/g, '');
+    setPasswordCheck(value);
 
-    if (passwordInputNum === value) {
-      setpasswordCheckInput(true);
+    if (password === value) {
+      setVerification((prev) => ({ ...prev, passwordCheckConstraints: true }));
     } else {
-      setpasswordCheckInput(false);
+      setVerification((prev) => ({ ...prev, passwordCheckConstraints: false }));
     }
+  };
+
+  const handleSignUp = async () => {
+    ///////////////////////여기////////////////////////
+    await api.signup(
+      email,
+      password,
+      verification.isPrivacyPolicyAccepted,
+      verification.isTermsAccepted,
+    );
+  };
+
+  const handleAlertSignUp = () => {
+    alert('잘못 입력된 내용이 있습니다.');
   };
 
   return (
     <>
       <div className={styles.signUpContainer}>
-        <form className={styles.signUpForm}>
+        <div className={styles.signUpForm}>
           <div>
             <label className={styles.fields}>이메일*</label>
             <input
-              className={styles.fieldsInput}
+              className={`${verification.verificationCodeCheck ? styles.fieldsInputLock : styles.fieldsInput}`}
               type="email"
               name="email"
               onChange={(e) => setEmail(e.target.value)}
@@ -127,7 +156,16 @@ export default function SignUp() {
               onBlur={(e) => handleBlur(0, e.target.value)}
               style={{ textAlign: placeholdersVisible[0] ? 'center' : 'left' }}
             />
-            <button className={styles.emailCheckBut} onClick={emailCheck}>
+            <button
+              className={
+                verification.verificationCodeCheck
+                  ? styles.butLock
+                  : email_format.test(email)
+                    ? styles.emailCheckBut
+                    : styles.butLock
+              }
+              onClick={emailCertification}
+            >
               인증
             </button>
           </div>
@@ -136,23 +174,37 @@ export default function SignUp() {
             <div>
               <div className={styles.fields}>인증 코드 입력</div>
               <input
-                className={styles.fieldsInput}
+                className={`${verification.verificationCodeCheck ? styles.fieldsInputLock : styles.fieldsInput}`}
                 type="text"
                 placeholder={placeholdersVisible[1] ? '인증 번호 입력' : ''}
-                maxlength="6"
+                maxLength="6"
                 onFocus={() => handleFocus(1)}
                 onBlur={(e) => handleBlur(1, e.target.value)}
                 style={{ textAlign: placeholdersVisible[1] ? 'center' : 'left' }}
-                // onChange={(e) => setInputCode(e.target.value)}
-                onChange={ChengeverificationCode}
-                value={inputCode}
+                onChange={(e) => setauthenticationCode(e.target.value)}
+                value={authenticationCode}
               />
+              <button
+                className={
+                  verification.verificationCodeCheck
+                    ? styles.butLock // 인증 성공하면 버튼 비활성화
+                    : authenticationCode.length === 6
+                      ? styles.emailCheckBut // 6자리 인증번호 입력되면 활성화
+                      : styles.butLock // 그렇지 않으면 비활성화
+                }
+                onClick={emailverificationCodeCheck}
+              >
+                번호확인
+              </button>
+
               <div className={styles.authentication}>
-                {inputCode === verificationCode && timeLeft > 0
-                  ? '인증되었습니다!'
-                  : timeLeft > 0
-                    ? `남은 시간: ${Math.floor(timeLeft / 60)}:${('0' + (timeLeft % 60)).slice(-2)}`
-                    : '인증 코드가 만료되었습니다.'}
+                {verification.verificationCodeCheck && timeLeft > 0 ? (
+                  '인증되었습니다!'
+                ) : timeLeft > 0 ? (
+                  `남은 시간: ${Math.floor(timeLeft / 60)}:${('0' + (timeLeft % 60)).slice(-2)}`
+                ) : (
+                  <span className={styles.expired}>인증 코드가 만료되었습니다.</span>
+                )}
               </div>
             </div>
           )}
@@ -169,13 +221,19 @@ export default function SignUp() {
               style={{ textAlign: placeholdersVisible[2] ? 'center' : 'left' }}
               onChange={ChengePassword}
             />
-            <div className={passwordInput ? styles.visibilityVisible : styles.visibilityHidden}>
+            <div
+              className={
+                !password || verification.passwordConstraints
+                  ? styles.visibilityVisible
+                  : styles.visibilityHidden
+              }
+            >
               비밀번호는 특수부호를 포함 8자이상 작성해주세요
             </div>
           </div>
 
           <div>
-            <label for="password" className={styles.fields}>
+            <label htmlFor="password" className={styles.fields}>
               비밀번호 확인*
             </label>
             <input
@@ -189,12 +247,16 @@ export default function SignUp() {
               onChange={ChengePasswordCheck}
             />
             <div
-              className={passwordCheckInput ? styles.visibilityVisible : styles.visibilityHidden}
+              className={
+                !passwordCheck || verification.passwordCheckConstraints
+                  ? styles.visibilityVisible
+                  : styles.visibilityHidden
+              }
             >
               비밀번호가 일치하지 않습니다.
             </div>
           </div>
-        </form>
+        </div>
       </div>
 
       <div className={styles.bottomBox}>
@@ -202,7 +264,16 @@ export default function SignUp() {
           <div className={styles.isPrivacyPolicyAccepted}>
             <div>개인 정보 활용에 대해 동의하시겠습니까?</div>
             <div className={styles.checkboxText}>
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={verification.isPrivacyPolicyAccepted}
+                onChange={(e) =>
+                  setVerification((prev) => ({
+                    ...prev,
+                    isPrivacyPolicyAccepted: e.target.checked,
+                  }))
+                }
+              />
               <label className={styles.checkboxlabel}>자세히보기</label>
             </div>
           </div>
@@ -210,12 +281,25 @@ export default function SignUp() {
           <div className={styles.isTermsAccepted}>
             <div>이용 약관에 동의 하시겠습니까?</div>
             <div className={styles.checkboxText}>
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={verification.isTermsAccepted}
+                onChange={(e) =>
+                  setVerification((prev) => ({
+                    ...prev,
+                    isTermsAccepted: e.target.checked,
+                  }))
+                }
+              />
               <label className={styles.checkboxlabel}>자세히보기</label>
             </div>
           </div>
         </div>
-        <BottomButton title={'가입하기'}></BottomButton>
+        {Object.values(verification).every((value) => value) ? (
+          <BottomButton title={'가입하기'} onClick={handleSignUp} />
+        ) : (
+          <BottomButton title={'가입하기'} onClick={handleAlertSignUp} />
+        )}
       </div>
     </>
   );

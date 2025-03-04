@@ -1,6 +1,4 @@
-import { data } from "react-router-dom";
 import apiInstance from "./apiInstance";
-
 export const api = {
   login: async (username, password) => { 
     const response = await apiInstance.post("/auth/login", {
@@ -33,18 +31,17 @@ export const api = {
 
   requestEmailVerificationCode: async (email) => {
     const response = await apiInstance.post("/auth/email-verification-codes", {
-      data: {
         email: email
-      }
     })
+    return response;
   },
 
-  checkEmailVerificationCode: async (authenticationCode) => { 
+  checkEmailVerificationCode: async (email,authenticationCode) => { 
     const response = await apiInstance.post("/auth/email-verification-codes/validate", {
-      data: {
+        email: email,
         authenticationCode: authenticationCode
-      }
     })
+    return response;
   },
 
   getTimepaper: async (timepaperId) => {
