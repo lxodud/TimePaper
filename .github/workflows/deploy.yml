@@ -46,6 +46,7 @@ jobs:
           echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
           echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
           echo "TIME_PAPER_URL=${{ secrets.TIME_PAPER_URL }}" >> .env
+          echo "ORIGIN=${{ secrets.ORIGIN }}" >> .env
 
       - name: Add ssh-agent
         uses: webfactory/ssh-agent@v0.9.0
