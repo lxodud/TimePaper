@@ -13,6 +13,4 @@ public interface PostitRepository extends JpaRepository<Postit, Long> {
   Page<Postit> findAllByTimePaperId(UUID timePaperId, Pageable pageable);
 
   List<Postit> findAllByAuthor(User author);
-
-  void deleteByTimePaperId(UUID timepaperId);
 }
