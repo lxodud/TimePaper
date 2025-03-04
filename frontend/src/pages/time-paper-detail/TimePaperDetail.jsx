@@ -64,6 +64,14 @@ export default function TimePaperDetail() {
     navigate(`/timepaper/${timepaperId}/capsule`);
   };
 
+  const handleDeleteClick = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handlePostItCreateClick = () => {
+    navigate(`/timepaper/${timepaperId}/postit/create`);
+  };
+
   const handleDeleteTimepaper = async () => {
     try {
       await api.deleteTimepaper(timepaperId); // 삭제 API 호출
@@ -117,11 +125,13 @@ export default function TimePaperDetail() {
                   onClick={handleCapsuleClick}
                   isEnable={true}
                 />
+                <BottomButton title="타임페이퍼 삭제" onClick={handleDeleteClick} isEnable={true} />
                 <BottomButton
-                  title="타임페이퍼 삭제"
-                  onClick={() => setShowConfirmModal(true)} // 모달 열기
+                  title="포스트잇 생성"
+                  onClick={handlePostItCreateClick}
                   isEnable={true}
                 />
+
                 {/* 확인 모달 */}
                 {showConfirmModal && (
                   <ConfirmModal
