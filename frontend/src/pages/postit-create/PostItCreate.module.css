@@ -36,6 +36,7 @@
 
 .selectedImage {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -53,4 +54,18 @@
   overflow: hidden;
   resize: none;
   outline: none;
+}
+
+.textareaError {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  position: absolute;
+  left: 20px;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }
