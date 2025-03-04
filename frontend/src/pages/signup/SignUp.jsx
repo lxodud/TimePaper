@@ -30,18 +30,9 @@ export default function SignUp() {
       return;
     } else {
       try {
-        /////////////////////////여기/////////////////////////////
         const response = await api.requestEmailVerificationCode(email);
-        const data = response.data;
-        const boolean = data.data;
-        console.log(boolean);
-        if (!boolean) {
-          alert('인증 메일이 전송되었습니다.');
-          setIsCodeSent(true);
-        } else {
-          alert('이미 가입된 이메일입니다.');
-          return;
-        }
+        alert('인증 메일이 전송되었습니다.');
+        setIsCodeSent(true);
       } catch (error) {
         console.error(error);
       }
@@ -50,19 +41,9 @@ export default function SignUp() {
 
   const emailverificationCodeCheck = async () => {
     try {
-      ////////////////////여기///////////////////////
-      const response = await api.checkEmailVerificationCode(email, authenticationCode);
-      console.log(response);
-      const data = response.data;
-      const boolean = data.data;
-      console.log(boolean);
-      if (boolean) {
-        alert('인증되었습니다.');
-        // setverificationCodeCheck(true);
-        setVerification((prev) => ({ ...prev, verificationCodeCheck: true }));
-      } else {
-        alert('인증번호가 맞지 않습니다.');
-      }
+      await api.checkEmailVerificationCode(email, authenticationCode);
+      alert('인증되었습니다.');
+      setVerification((prev) => ({ ...prev, verificationCodeCheck: true }));
     } catch (error) {
       console.error('인증 확인 중 오류 발생:', error);
     }
@@ -126,7 +107,6 @@ export default function SignUp() {
   };
 
   const handleSignUp = async () => {
-    ///////////////////////여기////////////////////////
     await api.signup(
       email,
       password,
@@ -295,11 +275,7 @@ export default function SignUp() {
             </div>
           </div>
         </div>
-        {Object.values(verification).every((value) => value) ? (
-          <BottomButton title={'가입하기'} onClick={handleSignUp} />
-        ) : (
-          <BottomButton title={'가입하기'} onClick={handleAlertSignUp} />
-        )}
+          <BottomButton title={'가입하기'} onClick={handleSignUp} isEnable={true} />
       </div>
     </>
   );

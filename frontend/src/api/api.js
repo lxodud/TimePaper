@@ -41,6 +41,8 @@ export const api = {
         isTermsAccepted : isTermsAccepted
       }
     )
+
+    return response
   },
 
   unsubscribe: async () => {
