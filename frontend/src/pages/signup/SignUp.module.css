@@ -121,19 +121,17 @@
 
 .visibilityVisible {
   color: red;
-  font-size: 13px;
+  font-size: 12px;
   visibility: hidden;
-  padding: 1%;
 }
 .visibilityHidden {
   color: red;
-  font-size: 13px;
+  font-size: 12px;
   visibility: visible;
-  padding: 1%;
 }
 
-.emailBox {
-  margin-bottom: 22px;
+.marginBox {
+  margin-bottom: 8px;
 }
 
 /* 전체 요소에 드래그 방지 적용 */

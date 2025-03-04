@@ -4,13 +4,14 @@ import BottomButton from '../../components/BottomButton/BottomButton';
 import { api } from '../../api/api';
 
 export default function SignUp() {
-  const [placeholdersVisible, setPlaceholdersVisible] = useState([true, true, true, true]); // input
+  const [placeholdersVisible, setPlaceholdersVisible] = useState([true, true, true, true]);
   const [email, setEmail] = useState(''); // 이메일 입력값 저장
   const [authenticationCode, setauthenticationCode] = useState(''); //인증번호 input창 데이터 저장
-  const [isCodeSent, setIsCodeSent] = useState(true); // 인증번호 입력창 노출을 위한 useState
+  const [isCodeSent, setIsCodeSent] = useState(false); // 인증번호 입력창 노출을 위한 useState
   const [timeLeft, setTimeLeft] = useState(0); // 인증시간 관련 useState
   const [password, setPassword] = useState(''); // 비밀번호input의 값을 넣을 useState
   const [passwordCheck, setPasswordCheck] = useState(false); //비밀번호확인 input의 값을 넣을 useState
+  const [isEnable, setIsEnable] = useState(false); // 회원가입 버튼 활성화/비활성화
 
   const [verification, setVerification] = useState({
     passwordConstraints: false, // 비밀번호 제약조건 성립여부
@@ -20,10 +21,16 @@ export default function SignUp() {
     isTermsAccepted: false, // 이용 약관 동의 true/false
   });
 
+  useEffect(() => {
+    const allTrue = Object.values(verification).every(Boolean);
+    setIsEnable(allTrue);
+  }, [verification]);
+
   const email_format = /^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[cC][oO][mM]$/;
 
   const emailCertification = async (e) => {
     e.preventDefault();
+    setTimeLeft(300);
 
     if (!email || !email_format.test(email)) {
       alert('이메일 형식이 올바르지 않습니다.');
@@ -78,7 +85,7 @@ export default function SignUp() {
     setPlaceholdersVisible(newPlaceholdersVisible);
   };
 
-  const ChengePassword = (e) => {
+  const handlePassword = (e) => {
     const value = e.target.value.replace(/(\s*)/g, '');
     setPassword(value);
 
@@ -97,7 +104,7 @@ export default function SignUp() {
     }
   };
 
-  const ChengePasswordCheck = (e) => {
+  const handlePasswordCheck = (e) => {
     const value = e.target.value.replace(/(\s*)/g, '');
     setPasswordCheck(value);
 
@@ -125,7 +132,7 @@ export default function SignUp() {
     <>
       <div className={styles.signUpContainer}>
         <div className={styles.signUpForm}>
-          <div className={styles.emailBox}>
+          <div className={styles.marginBox}>
             <label className={styles.fields}>이메일*</label>
             <input
               className={`${verification.verificationCodeCheck ? styles.fieldsInputLock : styles.fieldsInput}`}
@@ -153,7 +160,7 @@ export default function SignUp() {
           </div>
 
           {isCodeSent && (
-            <div>
+            <div className={styles.marginBox}>
               <div className={styles.fields}>인증 코드 입력</div>
               <input
                 className={`${verification.verificationCodeCheck ? styles.fieldsInputLock : styles.fieldsInput}`}
@@ -201,7 +208,7 @@ export default function SignUp() {
               onFocus={() => handleFocus(2)}
               onBlur={(e) => handleBlur(2, e.target.value)}
               style={{ textAlign: placeholdersVisible[2] ? 'center' : 'left' }}
-              onChange={ChengePassword}
+              onChange={handlePassword}
             />
             <div
               className={
@@ -226,7 +233,7 @@ export default function SignUp() {
               onFocus={() => handleFocus(3)}
               onBlur={(e) => handleBlur(3, e.target.value)}
               style={{ textAlign: placeholdersVisible[3] ? 'center' : 'left' }}
-              onChange={ChengePasswordCheck}
+              onChange={handlePasswordCheck}
             />
             <div
               className={
@@ -277,7 +284,12 @@ export default function SignUp() {
             </div>
           </div>
         </div>
-        <BottomButton title={'가입하기'} onClick={handleSignUp} isEnable={true} />
+        <BottomButton
+          title={'가입하기'}
+          onClick={handleSignUp}
+          isEnable={isEnable}
+          cursor={isEnable ? 'pointer' : 'not-allowed'}
+        />
       </div>
     </>
   );
