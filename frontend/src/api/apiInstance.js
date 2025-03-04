@@ -1,10 +1,10 @@
 import axios from 'axios';
-import store from '../store/store'
-import { api } from './api'
+import store from '../store/store';
+import { api } from './api';
 import { login } from '../store/slices/authSlice';
 
 const apiInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 const NO_TOKEN_REQUIRED = [
@@ -50,4 +50,4 @@ apiInstance.interceptors.response.use(
   },
 );
 
-export default apiInstance
+export default apiInstance;
