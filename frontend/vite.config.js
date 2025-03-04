@@ -7,4 +7,4 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['jwt-decode']
   }
-})
+});

@@ -38,6 +38,11 @@ export default function Login() {
     });
   };
 
+  const handleSignUpButtonClick = (event) => {
+    event.preventDefault();
+    navigate('/signup')
+  }
+
   useEffect(() => {
     if (inputData.email.trim().length !== 0 && inputData.password.trim().length !== 0) {
       setIsLoginButtonEnable(true);
@@ -78,7 +83,7 @@ export default function Login() {
               onClick={handleLoginButtonClick}
               isEnable={isLoginButtonEnable}
             ></BottomButton>
-            <button className={styles.signupButton}>회원가입</button>
+            <button className={styles.signupButton} onClick={handleSignUpButtonClick}>회원가입</button>
           </div>
         </form>
       </div>
