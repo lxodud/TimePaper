@@ -21,6 +21,8 @@ public class TimePaperResponseDto {
   private final LocalDateTime createdAt;
   private final LocalDateTime releaseDate;
 
+  private final boolean isLocked;
+
   public static TimePaperResponseDto from(TimePaper timePaper) {
     return TimePaperResponseDto.builder()
         .timePaperId(timePaper.getId())
@@ -29,6 +31,7 @@ public class TimePaperResponseDto {
         .writerEmail(timePaper.getCreator().getEmail())
         .createdAt(timePaper.getCreatedAt())
         .releaseDate(timePaper.getReleaseDate())
+        .isLocked(timePaper.isLocked())
         .build();
   }
 }

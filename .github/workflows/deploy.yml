@@ -1,0 +1,113 @@
+name: deploy service
+
+on:
+  push:
+    branches:
+      - main
+      - deploy/*
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    steps:
+      # repo에서 소스코드 복사(checkout)
+      - name: Checkout Project
+        uses: actions/checkout@v4
+
+      - name: Use Cache for Build Image Layer Save
+        uses: actions/cache@v4.2.0
+        with:
+          path: /tmp/.build-cache
+          key: docker-image-cache-${{ github.sha }}
+          restore-keys: docker-image-cache-
+
+      - name: Create .env file
+        run: |
+          echo "DOMAIN=${{ secrets.DOMAIN }}" >> .env
+          echo "API_URL=${{ secrets.API_URL }}" >> .env
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+          echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
+          echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
+          echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> .env
+          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+          echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
+          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> .env
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> .env
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
+          echo "ACCESS_KEY=${{ secrets.ACCESS_KEY }}" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "BUCKET_NAME=${{ secrets.BUCKET_NAME }}" >> .env
+          echo "REGION=${{ secrets.REGION }}" >> .env
+
+      - name: Add ssh-agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add Remote Server FingerPrint to Know Hosts
+        run: ssh-keyscan -H -p ${{secrets.SSH_PORT}} ${{secrets.SSH_HOST}} >> ~/.ssh/known_hosts || true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create BuildKit Builder
+        run: |
+          docker buildx create --use --name buildkit
+          docker buildx use buildkit
+
+      - name: Login DockerHub
+        run: echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin
+
+      - name: Docker Image Build
+        run: docker compose build --build-arg BUILDKIT_INLINE_CACHE=1
+
+      - name: Docker Image Push
+        run: docker compose push
+
+      - name: Create work directory on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "Current directory: $(pwd)"
+            mkdir -p ~/work-directory
+
+      - name: Copy .env and docker-compose.yml Into EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "docker-compose.yml, .env"
+          target: "~/work-directory"
+
+      ## EC2내서 수행할 작업
+      - name: Pull Image from Docker Hub
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/work-directory
+            docker compose pull
+
+      - name: UP Containers
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/work-directory
+            docker compose down
+            docker compose up -d
+            docker system prune -f

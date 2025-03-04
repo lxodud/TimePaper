@@ -39,7 +39,7 @@ public class PostitController {
   ) {
     postitService.createPostit(UUID.fromString(timePaperId), user, requestDto, image);
     return ResponseEntity.status(HttpStatus.CREATED)
-               .body(ApiResponse.ok("포스트잇 생성 성공", "SUCCESS", null));
+        .body(ApiResponse.ok("포스트잇 생성 성공", "SUCCESS", null));
   }
 
   @GetMapping("timepapers/{timePaperId}/postits")
@@ -63,6 +63,6 @@ public class PostitController {
   ) {
     postitService.deletePostit(postitId, user.getId());
     return ResponseEntity.status(HttpStatus.NO_CONTENT)
-               .body(ApiResponse.ok("포스트잇 삭제 성공", "NO_CONTENT", null));
+        .body(ApiResponse.ok("포스트잇 삭제 성공", "NO_CONTENT", null));
   }
 }

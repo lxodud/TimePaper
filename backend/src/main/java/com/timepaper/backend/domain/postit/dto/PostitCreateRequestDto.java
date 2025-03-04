@@ -14,7 +14,7 @@ public class PostitCreateRequestDto {
 
   @NotEmpty
   @Length(max = 20)
-  private String author;
+  private String authorName;
 
   @NotEmpty
   @Length(max = 155)
@@ -28,12 +28,12 @@ public class PostitCreateRequestDto {
     }
 
     return Postit.builder()
-               .timePaper(timePaper)
-               .author(user)
-               .authorName(author)
-               .content(content)
-               .s3Key(s3Key)
-               .imageUrl(imageUrl)
-               .build();
+        .timePaper(timePaper)
+        .author(user)
+        .authorName(authorName)
+        .content(content)
+        .s3Key(s3Key)
+        .imageUrl(imageUrl)
+        .build();
   }
 }

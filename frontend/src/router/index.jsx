@@ -4,12 +4,13 @@ import Home from '../pages/home/Home';
 import Login from '../pages/login/Login.jsx';
 import Signup from '../pages/SignUp';
 import MyPage from '../pages/MyPage.jsx';
-import TimePaperDetail from '../pages/timepaperDetail/TimePaperDetail.jsx';
-import TimePaperIsLocked from '../pages/timepaperlocked/TimePaperIsLocked.jsx';
-import PostItCreate from '../pages/PostItCreate';
+import TimePaperDetail from '../pages/time-paper-detail/TimePaperDetail.jsx';
+import TimePaperIsLocked from '../pages/time-paper-is-locked/TimePaperIsLocked.jsx';
+import PostItCreate from '../pages/postit-create/PostItCreate.jsx';
 import NotFound from '../pages/error/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
-import TimePaperCreate from '../pages/timepapercreate/TimePaperCreate.jsx';
+import TimePaperCreate from '../pages/time-paper-create/TimePaperCreate.jsx';
+import TimePaperSetLock from '../pages/time-paper-set-lock/TimePaperSetLock.jsx';
 
 import ModalTest from '../pages/modal/ModalTest.jsx';
 const router = createBrowserRouter([
@@ -39,14 +40,6 @@ const router = createBrowserRouter([
             element: <MyPage />,
           },
           {
-            path: '/postit/create',
-            element: <PostItCreate />,
-          },
-          {
-            path: '/test',
-            element: <ModalTest></ModalTest>,
-          },
-          {
             path: '/timepaper',
             children: [
               {
@@ -64,6 +57,14 @@ const router = createBrowserRouter([
               {
                 path: ':timepaperId/lock',
                 element: <TimePaperIsLocked />,
+              },
+              {
+                path: ':timepaperId/capsule',
+                element: <TimePaperSetLock />,
+              },
+              {
+                path: ':timepaperId/postit/create',
+                element: <PostItCreate />,
               },
             ],
           },
