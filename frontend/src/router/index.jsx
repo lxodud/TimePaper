@@ -39,10 +39,6 @@ const router = createBrowserRouter([
             element: <MyPage />,
           },
           {
-            path: '/postit/create',
-            element: <PostItCreate />,
-          },
-          {
             path: '/timepaper',
             children: [
               {
@@ -64,6 +60,10 @@ const router = createBrowserRouter([
               {
                 path: ':timepaperId/capsule',
                 element: <TimePaperSetLock />,
+              },
+              {
+                path: ':timepaperId/postit/create',
+                element: <PostItCreate />,
               },
             ],
           },

@@ -74,6 +74,7 @@ export const api = {
 
   deleteTimepaper: async (timepaperId) => { 
     const response = await apiInstance.delete(`/timepapers/${timepaperId}`)
+    return response
   },
 
   lockTimepaper: async (timepaperId, email, releaseDate) => { 
@@ -90,9 +91,13 @@ export const api = {
     return response;
   },
 
-  createPostit: async (timepaperId, author, content, image) => { 
-    // TODO: multi-part form 데이터
-    const response = await apiInstance.post(`/timepapers/${timepaperId}/postits`)
+  createPostit: async (timepaperId, data) => { 
+    const response = await apiInstance.post(`/timepapers/${timepaperId}/postits`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    });
+    return response;
   },
 
   deletePostit: async (postitId) => { 
