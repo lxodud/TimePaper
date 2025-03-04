@@ -127,7 +127,7 @@ export default function TimePaperDetail() {
                 />
                 <BottomButton title="타임페이퍼 삭제" onClick={handleDeleteClick} isEnable={true} />
                 <BottomButton
-                  title="포스트잇 생성"
+                  title="포스트잇 작성"
                   onClick={handlePostItCreateClick}
                   isEnable={true}
                 />
