@@ -6,9 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login, loadUser } from './store/slices/authSlice';
 import { api } from './api/api';
 
+
 export default function App() {
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.auth.accessToken);
+  const { accessToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -16,15 +17,6 @@ export default function App() {
       dispatch(login(response.headers.authorization));
     })();
   }, []);
-
-  useEffect(() => {
-    if (accessToken) {
-      (async () => {
-        const response = await api.getMyInfo();
-        dispatch(loadUser(response.data.data));
-      })();
-    }
-  }, [accessToken]);
 
   return (
     <>
