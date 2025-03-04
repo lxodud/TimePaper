@@ -9,7 +9,6 @@ public class SignupDto {
 
   private String email;
   private String password;
-
   @JsonProperty("isPrivacyPolicyAccepted")
   private boolean isPrivacyPolicyAccepted;
 

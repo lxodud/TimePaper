@@ -12,6 +12,6 @@ public class CertificationNumberRequestDto {
   private String email;
 
   @NotBlank
-  private String checkNum;
+  private String authenticationCode;
 
 }

@@ -40,6 +40,7 @@ public class AuthController {
     authService.logout(response, refreshToken, authentication);
   }
 
+  @PostMapping("/auth/email-verification-codes")
   public ResponseEntity<ApiResponse<Boolean>> emailverification(
       @RequestBody EmailCertificationRequestDto dto) {
     return ResponseEntity.ok(ApiResponse.ok(

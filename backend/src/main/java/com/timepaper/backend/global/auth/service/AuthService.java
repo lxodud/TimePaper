@@ -98,27 +98,31 @@ public class AuthService {
 
   @Transactional
   public boolean checkEmailVerificationCode(CertificationNumberRequestDto dto) {
-    String randomCode = redisTemplate.opsForValue().get(dto.getEmail());
-    String approvalStatus;
-    System.out.println(randomCode);
-    boolean verification = randomCode != null && randomCode.equals(dto.getCheckNum());
-
-    if (verification) {
-      approvalStatus = "approval";
-      redisTemplate.opsForValue().set(dto.getEmail(), approvalStatus, Duration.ofMinutes(5));
-      return true;
-    } else {
-      approvalStatus = "rejection";
-      redisTemplate.opsForValue().set(dto.getEmail(), approvalStatus, Duration.ofMinutes(5));
+    try {
+      String randomCode = redisTemplate.opsForValue().get(dto.getEmail());
+      System.out.println(randomCode);
+      System.out.println(dto.getAuthenticationCode());
+      boolean verification = randomCode != null && randomCode.equals(dto.getAuthenticationCode());
+      if (verification) {
+        String verificationStr = String.valueOf(verification); // 인증번호 인증 여부
+        redisTemplate.opsForValue()
+            .set(dto.getEmail(), verificationStr, Duration.ofMinutes(5));
+        return true;
+      } else {
+        return false;
+      }
+    } catch (Exception e) {
       return false;
     }
+
   }
+
 
   @Transactional
   public boolean signUp(SignupDto dto) {
+    String signupValidation = redisTemplate.opsForValue().get(dto.getEmail());
 
-    String approvalStatus = redisTemplate.opsForValue().get(dto.getEmail());
-    if (approvalStatus.equals("approval")) {
+    if (signupValidation.equals("true")) {
       try {
         User auth = dto.toEntity(dto);
         authRepository.save(auth);
