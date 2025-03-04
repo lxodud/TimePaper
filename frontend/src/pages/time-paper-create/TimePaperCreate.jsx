@@ -14,21 +14,32 @@ export default function TimePaperCreate() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('제목을 입력해주세요.');
   const [isLoginButtonEnable, setIsLoginButtonEnable] = useState(false);
-  const { isLoggedIn } = useSelector((state) => state.auth)
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleTitleChange = (e) => {
-    let newValue = e.target.value;
+    const newValue = e.target.value;
+    setTitle(newValue);
+
+    if (newValue === '') {
+      setError(false);
+      return;
+    }
+    if (newValue && newValue.trim().length === 0) {
+      setError(true);
+      setErrorMessage('공백만으로 이루어진 제목은 사용할 수 없습니다.');
+      return;
+    }
     if (newValue.length > 30) {
-      newValue = newValue.slice(0, 30);
+      const trimmedValue = newValue.slice(0, 30);
+      setTitle(trimmedValue);
       setError(true);
       setErrorMessage('제목의 최대 글자 수는 30자 입니다.');
-    } else {
-      setError(false);
+      return;
     }
-    setTitle(newValue);
+    setError(false);
   };
 
   const handleSubmit = async (e) => {
@@ -38,12 +49,12 @@ export default function TimePaperCreate() {
       setErrorMessage('제목을 입력해주세요.');
       return;
     }
-    setError(false);
     setLoading(true);
 
     try {
       const response = await api.createTimepaper(title);
-      navigate(`/timepaper/${response.id}`);
+      console.log(response);
+      navigate(`/timepaper/${response.data.data.timePaperId}`);
     } catch (err) {
       console.error(err);
       setError(true);
@@ -69,9 +80,9 @@ export default function TimePaperCreate() {
         },
       });
     }
-  }, [isLoggedIn])
-  
-   useEffect(() => {
+  }, [isLoggedIn]);
+
+  useEffect(() => {
     dispatch(setPageTitle('타임페이퍼 생성'));
   }, []);
 
