@@ -7,7 +7,7 @@ export default function SignUp() {
   const [placeholdersVisible, setPlaceholdersVisible] = useState([true, true, true, true]); // input
   const [email, setEmail] = useState(''); // 이메일 입력값 저장
   const [authenticationCode, setauthenticationCode] = useState(''); //인증번호 input창 데이터 저장
-  const [isCodeSent, setIsCodeSent] = useState(false); // 인증번호 입력창 노출을 위한 useState
+  const [isCodeSent, setIsCodeSent] = useState(true); // 인증번호 입력창 노출을 위한 useState
   const [timeLeft, setTimeLeft] = useState(0); // 인증시간 관련 useState
   const [password, setPassword] = useState(''); // 비밀번호input의 값을 넣을 useState
   const [passwordCheck, setPasswordCheck] = useState(false); //비밀번호확인 input의 값을 넣을 useState
@@ -40,11 +40,13 @@ export default function SignUp() {
   };
 
   const emailverificationCodeCheck = async () => {
+    setVerification((prev) => ({ ...prev, verificationCodeCheck: true }));
     try {
       await api.checkEmailVerificationCode(email, authenticationCode);
       alert('인증되었습니다.');
       setVerification((prev) => ({ ...prev, verificationCodeCheck: true }));
     } catch (error) {
+      setVerification((prev) => ({ ...prev, verificationCodeCheck: false }));
       console.error('인증 확인 중 오류 발생:', error);
     }
   };
@@ -123,7 +125,7 @@ export default function SignUp() {
     <>
       <div className={styles.signUpContainer}>
         <div className={styles.signUpForm}>
-          <div>
+          <div className={styles.emailBox}>
             <label className={styles.fields}>이메일*</label>
             <input
               className={`${verification.verificationCodeCheck ? styles.fieldsInputLock : styles.fieldsInput}`}
@@ -275,7 +277,7 @@ export default function SignUp() {
             </div>
           </div>
         </div>
-          <BottomButton title={'가입하기'} onClick={handleSignUp} isEnable={true} />
+        <BottomButton title={'가입하기'} onClick={handleSignUp} isEnable={true} />
       </div>
     </>
   );

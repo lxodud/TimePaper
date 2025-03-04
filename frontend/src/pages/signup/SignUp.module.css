@@ -132,6 +132,10 @@
   padding: 1%;
 }
 
+.emailBox {
+  margin-bottom: 22px;
+}
+
 /* 전체 요소에 드래그 방지 적용 */
 * {
   user-select: none;
