@@ -7,6 +7,7 @@ import styles from './TimePaperDetail.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import ConfirmModal from '../../components/confirmmodal/ConfirmModal';
 import Modal from '../../components/Modal/Modal';
+import { finishLoading, startLoading } from '../../store/slices/loadingSlice';
 
 export default function TimePaperDetail() {
   const { timepaperId } = useParams();
@@ -16,6 +17,7 @@ export default function TimePaperDetail() {
   const [showConfirmModal, setShowConfirmModal] = useState(false); // 삭제 모달 창 상태 관리
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedPostit, setSelectedPostit] = useState(null); // 선택된 포스트잇 저장
+  const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
@@ -28,7 +30,7 @@ export default function TimePaperDetail() {
         if (response && response.data && response.data.data) {
           const timePaperData = response.data.data;
           setTimepaper(timePaperData);
-          dispatch(setPageTitle(timePaperData.title));
+          dispatch(setPageTitle('타임페이퍼'));
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -136,6 +138,23 @@ export default function TimePaperDetail() {
           ) : (
             <div>포스트잇이 없습니다.</div>
           )}
+          {/* 클릭한 포스트잇에 대한 정보를 이용해 모달 한 번만 렌더링 */}
+          {isModalOpen && selectedPostit && (
+            <Modal
+              onClose={() => {
+                setModalOpen(false);
+                setSelectedPostit(null);
+              }}
+              onDelete={handleDeletePostit}
+              imageUrl={selectedPostit.imageUrl}
+              modalContent={selectedPostit.content}
+              from={selectedPostit.author}
+              postitId={selectedPostit.postitId}
+              authorId={selectedPostit.authorId}
+              userId={userId}
+            />
+          )}
+          <div className={styles.floatButton}>
           {timepaper && timepaper.writerId === userId && (
             <div className={styles.buttonGroup}>
               <BottomButton
@@ -155,28 +174,13 @@ export default function TimePaperDetail() {
               )}
             </div>
           )}
-          {/* 클릭한 포스트잇에 대한 정보를 이용해 모달 한 번만 렌더링 */}
-          {isModalOpen && selectedPostit && (
-            <Modal
-              onClose={() => {
-                setModalOpen(false);
-                setSelectedPostit(null);
-              }}
-              onDelete={handleDeletePostit}
-              imageUrl={selectedPostit.imageUrl}
-              modalContent={selectedPostit.content}
-              from={selectedPostit.author}
-              postitId={selectedPostit.postitId}
-              authorId={selectedPostit.authorId}
-              userId={userId}
+            <BottomButton
+              title="포스트잇 작성"
+              onClick={handlePostItCreateClick}
+              isEnable={true}
+              className={styles.postitCreate}
             />
-          )}
-          <BottomButton
-            title="포스트잇 작성"
-            onClick={handlePostItCreateClick}
-            isEnable={true}
-            className={styles.postitCreate}
-          />
+          </div>
         </div>
       </div>
     </>
