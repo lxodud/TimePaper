@@ -1,4 +1,4 @@
-package com.timepaper.backend.global.auth.token.handler;
+package com.timepaper.backend.global.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.global.dto.ApiResponse;
