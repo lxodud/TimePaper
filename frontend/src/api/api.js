@@ -1,4 +1,7 @@
 import apiInstance from './apiInstance';
+import store from '../store/store';
+import { couldStartTrivia } from 'typescript';
+const state = store.getState();
 
 export const api = {
   login: async (email, password) => {
@@ -117,15 +120,25 @@ export const api = {
     const response = await apiInstance.delete(`/postits/${postitId}`);
   },
 
-  getMyPostits: async () => {
-    const response = await apiInstance.get(`/my/postits`);
-  },
-
   getMyTimePapers: async () => {
-    const response = await apiInstance.get(`/my/timepapers`);
+    const state = store.getState();
+    const response = await apiInstance.get(`/my/timepapers`, {
+      headers: {
+        Authorization: state.auth.accessToken,
+      },
+      withCredentials: true,
+    });
+    return response;
   },
 
-  getMyInfo: async () => {
-    return await apiInstance.get(`/my`);
+  getMyPostits: async () => {
+    const state = store.getState();
+    const response = await apiInstance.get(`/my/postits`, {
+      headers: {
+        Authorization: state.auth.accessToken,
+      },
+      withCredentials: true,
+    });
+    return response;
   },
 };

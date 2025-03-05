@@ -38,6 +38,21 @@ const router = createBrowserRouter([
             path: '/my',
             element: <MyPage />,
           },
+
+          // {
+          //   path: '/my/myinfo',
+          //   element: <MyPage section="myinfo" />,
+          // },
+          // {
+          //   path: '/my/postits',
+          //   element: <MyPage />,
+          // },
+
+          // {
+          //   path: '/my/timepapers',
+          //   element: <MyPage />,
+          // },
+
           {
             path: '/timepaper',
             children: [

@@ -52,6 +52,11 @@
   overflow: hidden;
 }
 
+/* myPage에서 dropdown을 위한 css */
+.mypage-container{
+  position:relative;
+}
+
 .logo-image {
   width: 90%;
   aspect-ratio: 1 / 1;
