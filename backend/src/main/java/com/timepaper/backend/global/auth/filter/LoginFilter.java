@@ -2,10 +2,10 @@ package com.timepaper.backend.global.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
-import com.timepaper.backend.global.auth.exception.LoginValidationException;
 import com.timepaper.backend.global.auth.service.AuthService;
 import com.timepaper.backend.global.dto.ApiResponse;
 import com.timepaper.backend.global.exception.ErrorCode;
+import com.timepaper.backend.global.exception.custom.auth.LoginValidationException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -93,7 +93,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
       apiResponse = ApiResponse.error(exception.getErrorCode().getMessage(),
           exception.getErrorCode().getCode());
       status = exception.getErrorCode().getStatus();
-      
+
     } else if (failed instanceof BadCredentialsException) {
       log.info("BadCredentialsException");
       apiResponse = ApiResponse.error(ErrorCode.INVALID_CREDENTIALS.getMessage(),

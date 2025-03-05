@@ -1,4 +1,4 @@
-package com.timepaper.backend.global.auth.exception;
+package com.timepaper.backend.global.exception.custom.auth;
 
 import com.timepaper.backend.global.exception.ErrorCode;
 import lombok.Getter;
