@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - deploy/*
+      - feat/SSD-133-포스트잇-예외-처리
 
 jobs:
   deploy:

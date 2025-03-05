@@ -24,7 +24,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-//TODO: 이메일 형식 유효성 검증 로직
 @RequiredArgsConstructor
 @Component
 @Slf4j
