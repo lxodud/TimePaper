@@ -5,9 +5,8 @@ import ConfirmModal from '../confirmmodal/ConfirmModal';
 import { api } from '../../api/api.js';
 import { useNavigate } from 'react-router-dom';
 
-function Modal({ onClose, onDelete, imageUrl, modalContent, from, postitId, timepaperId }) {
+function Modal({ onClose, onDelete, imageUrl, modalContent, from, postitId}) {
   const [showConfirmModal, setShowConfirmModal] = useState(false); // ConfirmModal 상태 관리
-  const navigate = useNavigate();
 
   const handleSelect = (value) => {
     if (value === 'delete') {
