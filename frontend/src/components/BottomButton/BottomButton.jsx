@@ -13,6 +13,7 @@ export default function BottomButton({ title, onClick, isEnable, pointer }) {
       enableColor: enableColor,
       disableColor: disableColor,
     });
+    console.log(pointer)
   }, []);
 
   return (

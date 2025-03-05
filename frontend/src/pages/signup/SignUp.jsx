@@ -5,7 +5,7 @@ import { api } from '../../api/api';
 import { finishLoading, startLoading } from '../../store/slices/loadingSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { replace, useNavigate } from 'react-router-dom';
-import ErrorAlert from '../../components/ErrorAlert/ErrorAlert';
+import Alert from '../../components/Alert/Alert';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -33,7 +33,8 @@ export default function SignUp() {
     isTermsAccepted: false,
   });
 
-  const [isError, setIsError] = useState(false);
+  const [isAlertShow, setIsAlertShow] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,11 +65,13 @@ export default function SignUp() {
 
     try {
       await api.requestEmailVerificationCode(email);
-      alert('인증 메일이 전송되었습니다.');
+      setIsAlertShow(true);
+      setAlertMessage('인증 메일이 전송되었습니다.');
       setIsCodeSent(true);
       setTimeLeft(300);
     } catch (error) {
-      setIsError(true);
+      setIsAlertShow(true);
+      setAlertMessage('오류발생')
       setIsAuthCodeSendButtonEnable(true);
       setIsEmailInputEnable(true);
     } finally {
@@ -90,11 +93,14 @@ export default function SignUp() {
 
     try {
       await api.checkEmailVerificationCode(email, authCode);
-      alert('인증되었습니다.');
+      setAlertMessage('인증 되었습니다.');
+      setIsAlertShow(true);
       setVerification((prev) => ({ ...prev, authCodeCheck: true }));
       setIsConfirmAuthMessage('인증되었습니다.');
     } catch (error) {
-      setIsError(true);
+      setIsAlertShow(true);
+      setAlertMessage('오류발생')
+      console.log(error.response)
       setIsConfirmAuthCodeButtonEnable(true);
       setIsAuthCodeInputEnable(true);
     }
@@ -160,7 +166,8 @@ export default function SignUp() {
         replace: true,
       });
     } catch {
-      setIsError(true);
+      setIsAlertShow(true);
+      setAlertMessage('오류발생')
       setIsEnable(true);
     } finally {
       dispatch(finishLoading());
@@ -173,8 +180,8 @@ export default function SignUp() {
     }
   }, [isLoggedIn]);
 
-  const handleErrorAlertButtonClick = () => {
-    setIsError(false);
+  const handleAlertButtonClick = () => {
+    setIsAlertShow(false);
   };
 
   const resolveInvalidMessageStyle = (isValid, inputValue) => {
@@ -186,12 +193,12 @@ export default function SignUp() {
   return (
     <>
       <div className={styles.signUpContainer}>
-        {isError && (
-          <ErrorAlert
+        {isAlertShow && (
+          <Alert
             buttonTitle="확인"
-            message="네트워크 오류 발생"
-            onClick={handleErrorAlertButtonClick}
-          ></ErrorAlert>
+            message={alertMessage}
+            onClick={handleAlertButtonClick}
+          ></Alert>
         )}
         <div className={styles.signUpForm}>
           <div>
@@ -320,7 +327,7 @@ export default function SignUp() {
           title={'가입하기'}
           onClick={handleSignUp}
           isEnable={isEnable}
-          cursor={isEnable ? 'pointer' : 'not-allowed'}
+          pointer={isEnable ? 'pointer' : 'not-allowed'}
         />
       </div>
     </>
