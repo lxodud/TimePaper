@@ -100,8 +100,13 @@ export const api = {
     return response;
   },
 
-  getPostits: async (timepaperId) => {
-    const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`);
+  getPostits: async (timepaperId, page) => {
+    const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`, {
+      params: {
+        page: page,
+        size: 3,
+      },
+    });
     return response;
   },
 
@@ -114,8 +119,8 @@ export const api = {
     return response;
   },
 
-  deletePostit: async (postitId) => { 
-    const response = await apiInstance.delete(`/postits/${postitId}`)
+  deletePostit: async (postitId) => {
+    const response = await apiInstance.delete(`/postits/${postitId}`);
     return response;
   },
 
