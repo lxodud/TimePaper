@@ -5,6 +5,15 @@
   margin: 0 auto;
 }
 
+.alertContainer {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  min-height: 210px;
+}
+
 .signUpForm {
   min-width: 390px;
   display: flex;

@@ -194,7 +194,13 @@ export default function SignUp() {
     <>
       <div className={styles.signUpContainer}>
         {isAlertShow && (
-          <Alert buttonTitle="확인" message={alertMessage} onClick={handleAlertButtonClick}></Alert>
+          <div className={styles.alertContainer}>
+            <Alert
+              buttonTitle="확인"
+              message={alertMessage}
+              onClick={handleAlertButtonClick}
+            ></Alert>
+          </div>
         )}
         <div className={styles.signUpForm}>
           <div>
