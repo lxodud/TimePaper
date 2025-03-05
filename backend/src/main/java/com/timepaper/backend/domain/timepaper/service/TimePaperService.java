@@ -14,10 +14,12 @@ import com.timepaper.backend.global.exception.custom.common.ForBiddenException;
 import com.timepaper.backend.global.exception.custom.common.ResourceNotFoundException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -54,15 +56,16 @@ public class TimePaperService {
   }
 
   @Transactional
-  public void deleteTimePaper(UUID timepaperId) {
-    // 삭제할 타임페이퍼 조회
+  public void deleteTimePaper(UUID timepaperId, Long userId) {
+
     TimePaper timePaper = timePaperRepository.findById(timepaperId)
         .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.TIMEPAPER_NOT_FOUND));
 
-    // 1. 해당 타임페이퍼를 참조하는 모든 포스트잇 삭제
-    postitRepository.deleteByTimePaperId(timepaperId);
+    if (timePaper.getCreator().getId() != userId) {
+      throw new ForBiddenException(ErrorCode.AUTHOR_ONLY);
+    }
 
-    // 2. 타임페이퍼 삭제
+    postitRepository.unLinkPostits(timepaperId);
     timePaperRepository.delete(timePaper);
   }
 

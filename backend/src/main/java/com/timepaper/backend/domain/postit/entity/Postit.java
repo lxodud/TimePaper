@@ -36,7 +36,7 @@ public class Postit extends BaseTimeEntity {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "time_paper_id", nullable = false)
+  @JoinColumn(name = "time_paper_id", nullable = true)
   private TimePaper timePaper;
 
   @ManyToOne(fetch = FetchType.LAZY)

@@ -18,7 +18,7 @@ export default function Login() {
   const location = useLocation();
   const { isLoggedIn } = useSelector((state) => state.auth);
 
-  const handleLoginButtonClick = (event) => {
+  const handleLoginButtonClick = async (event) => {
     setIsLoginButtonEnable(false);
     event.preventDefault();
     (async () => {
