@@ -140,11 +140,6 @@ export default function TimePaperDetail() {
                   isEnable={true}
                 />
                 <BottomButton title="타임페이퍼 삭제" onClick={handleDeleteClick} isEnable={true} />
-                <BottomButton
-                  title="포스트잇 작성"
-                  onClick={handlePostItCreateClick}
-                  isEnable={true}
-                />
 
                 {/* 확인 모달 */}
                 {showConfirmModal && (
@@ -154,20 +149,26 @@ export default function TimePaperDetail() {
                     onCancel={() => setShowConfirmModal(false)} // 취소 클릭 시 모달 닫기
                   />
                 )}
-                {/* 클릭한 포스트잇에 대한 정보를 이용해 모달 한 번만 렌더링 */}
-                {isModalOpen && selectedPostit && (
-                  <Modal
-                    onClose={() => {
-                      setModalOpen(false);
-                      setSelectedPostit(null);
-                    }}
-                    imageUrl={selectedPostit.imageUrl}
-                    modalContent={selectedPostit.content}
-                    from={selectedPostit.author}
-                  />
-                )}
               </div>
             )}
+          {/* 클릭한 포스트잇에 대한 정보를 이용해 모달 한 번만 렌더링 */}
+          {isModalOpen && selectedPostit && (
+            <Modal
+              onClose={() => {
+                setModalOpen(false);
+                setSelectedPostit(null);
+              }}
+              imageUrl={selectedPostit.imageUrl}
+              modalContent={selectedPostit.content}
+              from={selectedPostit.author}
+            />
+          )}
+          <BottomButton
+            title="포스트잇 작성"
+            onClick={handlePostItCreateClick}
+            isEnable={true}
+            className={styles.postitCreate}
+          />
         </div>
       </div>
     </>
