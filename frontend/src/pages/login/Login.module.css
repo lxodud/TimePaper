@@ -6,16 +6,6 @@
   align-items: center;
 }
 
-.alertContainer {
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  min-height: 210px;
-}
-
-
 .formContainer {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from './SignUp.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import { api } from '../../api/api';
@@ -129,14 +129,16 @@ export default function SignUp() {
 
   const handlePasswordChange = (e) => {
     const value = e.target.value.replace(/(\s*)/g, '');
-    setPassword(value);
-
     const check = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
 
     setVerification((prev) => ({
       ...prev,
       passwordConstraints: check.test(value) && value.length >= 8,
     }));
+    setPassword(value);
+
+    console.log(value)
+    console.log(check.test(value) && value.length >= 8)
   };
 
   const handlePasswordCheck = (e) => {
@@ -188,17 +190,15 @@ export default function SignUp() {
       : styles.invalidMessageVisible;
   };
 
+  const resolvedPasswordInvalidStyle = useMemo(() => {
+    return resolveInvalidMessageStyle(verification.passwordConstraints, password);
+  }, [verification.passwordConstraints, password]);
+
   return (
     <>
       <div className={styles.signUpContainer}>
         {isAlertShow && (
-          <div className={styles.alertContainer}>
-            <Alert
-              buttonTitle="확인"
-              message={alertMessage}
-              onClick={handleAlertButtonClick}
-            ></Alert>
-          </div>
+          <Alert buttonTitle="확인" message={alertMessage} onClick={handleAlertButtonClick}></Alert>
         )}
         <div className={styles.signUpForm}>
           <div>
@@ -257,7 +257,7 @@ export default function SignUp() {
             />
             <br />
             <span
-              className={resolveInvalidMessageStyle(verification.passwordConstraints, password)}
+              className={resolvedPasswordInvalidStyle}
             >
               비밀번호는 특수부호를 포함 8자이상 작성해주세요
             </span>

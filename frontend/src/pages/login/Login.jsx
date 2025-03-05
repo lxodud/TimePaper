@@ -72,13 +72,11 @@ export default function Login() {
     <>
       <div className={styles.container}>
         {isAlertShow && (
-          <div className={styles.alertContainer}>
             <Alert
               buttonTitle={'확인'}
               message={'로그인 실패했습니다.'}
               onClick={handleAlertButtonClick}
             ></Alert>
-          </div>
         )}
         <img src={staticImagePath.timepaperLogo} className="logo-image" />
         <form action="" className={styles.formContainer}>
