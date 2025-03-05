@@ -20,17 +20,17 @@ export default function SignUp() {
   const [isConfirmAuthCodeButtonEnable, setIsConfirmAuthCodeButtonEnable] = useState(false);
   const [confirmAuthMessage, setIsConfirmAuthMessage] = useState('');
 
-  const [password, setPassword] = useState(''); // 비밀번호input의 값을 넣을 useState
-  const [passwordCheck, setPasswordCheck] = useState(''); //비밀번호확인 input의 값을 넣을 useState
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
 
-  const [isEnable, setIsEnable] = useState(false); // 회원가입 버튼 활성화/비활성화
+  const [isEnable, setIsEnable] = useState(false);
 
   const [verification, setVerification] = useState({
-    passwordConstraints: false, // 비밀번호 제약조건 성립여부
-    passwordCheckConstraints: false, // 비밀번호확인 제약조건 성립여부
-    authCodeCheck: false, // 인증코드 인증여부 true/false
-    isPrivacyPolicyAccepted: false, // 개인정보 약관 동의 true/false
-    isTermsAccepted: false, // 이용 약관 동의 true/false
+    passwordConstraints: false,
+    passwordCheckConstraints: false,
+    authCodeCheck: false,
+    isPrivacyPolicyAccepted: false,
+    isTermsAccepted: false,
   });
 
   const [isError, setIsError] = useState(false);
