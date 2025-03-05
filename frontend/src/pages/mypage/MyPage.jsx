@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import styles from './MyPage.module.css';
-import Dropdown from './Dropdown.jsx'; // 드롭다운 컴포넌트 import
+import Dropdown from './Dropdown.jsx';
 import { useSelector } from 'react-redux';
 import { api } from '../../api/api.js';
 import { useNavigate } from 'react-router-dom';
+import Modal from '../../components/Modal/Modal.jsx';
 
 const MyPage = () => {
   const navigate = useNavigate();
 
   // Redux 상태에서 email 가져오기
   const email = useSelector((state) => state.auth.email);
-
   const accessToken = useSelector((state) => state.auth.accessToken);
+
   const [currentTab, setCurrentTab] = useState('timepapers'); // 현재 선택된 탭
   const [myTimepapers, setMyTimepapers] = useState([]); // timepapers 상태
+  const [timepaper, setTimepaper] = useState(null);
+
   const [myPostits, setMyPostits] = useState([]); // postits 상태
+
+  const [isModalOpen, setModalOpen] = useState(false); // 모달 열림/닫힘 상태
+  const [selectedPostit, setSelectedPostit] = useState(null); // 선택된 포스트잇 정보
 
   // API 호출로 timepapers 데이터 가져오기
   useEffect(() => {
@@ -22,21 +28,20 @@ const MyPage = () => {
       const fetchTimepapers = async () => {
         try {
           const response = await api.getMyTimePapers();
-          console.log('Timepapers response', response);
-          const data = response.data.data; // 응답 데이터
-          // const titles = data.map((timepaper) => timepaper.title); // title만 추출
+          const data = response.data.data;
+          console.log(data);
           const timepapersWithKeys = data.map((timepaper) => ({
             ...timepaper,
             key: timepaper.rollingPaperId.toString(),
           }));
-          setMyTimepapers(timepapersWithKeys); // title만 상태로 설정
+          setMyTimepapers(timepapersWithKeys);
         } catch (error) {
           console.error('Error fetching timepapers:', error);
         }
       };
       fetchTimepapers();
     }
-  }, [accessToken]); // accessToken이 변경될 때마다 API 호출
+  }, [accessToken]);
 
   // API 호출로 postits 데이터 가져오기
   useEffect(() => {
@@ -44,14 +49,12 @@ const MyPage = () => {
       const fetchPostits = async () => {
         try {
           const response = await api.getMyPostits();
-          console.log('Postits response', response);
-          const data = response.data.data; // 응답 데이터
-          // const contents = data.map((postit) => postit.content); // content만 추출
+          const data = response.data.data;
           const postitsWithKeys = data.map((postit) => ({
             ...postit,
             key: postit.postitId.toString(),
           }));
-          setMyPostits(postitsWithKeys); // content만 상태로 설정
+          setMyPostits(postitsWithKeys);
         } catch (error) {
           console.error('Error fetching postits:', error);
         }
@@ -59,24 +62,71 @@ const MyPage = () => {
 
       fetchPostits();
     }
-  }, [accessToken]); // accessToken이 변경될 때마다 API 호출
+  }, [accessToken]);
 
-  // Handler to navigate to timepaper details
+  // useEffect(() => {
+  //   const fetchTimepaper = async () => {
+  //     try {
+  //       const response = await api.getTimepaper(timepaperId);
+  //       if (response && response.data && response.data.data) {
+  //         const timePaperData = response.data.data;
+  //         setTimepaper(timePaperData);
+  //         dispatch(setPageTitle(timePaperData.title));
+  //       }
+  //     } catch (error) {
+  //       if (error.response && error.response.status === 404) {
+  //         setErrorMessage('해당 타임페이퍼는 존재하지 않습니다.');
+  //       } else {
+  //         console.log(error.response.status);
+  //         console.error('타임페이퍼 조회 에러:', error);
+  //         setErrorMessage('타임페이퍼 데이터를 불러오는 중 오류가 발생했습니다.');
+  //       }
+  //     }
+  //   };
+  //   fetchTimepaper();
+  // }, [timepaperId, dispatch]);
+
+  // 포스트잇 데이터 가져오기
+  // useEffect(() => {
+  //   if (!timepaper) return; // 타임페이퍼가 없으면 포스트잇 데이터를 가져오지 않음
+  //   const fetchPostits = async () => {
+  //     try {
+  //       const response = await api.getPostits(timepaperId);
+  //       if (response && response.data && response.data.data && response.data.data.postits) {
+  //         setPostits(response.data.data.postits);
+  //       } else {
+  //         console.error('포스트잇 데이터가 없습니다.');
+  //       }
+  //     } catch (error) {
+  //       console.error('포스트잇 조회 에러:', error);
+  //     }
+  //   };
+
+  //   fetchPostits();
+  // }, [timepaper, timepaperId]);
+
+  // 롤링페이퍼 클릭 시 상세 페이지로 이동
   const handleTimePaperClick = (timepaperId) => {
-    // Navigate to the timepaper details page
     navigate(`/timepaper/${timepaperId}`);
   };
 
-  // Handler to navigate to postit details
-  const handlePostitClick = (postitId) => {
-    navigate(`/postits/${postitId}`);
+  // 포스트잇 클릭 시 모달 열기
+  const handlePostitClick = (postit) => {
+    setSelectedPostit(postit); // 선택된 포스트잇 정보 저장
+    setModalOpen(true); // 모달 열기
+  };
+
+  // 포스트잇 삭제 핸들러
+  const handleDeletePostit = (deletedPostitId) => {
+    setMyPostits((prev) => prev.filter((postit) => postit.postitId !== deletedPostitId));
+    setModalOpen(false); // 모달 닫기
+    setSelectedPostit(null); // 선택된 포스트잇 초기화
   };
 
   const handleActionClick = (path) => {
-    //    console.log(`${path}로 이동`); // 경로 처리 로직 추가
-    // 필요 시 navigate(path)로 경로 이동 구현 가능
+    console.log(`${path}로 이동`);
   };
-
+  console.log(selectedPostit);
   return (
     <div className={styles.container}>
       {/* 이메일 정보 */}
@@ -119,7 +169,7 @@ const MyPage = () => {
               <li
                 key={postit.key}
                 className={styles.listItem}
-                onClick={() => handlePostitClick(postit.postitId)}
+                onClick={() => handlePostitClick(postit)}
               >
                 {postit.content}
               </li>
@@ -130,6 +180,21 @@ const MyPage = () => {
 
       {/* 드롭다운 메뉴 */}
       <Dropdown onActionClick={handleActionClick} />
+
+      {/* 포스트잇 모달 */}
+      {isModalOpen && selectedPostit && (
+        <Modal
+          onClose={() => {
+            setModalOpen(false);
+            setSelectedPostit(null);
+          }}
+          onDelete={handleDeletePostit}
+          imageUrl={selectedPostit.imageUrl}
+          modalContent={selectedPostit.content}
+          from={selectedPostit.creator}
+          postitId={selectedPostit.postitId}
+        />
+      )}
     </div>
   );
 };
