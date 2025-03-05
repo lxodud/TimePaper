@@ -36,12 +36,12 @@ public class GlobalExceptionHandler {
                 ErrorCode.PAYLOAD_TOO_LARGE.getCode()));
   }
 
-  @ExceptionHandler(RuntimeException.class)
-  public ResponseEntity<ApiResponse<Object>> exceptionHandler(RuntimeException ex) {
-    return ResponseEntity.status(ErrorCode.SERVER_ERROR.getStatus())
-        .body(ApiResponse
-            .error(ErrorCode.SERVER_ERROR.getMessage(), ErrorCode.SERVER_ERROR.getCode()));
-  }
+//  @ExceptionHandler(RuntimeException.class)
+//  public ResponseEntity<ApiResponse<Object>> exceptionHandler(RuntimeException ex) {
+//    return ResponseEntity.status(ErrorCode.SERVER_ERROR.getStatus())
+//        .body(ApiResponse
+//            .error(ErrorCode.SERVER_ERROR.getMessage(), ErrorCode.SERVER_ERROR.getCode()));
+//  }
 
 
 }

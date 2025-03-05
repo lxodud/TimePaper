@@ -56,18 +56,16 @@ public class TimePaperService {
   }
 
   @Transactional
-  public void deleteTimePaper(UUID timepaperId) {
-    // 삭제할 타임페이퍼 조회
-    log.info("timepaperId : {}", timepaperId);
+  public void deleteTimePaper(UUID timepaperId, Long userId) {
+
     TimePaper timePaper = timePaperRepository.findById(timepaperId)
         .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.TIMEPAPER_NOT_FOUND));
 
-//    // 1. 해당 타임페이퍼를 참조하는 모든 포스트잇 삭제
-//    postitRepository.deleteByTimePaperId(timepaperId);
-//
-//    // 2. 타임페이퍼 삭제
-//    timePaperRepository.delete(timePaper);
-    postitRepository.bulkUnlinkPostits(timepaperId);
+    if (timePaper.getCreator().getId() != userId) {
+      throw new ForBiddenException(ErrorCode.AUTHOR_ONLY);
+    }
+
+    postitRepository.unLinkPostits(timepaperId);
     timePaperRepository.delete(timePaper);
   }
 

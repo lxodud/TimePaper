@@ -18,23 +18,22 @@ export default function Login() {
   const location = useLocation();
   const { isLoggedIn } = useSelector((state) => state.auth);
 
-  const handleLoginButtonClick = (event) => {
+  const handleLoginButtonClick = async (event) => {
     setIsLoginButtonEnable(false);
     event.preventDefault();
-    (async () => {
-      dispatch(startLoading());
-      try {
-        const response = await api.login(inputData.email, inputData.password);
-        dispatch(login(response.headers.authorization));
-        const next = location.state?.next ?? -1;
-        navigate(next, { replace: true });
-      } catch (error) {
-        setIsAlertShow(true)
-        setIsLoginButtonEnable(true);
-      } finally {
-        dispatch(finishLoading());
-      }
-    })();
+    dispatch(startLoading());
+    try {
+      const response = await api.login(inputData.email, inputData.password);
+      dispatch(login(response.headers.authorization));
+      const next = location.state?.next ?? -1;
+      navigate(next, { replace: true });
+    } catch (error) {
+      console.log(error);
+      setIsAlertShow(true);
+      setIsLoginButtonEnable(true);
+    } finally {
+      dispatch(finishLoading());
+    }
   };
 
   const handleInputChange = (event) => {

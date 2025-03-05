@@ -19,8 +19,7 @@ public interface PostitRepository extends JpaRepository<Postit, Long> {
 
   void deleteByTimePaperId(UUID timepaperId);
 
-  //JPQL 기반
   @Modifying
   @Query("UPDATE Postit p SET p.timePaper = NULL WHERE p.timePaper.id = :timePaperId")
-  void bulkUnlinkPostits(@Param("timePaperId") UUID timePaperId);
+  void unLinkPostits(@Param("timePaperId") UUID timePaperId);
 }
