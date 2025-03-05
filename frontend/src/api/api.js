@@ -114,8 +114,9 @@ export const api = {
     return response;
   },
 
-  deletePostit: async (postitId) => {
-    const response = await apiInstance.delete(`/postits/${postitId}`);
+  deletePostit: async (postitId) => { 
+    const response = await apiInstance.delete(`/postits/${postitId}`)
+    return response;
   },
 
   getMyTimePapers: async () => {
