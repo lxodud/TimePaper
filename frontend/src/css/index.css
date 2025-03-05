@@ -43,6 +43,7 @@
 }
 
 .main-container {
+  position: relative;
   margin: 0 auto;
   background-color: var(--background-color);
   width: 400px;
