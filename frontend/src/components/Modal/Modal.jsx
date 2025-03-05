@@ -3,11 +3,9 @@ import styles from './Modal.module.css';
 import Dropdown from '../dropdownmenu/Dropdown.jsx';
 import ConfirmModal from '../confirmmodal/ConfirmModal';
 import { api } from '../../api/api.js';
-import { useNavigate } from 'react-router-dom';
 
-function Modal({ onClose, onDelete, imageUrl, modalContent, from, postitId, timepaperId }) {
+function Modal({ onClose, onDelete, imageUrl, modalContent, from, postitId, authorId, userId }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false); // ConfirmModal 상태 관리
-  const navigate = useNavigate();
 
   const handleSelect = (value) => {
     if (value === 'delete') {
@@ -42,6 +40,7 @@ function Modal({ onClose, onDelete, imageUrl, modalContent, from, postitId, time
               { label: '닫기', value: 'close' },
             ]}
             onSelect={handleSelect}
+            showDelete={authorId === userId}
           />
           <img src={imageUrl} className={styles.logoImage} alt="선택된 포스트잇 이미지" />
           <textarea className={styles.textareaWrapper} readOnly>

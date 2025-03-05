@@ -19,8 +19,7 @@ export default function TimePaperDetail() {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  // Redux에서 현재 로그인한 사용자의 이메일 가져오기
-  const userEmail = useSelector((state) => state.auth.email || '');
+  const userId = useSelector((state) => state.auth.userId || '');
 
   useEffect(() => {
     const fetchTimepaper = async () => {
@@ -65,7 +64,7 @@ export default function TimePaperDetail() {
 
   const handleCapsuleClick = () => {
     navigate(`/timepaper/${timepaperId}/capsule`, {
-      state: { authorEmail: userEmail },
+      state: { authorEmail: userId },
     });
   };
 
@@ -137,26 +136,25 @@ export default function TimePaperDetail() {
           ) : (
             <div>포스트잇이 없습니다.</div>
           )}
-          {timepaper &&
-            timepaper.writerEmail.trim().toLowerCase() === userEmail.trim().toLowerCase() && (
-              <div className={styles.buttonGroup}>
-                <BottomButton
-                  title="타임페이퍼 캡슐화"
-                  onClick={handleCapsuleClick}
-                  isEnable={true}
-                />
-                <BottomButton title="타임페이퍼 삭제" onClick={handleDeleteClick} isEnable={true} />
+          {timepaper && timepaper.writerId === userId && (
+            <div className={styles.buttonGroup}>
+              <BottomButton
+                title="타임페이퍼 캡슐화"
+                onClick={handleCapsuleClick}
+                isEnable={true}
+              />
+              <BottomButton title="타임페이퍼 삭제" onClick={handleDeleteClick} isEnable={true} />
 
-                {/* 확인 모달 */}
-                {showConfirmModal && (
-                  <ConfirmModal
-                    message="정말로 이 타임페이퍼를 삭제하시겠습니까?"
-                    onConfirm={handleDeleteTimepaper} // 확인 클릭 시 삭제 처리
-                    onCancel={() => setShowConfirmModal(false)} // 취소 클릭 시 모달 닫기
-                  />
-                )}
-              </div>
-            )}
+              {/* 확인 모달 */}
+              {showConfirmModal && (
+                <ConfirmModal
+                  message="정말로 이 타임페이퍼를 삭제하시겠습니까?"
+                  onConfirm={handleDeleteTimepaper} // 확인 클릭 시 삭제 처리
+                  onCancel={() => setShowConfirmModal(false)} // 취소 클릭 시 모달 닫기
+                />
+              )}
+            </div>
+          )}
           {/* 클릭한 포스트잇에 대한 정보를 이용해 모달 한 번만 렌더링 */}
           {isModalOpen && selectedPostit && (
             <Modal
@@ -169,7 +167,8 @@ export default function TimePaperDetail() {
               modalContent={selectedPostit.content}
               from={selectedPostit.author}
               postitId={selectedPostit.postitId}
-              timepaperId={timepaperId}
+              authorId={selectedPostit.authorId}
+              userId={userId}
             />
           )}
           <BottomButton
