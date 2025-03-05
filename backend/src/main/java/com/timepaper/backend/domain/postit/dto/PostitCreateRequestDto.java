@@ -13,11 +13,11 @@ import org.hibernate.validator.constraints.Length;
 public class PostitCreateRequestDto {
 
   @NotEmpty
-  @Length(max = 20)
+  @Length(max = 20, message = "작성자 이름은 최대 20자까지 입력할 수 있습니다.")
   private String authorName;
 
   @NotEmpty
-  @Length(max = 155)
+  @Length(max = 155, message = "내용은 최대 155자까지 입력할 수 있습니다.")
   private String content;
 
   private String imageUrl;

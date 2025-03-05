@@ -7,6 +7,7 @@ import com.timepaper.backend.domain.timepaper.dto.response.TimePaperResponseDto;
 import com.timepaper.backend.domain.timepaper.service.TimePaperService;
 import com.timepaper.backend.domain.user.entity.User;
 import com.timepaper.backend.global.dto.ApiResponse;
+import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class TimePaperController {
 
   @PostMapping
   public ResponseEntity<ApiResponse<TimePaperResponseDto>> createTimePaper(
-      @RequestBody TimePaperCreateRequestDto timePaperCreateRequestDto,
+      @Valid @RequestBody TimePaperCreateRequestDto timePaperCreateRequestDto,
       Authentication authentication) {
 
     TimePaperResponseDto responseDto =
@@ -72,7 +73,7 @@ public class TimePaperController {
   @PatchMapping("/{timePaperId}/lock")
   public ResponseEntity<ApiResponse<TimePaperLockResponseDto>> lockTimePaper(
       @PathVariable UUID timePaperId,
-      @RequestBody TimePaperLockRequestDto timePaperLockRequestDto,
+      @RequestBody @Valid TimePaperLockRequestDto timePaperLockRequestDto,
       @AuthenticationPrincipal User requester
   ) {
 

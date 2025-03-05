@@ -4,7 +4,7 @@ import com.timepaper.backend.domain.user.entity.User;
 import com.timepaper.backend.domain.user.repository.UserRepository;
 import com.timepaper.backend.global.auth.dto.CertificationNumberRequestDto;
 import com.timepaper.backend.global.auth.dto.EmailCertificationRequestDto;
-import com.timepaper.backend.global.auth.dto.SignupDto;
+import com.timepaper.backend.global.auth.dto.SignupRequestDto;
 import com.timepaper.backend.global.auth.token.service.RefreshTokenService;
 import com.timepaper.backend.global.auth.token.util.JWTUtil;
 import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
@@ -123,7 +123,7 @@ public class AuthService {
 
 
   @Transactional
-  public void signUp(SignupDto dto) {
+  public void signUp(SignupRequestDto dto) {
     boolean isAuthenticatedEmail = Boolean.parseBoolean(
         redisTemplate.opsForValue().get(dto.getEmail())
     );

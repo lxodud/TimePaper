@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class EmailCertificationRequestDto {
 
-  @NotBlank
+  @NotBlank(message = "이메일은 필수 입력입니다.")
   @Email
   private String email;
 }

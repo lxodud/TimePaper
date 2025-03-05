@@ -22,5 +22,4 @@ public class TimePaperLockRequestDto {
   private LocalDateTime releaseDate;
 
 
-
 }
