@@ -7,6 +7,9 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface PostitRepository extends JpaRepository<Postit, Long> {
 
@@ -15,4 +18,9 @@ public interface PostitRepository extends JpaRepository<Postit, Long> {
   List<Postit> findAllByAuthor(User author);
 
   void deleteByTimePaperId(UUID timepaperId);
+
+  //JPQL 기반
+  @Modifying
+  @Query("UPDATE Postit p SET p.timePaper = NULL WHERE p.timePaper.id = :timePaperId")
+  void bulkUnlinkPostits(@Param("timePaperId") UUID timePaperId);
 }
