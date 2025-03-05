@@ -11,11 +11,13 @@ import lombok.Getter;
 public class MyPostitListResponseDto {
   private final Long postitId;
   private final String creator;
+  private final String content;
   private final LocalDateTime createdAt;
-
+  
   public static MyPostitListResponseDto from(Postit entity){
     return MyPostitListResponseDto.builder()
         .postitId(entity.getId())
+        .content(entity.getContent())
         .creator(entity.getAuthorName())
         .createdAt(entity.getCreatedAt())
         .build();

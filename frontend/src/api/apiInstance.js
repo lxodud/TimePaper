@@ -20,11 +20,9 @@ apiInstance.interceptors.request.use((config) => {
   const state = store.getState();
   const isRequireToken = !NO_TOKEN_REQUIRED.includes(config.url);
   const isGetTimepaper = GET_TIMEPAPER_REGEX.test(config.url) && config.method === 'get';
-
   if (isRequireToken && !isGetTimepaper) {
     config.headers['Authorization'] = state.auth.accessToken;
   }
-
   return config;
 });
 

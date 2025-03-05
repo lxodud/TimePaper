@@ -130,4 +130,15 @@ export const api = {
     });
     return response;
   },
+
+  getMyPostits: async () => {
+    const state = store.getState();
+    const response = await apiInstance.get(`/my/postits`, {
+      headers: {
+        Authorization: state.auth.accessToken,
+      },
+      withCredentials: true,
+    });
+    return response;
+  },
 };
