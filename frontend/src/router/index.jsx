@@ -1,16 +1,20 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import RootLayout from '../layout/RootLayout.jsx';
-import SignUp from '../pages/signup/SignUp.jsx';
-import Home from '../pages/home/Home';
-import Login from '../pages/login/Login.jsx';
-import MyPage from '../pages/MyPage.jsx';
-import TimePaperDetail from '../pages/time-paper-detail/TimePaperDetail.jsx';
-import TimePaperIsLocked from '../pages/time-paper-is-locked/TimePaperIsLocked.jsx';
-import PostItCreate from '../pages/postit-create/PostItCreate.jsx';
-import NotFound from '../pages/error/NotFound';
 import HeaderLayout from '../layout/HeaderLayout.jsx';
-import TimePaperCreate from '../pages/time-paper-create/TimePaperCreate.jsx';
-import TimePaperSetLock from '../pages/time-paper-set-lock/TimePaperSetLock.jsx';
+import NotFound from '../pages/error/NotFound';
+
+const SignUp = lazy(() => import('../pages/signup/SignUp.jsx'));
+const Home = lazy(() => import('../pages/home/Home'));
+const Login = lazy(() => import('../pages/login/Login.jsx'));
+const MyPage = lazy(() => import('../pages/MyPage.jsx'));
+const TimePaperDetail = lazy(() => import('../pages/time-paper-detail/TimePaperDetail.jsx'));
+const TimePaperIsLocked = lazy(() => import('../pages/time-paper-is-locked/TimePaperIsLocked.jsx'));
+const PostItCreate = lazy(() => import('../pages/postit-create/PostItCreate.jsx'));
+const TimePaperCreate = lazy(() => import('../pages/time-paper-create/TimePaperCreate.jsx'));
+const TimePaperSetLock = lazy(() => import('../pages/time-paper-set-lock/TimePaperSetLock.jsx'));
+
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const router = createBrowserRouter([
   {
@@ -20,11 +24,19 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Home />
+          </Suspense>
+        ),
       },
       {
         path: '/login',
-        element: <Login />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Login />
+          </Suspense>
+        ),
       },
       {
         path: '/',
@@ -32,11 +44,19 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/signup',
-            element: <SignUp></SignUp>,
+            element: (
+              <Suspense fallback={<LoadingSpinner />}>
+                <SignUp />
+              </Suspense>
+            ),
           },
           {
             path: '/my',
-            element: <MyPage />,
+            element: (
+              <Suspense fallback={<LoadingSpinner />}>
+                <MyPage />
+              </Suspense>
+            ),
           },
 
           // {
@@ -62,23 +82,43 @@ const router = createBrowserRouter([
               },
               {
                 path: 'create',
-                element: <TimePaperCreate />,
+                element: (
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <TimePaperCreate />
+                  </Suspense>
+                ),
               },
               {
                 path: ':timepaperId',
-                element: <TimePaperDetail />,
+                element: (
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <TimePaperDetail />
+                  </Suspense>
+                ),
               },
               {
                 path: ':timepaperId/lock',
-                element: <TimePaperIsLocked />,
+                element: (
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <TimePaperIsLocked />
+                  </Suspense>
+                ),
               },
               {
                 path: ':timepaperId/capsule',
-                element: <TimePaperSetLock />,
+                element: (
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <TimePaperSetLock />
+                  </Suspense>
+                ),
               },
               {
                 path: ':timepaperId/postit/create',
-                element: <PostItCreate />,
+                element: (
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <PostItCreate />
+                  </Suspense>
+                ),
               },
             ],
           },
