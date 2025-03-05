@@ -16,7 +16,7 @@ public class TimePaperResponseDto {
   private final UUID timePaperId;
   private final String title;
   private final String recipientEmail;
-  private final String writerEmail;
+  private final Long writerId;
 
   private final LocalDateTime createdAt;
   private final LocalDateTime releaseDate;
@@ -28,7 +28,7 @@ public class TimePaperResponseDto {
         .timePaperId(timePaper.getId())
         .title(timePaper.getTitle())
         .recipientEmail(timePaper.getRecipientEmail())
-        .writerEmail(timePaper.getCreator().getEmail())
+        .writerId(timePaper.getCreator().getId())
         .createdAt(timePaper.getCreatedAt())
         .releaseDate(timePaper.getReleaseDate())
         .isLocked(timePaper.isLocked())
