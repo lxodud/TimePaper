@@ -8,9 +8,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 
 @Getter
-public class SignupDto {
+public class SignupRequestDto {
 
-  @Email
+  @Email(message = "이메일 형식이 틀렸습니다.")
   private String email;
 
   @Pattern(regexp = "^(?=.*[!@#$%^&*]).{8,}$")

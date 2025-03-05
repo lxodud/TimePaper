@@ -51,9 +51,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     try {
       requestDto = objectMapper.readValue(request.getInputStream(),
           LoginRequestDto.class);
-
     } catch (IOException e) {
-      //여기 예외처리 어떻게 하징
       throw new GlobalException(ErrorCode.SERVER_ERROR);
     }
 
@@ -85,7 +83,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
       throws IOException, ServletException {
 
     log.info("로그인 검증 실패");
-    log.info("failed: {}", failed);
+    log.info("failed : {}", failed);
     log.info(failed.getMessage());
 
     ApiResponse<Object> apiResponse = null;

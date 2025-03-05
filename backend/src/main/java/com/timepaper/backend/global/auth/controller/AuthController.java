@@ -2,16 +2,16 @@ package com.timepaper.backend.global.auth.controller;
 
 import com.timepaper.backend.global.auth.dto.CertificationNumberRequestDto;
 import com.timepaper.backend.global.auth.dto.EmailCertificationRequestDto;
-import com.timepaper.backend.global.auth.dto.SignupDto;
+import com.timepaper.backend.global.auth.dto.SignupRequestDto;
 import com.timepaper.backend.global.auth.service.AuthService;
 import com.timepaper.backend.global.dto.ApiResponse;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +30,6 @@ public class AuthController {
   public void reissueToken(HttpServletResponse response,
       @CookieValue(value = "refresh_token", required = true) String refreshToken) {
 
-    log.info("refreshToken : {}", refreshToken);
     authService.reissueToken(response, refreshToken);
   }
 
@@ -38,13 +37,13 @@ public class AuthController {
   public void logout(HttpServletResponse response,
       @CookieValue(value = "refresh_token", required = false) String refreshToken,
       Authentication authentication) {
-    log.info("refreshToken : {}", refreshToken);
+
     authService.logout(response, refreshToken, authentication);
   }
 
   @PostMapping("/auth/email-verification-codes")
   public ResponseEntity<ApiResponse<Void>> requestEmailVerificationCode(
-      @RequestBody @Validated EmailCertificationRequestDto dto
+      @RequestBody @Valid EmailCertificationRequestDto dto
   ) {
     authService.requestEmailVerificationCode(dto);
 
@@ -54,7 +53,7 @@ public class AuthController {
 
   @PostMapping("/auth/email-verification-codes/validate")
   public ResponseEntity<ApiResponse<Boolean>> checkEmailVerificationCode(
-      @RequestBody CertificationNumberRequestDto dto
+      @RequestBody @Valid CertificationNumberRequestDto dto
   ) {
     authService.checkEmailVerificationCode(dto);
 
@@ -63,7 +62,7 @@ public class AuthController {
   }
 
   @PostMapping("/auth/signup")
-  public ResponseEntity<ApiResponse<Boolean>> signUp(@RequestBody @Validated SignupDto dto) {
+  public ResponseEntity<ApiResponse<Boolean>> signUp(@RequestBody @Valid SignupRequestDto dto) {
     authService.signUp(dto);
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT)

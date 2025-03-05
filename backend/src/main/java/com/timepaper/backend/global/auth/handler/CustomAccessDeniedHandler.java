@@ -2,6 +2,7 @@ package com.timepaper.backend.global.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.global.dto.ApiResponse;
+import com.timepaper.backend.global.exception.ErrorCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +25,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
-    ApiResponse<Void> errorResponse = ApiResponse.error("접근 권한이 없습니다.", "3002");
+    ApiResponse<Void> errorResponse = ApiResponse.error(ErrorCode.DEFAULT_FORBIDDEN.getMessage(),
+        ErrorCode.DEFAULT_FORBIDDEN.getCode());
     response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
   }
 }

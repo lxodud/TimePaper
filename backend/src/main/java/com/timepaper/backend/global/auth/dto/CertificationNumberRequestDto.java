@@ -11,7 +11,7 @@ public class CertificationNumberRequestDto {
   @NotBlank
   private String email;
 
-  @NotBlank
+  @NotBlank(message = "인증 코드는 필수입니다.")
   private String authenticationCode;
 
 }
