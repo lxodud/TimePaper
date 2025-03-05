@@ -7,6 +7,7 @@ import styles from './TimePaperDetail.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import ConfirmModal from '../../components/confirmmodal/ConfirmModal';
 import Modal from '../../components/Modal/Modal';
+import ShareLink from '../../components/share-link/ShareLink';
 
 export default function TimePaperDetail() {
   const { timepaperId } = useParams();
@@ -171,12 +172,15 @@ export default function TimePaperDetail() {
               userId={userId}
             />
           )}
-          <BottomButton
-            title="포스트잇 작성"
-            onClick={handlePostItCreateClick}
-            isEnable={true}
-            className={styles.postitCreate}
-          />
+          <div className={styles.buttonGroup}>
+            <ShareLink></ShareLink>
+            <BottomButton
+              title="포스트잇 작성"
+              onClick={handlePostItCreateClick}
+              isEnable={true}
+              className={styles.postitCreate}
+            />
+          </div>
         </div>
       </div>
     </>
