@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from './store/slices/authSlice';
 import { api } from './api/api';
 import Loading from './components/Loading/Loading';
+import { finishLoading, startLoading } from './store/slices/loadingSlice';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -13,9 +14,12 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
+      dispatch(startLoading())  
       const response = await api.reissue();
       dispatch(login(response.headers.authorization));
+      dispatch(finishLoading())
     })();
+
   }, []);
 
   return (
