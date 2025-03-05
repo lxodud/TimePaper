@@ -100,7 +100,6 @@ export default function SignUp() {
     } catch (error) {
       setIsAlertShow(true);
       setAlertMessage('오류발생');
-      console.log(error.response);
       setIsConfirmAuthCodeButtonEnable(true);
       setIsAuthCodeInputEnable(true);
     }
@@ -133,7 +132,6 @@ export default function SignUp() {
     setPassword(value);
 
     const check = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
-    console.log(check.test(value) && value.length >= 8);
 
     setVerification((prev) => ({
       ...prev,
