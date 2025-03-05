@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import styles from './Modal.module.css';
 import Dropdown from '../dropdownmenu/Dropdown.jsx';
 import ConfirmModal from '../confirmmodal/ConfirmModal';
+import { api } from '../../api/api.js';
+import { useNavigate } from 'react-router-dom';
 
-function Modal({ onClose, onDelete, imageUrl, modalContent, from }) {
+function Modal({ onClose, onDelete, imageUrl, modalContent, from, postitId, timepaperId }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false); // ConfirmModal 상태 관리
+  const navigate = useNavigate();
 
   const handleSelect = (value) => {
     if (value === 'delete') {
@@ -14,9 +17,18 @@ function Modal({ onClose, onDelete, imageUrl, modalContent, from }) {
     }
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(); // 포스트잇 삭제 처리
-    setShowConfirmModal(false); // ConfirmModal 닫기
+  const handleConfirmDelete = async () => {
+    try {
+      await api.deletePostit(postitId);
+      alert('포스트잇이 성공적으로 삭제되었습니다');
+      // 삭제 성공 후 부모 콜백 호출하여 postits 상태 업데이트
+      onDelete(postitId);
+      // 페이지 이동 없이 상태 업데이트만으로 시간 페이퍼 목록 반영
+    } catch (error) {
+      console.error('포스트잇 삭제 실패:', error);
+      alert('포스트잇을 삭제하는데 실패했습니다');
+    }
+    setShowConfirmModal(false);
   };
 
   return (
