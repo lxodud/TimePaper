@@ -4,7 +4,7 @@ import Dropdown from '../dropdownmenu/Dropdown.jsx';
 import ConfirmModal from '../confirmmodal/ConfirmModal';
 import { api } from '../../api/api.js';
 
-function Modal({ onClose, onDelete, imageUrl, modalContent, from, postitId}) {
+function Modal({ onClose, onDelete, imageUrl, modalContent, from, postitId, authorId, userId }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false); // ConfirmModal 상태 관리
 
   const handleSelect = (value) => {
@@ -40,6 +40,7 @@ function Modal({ onClose, onDelete, imageUrl, modalContent, from, postitId}) {
               { label: '닫기', value: 'close' },
             ]}
             onSelect={handleSelect}
+            showDelete={authorId === userId}
           />
           <img src={imageUrl} className={styles.logoImage} alt="선택된 포스트잇 이미지" />
           <textarea className={styles.textareaWrapper} readOnly>
