@@ -39,19 +39,19 @@ const router = createBrowserRouter([
             element: <MyPage />,
           },
 
-          {
-            path: '/my/myinfo',
-            element: <MyPage section="myinfo" />,
-          },
-          {
-            path: '/my/postits',
-            element: <MyPage />,
-          },
+          // {
+          //   path: '/my/myinfo',
+          //   element: <MyPage section="myinfo" />,
+          // },
+          // {
+          //   path: '/my/postits',
+          //   element: <MyPage />,
+          // },
 
-          {
-            path: '/my/timepapers',
-            element: <MyPage />,
-          },
+          // {
+          //   path: '/my/timepapers',
+          //   element: <MyPage />,
+          // },
 
           {
             path: '/timepaper',

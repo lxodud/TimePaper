@@ -1,4 +1,7 @@
 import apiInstance from './apiInstance';
+import store from '../store/store';
+import { couldStartTrivia } from 'typescript';
+const state = store.getState();
 
 export const api = {
   login: async (email, password) => {
@@ -123,6 +126,13 @@ export const api = {
   },
 
   getMyTimePapers: async () => {
-    const response = await apiInstance.get(`/my/timepapers`);
+    const state = store.getState();
+    const response = await apiInstance.get(`/my/timepapers`, {
+      headers: {
+        Authorization: state.auth.accessToken,
+      },
+      withCredentials: true,
+    });
+    return response;
   },
 };

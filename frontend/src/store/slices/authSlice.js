@@ -27,6 +27,12 @@ const authSlice = createSlice({
       state.email = null;
       state.role = null;
     }
+
+    // timepaper: (state, action) => {
+    //   state.long = String;
+    //   state.
+
+    // }
   },
 });
 
