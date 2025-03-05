@@ -93,11 +93,17 @@ export default function TimePaperDetail() {
     }
     setShowConfirmModal(false); // 모달 닫기
   };
+  // 포스트잇 삭제 업데이트 콜백
+  const handleDeletePostit = (deletedPostitId) => {
+    setPostits((prev) => prev.filter((postit) => postit.postitId !== deletedPostitId));
+    // 모달 창도 닫기 처리
+    setModalOpen(false);
+    setSelectedPostit(null);
+  };
 
   if (errorMessage) {
     return <div className={styles.error}>{errorMessage}</div>; // 에러 메시지 표시
   }
-
   return (
     <>
       {timepaper ? (
@@ -158,9 +164,12 @@ export default function TimePaperDetail() {
                 setModalOpen(false);
                 setSelectedPostit(null);
               }}
+              onDelete={handleDeletePostit}
               imageUrl={selectedPostit.imageUrl}
               modalContent={selectedPostit.content}
               from={selectedPostit.author}
+              postitId={selectedPostit.postitId}
+              timepaperId={timepaperId}
             />
           )}
           <BottomButton
