@@ -1,4 +1,5 @@
 .container {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,12 +9,23 @@
   gap: 20%;
 }
 
+.alertContainer {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 30vh;
+}
+
 .inputContainer {
   width: 80%;
 }
 
 .errContainer {
   text-align: center;
-  font-family: var(--pretendard-semiBold);
   margin-top: 3%;
+  color: red;
+  font-size: var(--font-size-small);
+  font-family: var(--pretendard-Light);
 }
