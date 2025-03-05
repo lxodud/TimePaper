@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from '../store/store';
-import { api } from './api';
+// import { api } from './api'
 import { login } from '../store/slices/authSlice';
 
 const apiInstance = axios.create({

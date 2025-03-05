@@ -1,0 +1,122 @@
+/* MyPage.module.css */
+
+/* 전체 컨테이너 */
+.container {
+  font-family: Arial, sans-serif;
+  background-color: #f8f5e9; /* 배경색 */
+  /* position: relative; */
+  padding: 20px;
+  max-width: 400px;
+  margin: 60 auto;
+}
+
+/* 헤더 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.backButton,
+.homeButton {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 이메일 섹션 */
+.email {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* 탭 스타일 */
+.tabs {
+  display: flex;
+  gap:20px;
+  justify-content: space-around;
+  /* border-bottom: 1px solid #ccc; */
+   /* 탭 하단 구분선 */
+}
+
+.tabButton {
+  flex: 1;
+  border:none;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.tabButton.active {
+  border-bottom: 2px solid black; /* 활성화된 탭 표시 */
+  background-color: #007bff; /* 활성화된 탭 배경색 */
+  color: white; /* 활성화된 탭 텍스트 색상 */
+}
+
+/* 콘텐츠 섹션 */
+.content ul {
+  list-style-type: none; /* 불릿 제거 */
+  padding-left: 0;
+}
+
+.content li {
+  background-color: #e0e0e0; /* 리스트 항목 배경색 */
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+/* 드롭다운 컨테이너 */
+.dropdownContainer {
+  position: absolute; /* 마이페이지 영역 내에서 절대적 위치 */
+  bottom: 70px; /* 하단에서 20px 위 */
+  right: 20px; /* 오른쪽에서 20px 왼쪽 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+}
+
+.dropdownButton {
+  background-color: #007bff; /* 버튼 배경색 */
+  color: white; /* 버튼 텍스트 색상 */
+  border: none;
+  border-radius: 50%; /* 원형 버튼 */
+  width: 40px; /* 버튼 크기 */
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+.dropdownMenu {
+  position: absolute;
+  bottom: 50px; /* 버튼 위에 배치 */
+  right: 0; /* 오른쪽 정렬 */
+  background-color: white; /* 드롭다운 배경색 */
+  border: 1px solid #ddd; /* 테두리 */
+  border-radius: 5px; /* 모서리 둥글게 처리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  width: 150px; /* 드롭다운 메뉴 너비 */
+}
+
+.dropdownItem {
+  display: block; /* 버튼을 블록 형태로 표시 */
+  padding: 10px;
+  width: 100%; /* 버튼 너비를 100%로 설정 */
+  text-align: left; /* 텍스트 왼쪽 정렬 */
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.dropdownItem:hover {
+  background-color: #f1f1f1; /* 호버 시 배경색 변경 */
+}

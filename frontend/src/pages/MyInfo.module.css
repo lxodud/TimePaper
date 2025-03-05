@@ -1,0 +1,53 @@
+
+/* 전체 컨테이너 */
+.container {
+   font-family: Arial, sans-serif;
+   background-color: #f8f5e9;
+   padding: 20px;
+   max-width: 600px;
+   margin: 0 auto;
+ }
+ 
+ /* 이메일 섹션 */
+ .emailSection {
+   margin-bottom: 20px;
+ }
+ 
+ .emailSection h2 {
+   font-size: 20px;
+   margin-bottom: 10px;
+ }
+ 
+ .emailSection p {
+   font-size: 16px;
+   color: #333;
+ }
+ 
+ /* 탭 스타일 */
+ .tabs {
+   display: flex;
+   justify-content: space-around;
+   margin-bottom: 20px;
+ }
+ 
+ .tabButton {
+   padding: 10px 20px;
+   font-size: 16px;
+   border: none;
+   background-color: #d3d3d3;
+   cursor: pointer;
+ }
+ 
+ .tabButton.active {
+   background-color: #a8a8a8;
+ }
+ 
+ /* 콘텐츠 섹션 */
+ .content ul {
+   list-style-type: none;
+ }
+ 
+ .content li {
+   background-color: #e0e0e0;
+ }
+ 

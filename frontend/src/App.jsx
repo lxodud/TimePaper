@@ -14,18 +14,15 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      dispatch(startLoading())  
+      dispatch(startLoading());
       try {
-      const response = await api.reissue();
-      dispatch(login(response.headers.authorization));
+        const response = await api.reissue();
+        dispatch(login(response.headers.authorization));
       } catch {
-
       } finally {
-        dispatch(finishLoading())
+        dispatch(finishLoading());
       }
-      
     })();
-
   }, []);
 
   return (
