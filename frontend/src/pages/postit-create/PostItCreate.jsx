@@ -6,6 +6,7 @@ import BottomButton from '../../components/BottomButton/BottomButton';
 import { api } from '../../api/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ssrModuleExportsKey } from 'vite/module-runner';
+import Alert from '../../components/Alert/Alert';
 
 export default function PostItCreate() {
   const { timepaperId } = useParams();
@@ -14,6 +15,8 @@ export default function PostItCreate() {
   const templates = [staticImagePath.postitAfternoon, staticImagePath.postitNight];
   const [errors, setErrors] = useState({});
   const [isTouched, setIsTouched] = useState({ content: false, authorName: false });
+  const [isShowAlert, setIsShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
 
   const INITIAL_FORM_DATA = {
@@ -83,7 +86,8 @@ export default function PostItCreate() {
 
     const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!validImageTypes.includes(file.type)) {
-      alert('이미지 파일만 업로드 가능합니다.');
+      setIsShowAlert(true);
+      setAlertMessage('이미지 파일만 업로드 가능합니다.');
       return;
     }
 
@@ -168,14 +172,22 @@ export default function PostItCreate() {
           navigate(`/timepaper/${timepaperId}`, { replace: true });
         }
       } catch (error) {
-        alert('등록에 실패했습니다.');
+        setIsShowAlert(true);
+        setAlertMessage('등록에 실패했습니다.');
         setIsSubmitable(true);
       }
     })();
   };
 
+  const handleAlertButtonClick = () => {
+    setIsShowAlert(false);
+  };
+
   return (
     <>
+      {isShowAlert && (
+        <Alert message={alertMessage} buttonTitle={'확인'} onClick={handleAlertButtonClick}></Alert>
+      )}
       <form action="" className={styles.container}>
         <div className={styles.underBarInput}>
           <UnderBarInput
