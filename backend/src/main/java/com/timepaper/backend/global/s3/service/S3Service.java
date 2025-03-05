@@ -1,5 +1,7 @@
 package com.timepaper.backend.global.s3.service;
 
+import com.timepaper.backend.global.exception.ErrorCode;
+import com.timepaper.backend.global.exception.custom.common.GlobalException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
@@ -39,11 +41,11 @@ public class S3Service {
   private void uploadFileToS3(MultipartFile file, String s3Key) throws RuntimeException {
     try {
       PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                                              .bucket(bucketName)
-                                              .key(s3Key)
-                                              .contentType(file.getContentType())
-                                              .contentLength(file.getSize())
-                                              .build();
+          .bucket(bucketName)
+          .key(s3Key)
+          .contentType(file.getContentType())
+          .contentLength(file.getSize())
+          .build();
 
       s3Client.putObject(
           putObjectRequest,
@@ -51,19 +53,19 @@ public class S3Service {
       );
 
     } catch (IOException e) {
-      throw new RuntimeException("파일 업로드 실패: " + e.getMessage());
+      throw new GlobalException(ErrorCode.FILE_UPLOAD_ERROR);
     }
   }
 
   public void deleteFile(String s3Key) {
     try {
       DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                                                    .bucket(bucketName)
-                                                    .key(s3Key)
-                                                    .build();
+          .bucket(bucketName)
+          .key(s3Key)
+          .build();
       s3Client.deleteObject(deleteObjectRequest);
     } catch (Exception e) {
-      throw new RuntimeException("파일 삭제 실패: " + e.getMessage());
+      throw new GlobalException(ErrorCode.FILE_DELETE_ERROR);
     }
   }
 }
