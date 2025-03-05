@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Modal.module.css';
 import Dropdown from '../dropdownmenu/Dropdown.jsx';
+import ConfirmModal from '../confirmmodal/ConfirmModal';
 
 function Modal({ onClose, onDelete, imageUrl, modalContent, from }) {
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // ConfirmModal 상태 관리
+
   const handleSelect = (value) => {
     if (value === 'delete') {
-      onDelete(); // 포스트잇 삭제 동작 실행
+      setShowConfirmModal(true); // 포스트잇 삭제 ConfirmModal 열기
     } else if (value === 'close') {
-      onClose(); // 모달 닫기 동작 실행
+      onClose(); // 모달 닫기
     }
+  };
+
+  const handleConfirmDelete = () => {
+    onDelete(); // 포스트잇 삭제 처리
+    setShowConfirmModal(false); // ConfirmModal 닫기
   };
 
   return (
@@ -33,6 +41,15 @@ function Modal({ onClose, onDelete, imageUrl, modalContent, from }) {
             </p>
           </div>
         </div>
+
+        {/* ConfirmModal */}
+        {showConfirmModal && (
+          <ConfirmModal
+            message="정말로 이 포스트잇을 삭제하시겠습니까?"
+            onConfirm={handleConfirmDelete} // 확인 클릭 시 삭제 처리
+            onCancel={() => setShowConfirmModal(false)} // 취소 클릭 시 ConfirmModal 닫기
+          />
+        )}
       </div>
     </div>
   );
