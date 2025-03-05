@@ -107,6 +107,7 @@ export const api = {
 
   deletePostit: async (postitId) => { 
     const response = await apiInstance.delete(`/postits/${postitId}`)
+    return response;
   },
 
   getMyPostits: async () => { 
