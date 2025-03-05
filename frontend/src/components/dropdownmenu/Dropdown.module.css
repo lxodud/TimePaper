@@ -1,0 +1,40 @@
+/* 트리거 버튼 스타일 */
+.trigger {
+  position: absolute;
+  top: -12%;
+  right: -2.3%;
+  font-size: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--orange-color);
+}
+
+.trigger:hover {
+  color: #d87728;
+}
+
+/* 드롭다운 메뉴 컨테이너 */
+.content {
+  position: absolute;
+  top: 0; /* 트리거 버튼과 같은 높이에 표시 */
+  right: 0%; /* 트리거 버튼 기준으로 왼쪽으로 이동 */
+  display: block; /* 블록 요소로 설정하여 가로 표시 */
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  background-color: var(--background-color);
+}
+
+/* 드롭다운 메뉴 항목 */
+.item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.item:hover {
+  background-color: var(--orange-color);
+}

@@ -30,6 +30,7 @@ export default function Home() {
             title={'롤링페이퍼 생성 하러가기'}
             onClick={handleToCreateButtonClick}
             isEnable={true}
+            pointer='pointer'
           ></BottomButton>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import apiInstance from './apiInstance';
 import store from '../store/store';
-const state = store.getState();
 
 export const api = {
   login: async (email, password) => {
@@ -115,8 +114,9 @@ export const api = {
     return response;
   },
 
-  deletePostit: async (postitId) => {
-    const response = await apiInstance.delete(`/postits/${postitId}`);
+  deletePostit: async (postitId) => { 
+    const response = await apiInstance.delete(`/postits/${postitId}`)
+    return response;
   },
 
   getMyTimePapers: async () => {
@@ -140,28 +140,4 @@ export const api = {
     });
     return response;
   },
-
-
-  // getMyTimePapers: async () => {
-  //   const state = store.getState();
-  //   const response = await apiInstance.get(`/my/timepapers/${timepaperId}`, {
-  //     headers: {
-  //       Authorization: state.auth.accessToken,
-  //     },
-  //     withCredentials: true,
-  //   });
-  //   return response;
-  // },
-
-  // getMyPostits: async () => {
-  //   const state = store.getState();
-  //   const response = await apiInstance.get(`/my/postits/${postitId}`, {
-  //     headers: {
-  //       Authorization: state.auth.accessToken,
-  //     },
-  //     withCredentials: true,
-  //   });
-  //   return response;
-  // },
-
 };

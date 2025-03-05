@@ -7,6 +7,8 @@
   width: 90%;
   height: 55px;
   border-radius: 10px;
+  cursor: pointer;
+  margin-top: 5%;
 }
 
 .bottomButton:hover {

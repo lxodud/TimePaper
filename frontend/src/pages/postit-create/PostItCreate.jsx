@@ -160,7 +160,7 @@ export default function PostItCreate() {
       } catch (error) {
         alert('등록에 실패했습니다.');
       } finally {
-        isSubmitable(false);
+        setIsSubmitable(false);
       }
     })();
   };

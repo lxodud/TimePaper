@@ -13,7 +13,6 @@ export default function BottomButton({ title, onClick, isEnable, pointer }) {
       enableColor: enableColor,
       disableColor: disableColor,
     });
-    console.log(pointer)
   }, []);
 
   return (
@@ -23,7 +22,7 @@ export default function BottomButton({ title, onClick, isEnable, pointer }) {
       disabled={!isEnable}
       style={{
         backgroundColor: isEnable ? buttonColor.enableColor : buttonColor.disableColor,
-        cursor: pointer,
+        cursor: isEnable ? 'pointer' : 'not-allowed',
       }}
     >
       {title}

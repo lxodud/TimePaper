@@ -9,13 +9,14 @@ import com.timepaper.backend.domain.timepaper.entity.TimePaper;
 import com.timepaper.backend.domain.timepaper.repository.TimePaperRepository;
 import com.timepaper.backend.domain.user.entity.User;
 import com.timepaper.backend.domain.user.repository.UserRepository;
+import com.timepaper.backend.global.exception.ErrorCode;
+import com.timepaper.backend.global.exception.custom.common.ForBiddenException;
+import com.timepaper.backend.global.exception.custom.common.ResourceNotFoundException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class TimePaperService {
     String creatorEmail = authentication.getName();
 
     User creator = (User) userRepository.findByEmail(creatorEmail)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
 
     TimePaper timePaper = timePaperRepository.save(
         TimePaper.builder()
@@ -48,7 +49,7 @@ public class TimePaperService {
 
     TimePaper timePaper = timePaperRepository.findById(timepaperId)
         .orElseThrow(
-            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 타임페이퍼는 존재하지 않습니다."));
+            () -> new ResourceNotFoundException(ErrorCode.TIMEPAPER_NOT_FOUND));
     return TimePaperResponseDto.from(timePaper);
   }
 
@@ -56,7 +57,7 @@ public class TimePaperService {
   public void deleteTimePaper(UUID timepaperId) {
     // 삭제할 타임페이퍼 조회
     TimePaper timePaper = timePaperRepository.findById(timepaperId)
-        .orElseThrow(() -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
+        .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.TIMEPAPER_NOT_FOUND));
 
     // 1. 해당 타임페이퍼를 참조하는 모든 포스트잇 삭제
     postitRepository.deleteByTimePaperId(timepaperId);
@@ -74,10 +75,10 @@ public class TimePaperService {
 
     TimePaper timePaper = timePaperRepository.findById(timePaperId)
         .orElseThrow(
-            () -> new IllegalArgumentException("해당 타임페이퍼를 찾을 수 없습니다."));
+            () -> new ResourceNotFoundException(ErrorCode.TIMEPAPER_NOT_FOUND));
 
     if (!timePaper.getCreator().getId().equals(requesterId)) {
-      throw new IllegalArgumentException("잠금 권한이 없습니다.");
+      throw new ForBiddenException(ErrorCode.DEFAULT_FORBIDDEN);
     }
 
     timePaper.setReleaseDate(timePaperLockRequestDto.getRecipientEmail(),
