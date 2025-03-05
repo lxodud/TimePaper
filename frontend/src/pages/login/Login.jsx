@@ -6,10 +6,13 @@ import { api } from '../../api/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/slices/authSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { finishLoading, startLoading } from '../../store/slices/loadingSlice';
+import Alert from '../../components/Alert/Alert';
 
 export default function Login() {
   const [inputData, setIntputData] = useState({ email: '', password: '' });
   const [isLoginButtonEnable, setIsLoginButtonEnable] = useState(false);
+  const [isAlertShow, setIsAlertShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,14 +22,17 @@ export default function Login() {
     setIsLoginButtonEnable(false);
     event.preventDefault();
     (async () => {
+      dispatch(startLoading());
       try {
         const response = await api.login(inputData.email, inputData.password);
-
         dispatch(login(response.headers.authorization));
         const next = location.state?.next ?? -1;
         navigate(next, { replace: true });
       } catch (error) {
+        setIsAlertShow(true)
         setIsLoginButtonEnable(true);
+      } finally {
+        dispatch(finishLoading());
       }
     })();
   };
@@ -40,8 +46,12 @@ export default function Login() {
 
   const handleSignUpButtonClick = (event) => {
     event.preventDefault();
-    navigate('/signup')
-  }
+    navigate('/signup');
+  };
+
+  const handleAlertButtonClick = () => {
+    setIsAlertShow(false);
+  };
 
   useEffect(() => {
     if (inputData.email.trim().length !== 0 && inputData.password.trim().length !== 0) {
@@ -61,6 +71,13 @@ export default function Login() {
   return (
     <>
       <div className={styles.container}>
+        {isAlertShow && (
+          <Alert
+            buttonTitle={'확인'}
+            message={'로그인 실패했습니다.'}
+            onClick={handleAlertButtonClick}
+          ></Alert>
+        )}
         <img src={staticImagePath.timepaperLogo} className="logo-image" />
         <form action="" className={styles.formContainer}>
           <input
@@ -82,8 +99,11 @@ export default function Login() {
               title={'로그인'}
               onClick={handleLoginButtonClick}
               isEnable={isLoginButtonEnable}
+              pointer={isLoginButtonEnable ? 'pointer' : 'not-allowed'}
             ></BottomButton>
-            <button className={styles.signupButton} onClick={handleSignUpButtonClick}>회원가입</button>
+            <button className={styles.signupButton} onClick={handleSignUpButtonClick}>
+              회원가입
+            </button>
           </div>
         </form>
       </div>
