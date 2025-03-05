@@ -2,6 +2,7 @@ package com.timepaper.backend.global.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.domain.user.dto.request.LoginRequestDto;
+import com.timepaper.backend.domain.user.entity.User;
 import com.timepaper.backend.global.auth.service.AuthService;
 import com.timepaper.backend.global.dto.ApiResponse;
 import com.timepaper.backend.global.exception.ErrorCode;
@@ -24,7 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-//TODO: 이메일 형식 유효성 검증 로직
 @RequiredArgsConstructor
 @Component
 @Slf4j
@@ -72,7 +72,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
       FilterChain chain, Authentication authentication) throws IOException, ServletException {
 
-    authService.setTokensResponse(response, authentication);
+    User user = (User) authentication.getPrincipal();
+    log.info("User : {}", user.getId());
+    authService.setTokensResponse(response, authentication, user.getId());
 
   }
 
