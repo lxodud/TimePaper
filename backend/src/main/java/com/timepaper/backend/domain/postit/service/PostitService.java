@@ -67,7 +67,7 @@ public class PostitService {
         .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.POSTIT_NOT_FOUND));
 
     if (postit.getAuthor().getId() != userId) {
-      throw new ForBiddenException();
+      throw new ForBiddenException(ErrorCode.AUTHOR_ONLY);
     }
 
     if (postit.getS3Key() != null) {

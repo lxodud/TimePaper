@@ -37,6 +37,7 @@ public enum ErrorCode {
   PAYLOAD_TOO_LARGE(HttpStatus.BAD_REQUEST, "4001", "파일 크키가 너무 큽니다. 3MB 이하로 업로드해주세요."),
   DEFAULT_NOT_FOUND(HttpStatus.BAD_REQUEST, "4002", "해당 리소스가 존재하지 않습니다."),
   DEFAULT_FORBIDDEN(HttpStatus.FORBIDDEN, "4003", "권한이 없습니다."),
+  AUTHOR_ONLY(HttpStatus.FORBIDDEN, "4006", "작성자만 삭제할 수 있습니다."),
 
   //타임페이퍼(4100)
   TIMEPAPER_NOT_FOUND(HttpStatus.BAD_REQUEST, "4104", "해당 타임페이퍼가 존재하지 않습니다."),
