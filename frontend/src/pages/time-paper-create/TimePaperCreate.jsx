@@ -98,11 +98,11 @@ export default function TimePaperCreate() {
       <form>
         <div className={styles.container}>
           {isError && (
-              <Alert
-                buttonTitle={'확인'}
-                message={errorMessage}
-                onClick={handleAlertButtonClick}
-              ></Alert>
+            <Alert
+              buttonTitle={'확인'}
+              message={errorMessage}
+              onClick={handleAlertButtonClick}
+            ></Alert>
           )}
           <div className={styles.inputContainer}>
             <UnderBarInput

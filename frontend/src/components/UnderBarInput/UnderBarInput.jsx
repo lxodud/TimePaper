@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './UnderBarInput.module.css';
 
-export default function UnderBarInput({ value, placeholder, onChange, name, onBlur }) {
+export default function UnderBarInput({ value, placeholder, onChange, name, onBlur, onClick }) {
   return (
     <input
       type="text"
@@ -11,6 +11,7 @@ export default function UnderBarInput({ value, placeholder, onChange, name, onBl
       placeholder={placeholder}
       onChange={onChange}
       onBlur={onBlur}
+      onClick={onClick}
     />
   );
 }
