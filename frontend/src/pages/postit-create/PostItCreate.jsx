@@ -5,6 +5,7 @@ import UnderBarInput from '../../components/UnderBarInput/UnderBarInput';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import { api } from '../../api/api';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ssrModuleExportsKey } from 'vite/module-runner';
 
 export default function PostItCreate() {
   const { timepaperId } = useParams();
@@ -67,7 +68,7 @@ export default function PostItCreate() {
   const handleOnClick = (e) => {
     const { name } = e.target;
     setIsTouched((prev) => ({ ...prev, [name]: true }));
-    const a = validateInput(inputData)
+    const a = validateInput(inputData);
     setErrors(a);
   };
 
@@ -130,7 +131,6 @@ export default function PostItCreate() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsSubmitable(false);
 
     const updatedInputData = {
       ...inputData,
@@ -160,6 +160,7 @@ export default function PostItCreate() {
       formData.append('image', imageState.imageData);
     }
 
+    setIsSubmitable(false);
     (async () => {
       try {
         const response = await api.createPostit(timepaperId, formData);
