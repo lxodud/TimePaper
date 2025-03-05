@@ -5,6 +5,7 @@ import { api } from '../../api/api';
 import { finishLoading, startLoading } from '../../store/slices/loadingSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { replace, useNavigate } from 'react-router-dom';
+import ErrorAlert from '../../components/ErrorAlert/ErrorAlert';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -31,6 +32,8 @@ export default function SignUp() {
     isPrivacyPolicyAccepted: false, // 개인정보 약관 동의 true/false
     isTermsAccepted: false, // 이용 약관 동의 true/false
   });
+
+  const [isError, setIsError] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -65,7 +68,7 @@ export default function SignUp() {
       setIsCodeSent(true);
       setTimeLeft(300);
     } catch (error) {
-      console.error(error);
+      setIsError(true);
       setIsAuthCodeSendButtonEnable(true);
       setIsEmailInputEnable(true);
     } finally {
@@ -91,7 +94,7 @@ export default function SignUp() {
       setVerification((prev) => ({ ...prev, authCodeCheck: true }));
       setIsConfirmAuthMessage('인증되었습니다.');
     } catch (error) {
-      console.error('인증 확인 중 오류 발생:', error);
+      setIsError(true);
       setIsConfirmAuthCodeButtonEnable(true);
       setIsAuthCodeInputEnable(true);
     }
@@ -157,6 +160,7 @@ export default function SignUp() {
         replace: true,
       });
     } catch {
+      setIsError(true);
       setIsEnable(true);
     } finally {
       dispatch(finishLoading());
@@ -165,9 +169,13 @@ export default function SignUp() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/', replace)
+      navigate('/', replace);
     }
   }, [isLoggedIn]);
+
+  const handleErrorAlertButtonClick = () => {
+    setIsError(false);
+  };
 
   const resolveInvalidMessageStyle = (isValid, inputValue) => {
     return isValid || inputValue.length === 0
@@ -178,6 +186,13 @@ export default function SignUp() {
   return (
     <>
       <div className={styles.signUpContainer}>
+        {isError && (
+          <ErrorAlert
+            buttonTitle="확인"
+            message="네트워크 오류 발생"
+            onClick={handleErrorAlertButtonClick}
+          ></ErrorAlert>
+        )}
         <div className={styles.signUpForm}>
           <div>
             <label className={styles.fields}>이메일*</label>

@@ -1,4 +1,5 @@
 .signUpContainer {
+  position: relative;
   margin-bottom: 3rem;
   display: flex;
   margin: 0 auto;
