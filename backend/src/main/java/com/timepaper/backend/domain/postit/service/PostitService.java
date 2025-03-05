@@ -7,6 +7,8 @@ import com.timepaper.backend.domain.postit.repository.PostitRepository;
 import com.timepaper.backend.domain.timepaper.entity.TimePaper;
 import com.timepaper.backend.domain.timepaper.repository.TimePaperRepository;
 import com.timepaper.backend.domain.user.entity.User;
+import com.timepaper.backend.global.exception.ErrorCode;
+import com.timepaper.backend.global.exception.custom.timepaper.ResourceNotFoundException;
 import com.timepaper.backend.global.s3.service.S3Service;
 import java.util.Map;
 import java.util.UUID;
@@ -45,7 +47,7 @@ public class PostitService {
     }
 
     TimePaper timePaper = timePaperRepository.findById(timePaperId)
-        .orElseThrow(() -> new IllegalArgumentException());
+        .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.TIMEPAPER_NOT_FOUND));
 
     Postit postit = requestDto.toEntity(timePaper, user, s3Key, s3ImageUrl);
 

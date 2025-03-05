@@ -35,7 +35,12 @@ public enum ErrorCode {
   //클라이언트 (4000번)
   INVALID_INPUT(HttpStatus.BAD_REQUEST, "4000", "입력값이 올바르지 않습니다."),
   PAYLOAD_TOO_LARGE(HttpStatus.BAD_REQUEST, "4001", "파일 크키가 너무 큽니다. 3MB 이하로 업로드해주세요."),
+  DEFAULT_NOT_FOUD(HttpStatus.BAD_REQUEST, "40002", "해당 리소스가 존재하지 않습니다."),
 
+  //타임페이퍼(40100)
+  TIMEPAPER_NOT_FOUND(HttpStatus.BAD_REQUEST, "40100", "해당 타임페이퍼가 존재하지 않습니다."),
+
+  //포스트잇 (40200)
 
   //네트워크, 데이터베이스 등
   SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "5000", "서버 내부 오류가 발생했습니다.");
