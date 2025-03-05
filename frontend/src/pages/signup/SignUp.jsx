@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from './SignUp.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import { api } from '../../api/api';
@@ -64,7 +64,7 @@ export default function SignUp() {
     setIsEmailInputEnable(false);
 
     try {
-      // await api.requestEmailVerificationCode(email);
+      await api.requestEmailVerificationCode(email);
       setIsAlertShow(true);
       setAlertMessage('인증 메일이 전송되었습니다.');
       setIsCodeSent(true);
@@ -92,7 +92,7 @@ export default function SignUp() {
     setIsEmailInputEnable(false);
 
     try {
-      // await api.checkEmailVerificationCode(email, authCode);
+      await api.checkEmailVerificationCode(email, authCode);
       setAlertMessage('인증 되었습니다.');
       setIsAlertShow(true);
       setVerification((prev) => ({ ...prev, authCodeCheck: true }));
@@ -129,14 +129,16 @@ export default function SignUp() {
 
   const handlePasswordChange = (e) => {
     const value = e.target.value.replace(/(\s*)/g, '');
-    setPassword(value);
-
     const check = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
 
     setVerification((prev) => ({
       ...prev,
       passwordConstraints: check.test(value) && value.length >= 8,
     }));
+    setPassword(value);
+
+    console.log(value)
+    console.log(check.test(value) && value.length >= 8)
   };
 
   const handlePasswordCheck = (e) => {
@@ -187,6 +189,10 @@ export default function SignUp() {
       ? styles.invalidMessageHidden
       : styles.invalidMessageVisible;
   };
+
+  const resolvedPasswordInvalidStyle = useMemo(() => {
+    return resolveInvalidMessageStyle(verification.passwordConstraints, password);
+  }, [verification.passwordConstraints, password]);
 
   return (
     <>
@@ -251,7 +257,7 @@ export default function SignUp() {
             />
             <br />
             <span
-              className={resolveInvalidMessageStyle(verification.passwordConstraints, password)}
+              className={resolvedPasswordInvalidStyle}
             >
               비밀번호는 특수부호를 포함 8자이상 작성해주세요
             </span>
