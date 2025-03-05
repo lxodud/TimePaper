@@ -7,6 +7,7 @@ import com.timepaper.backend.global.auth.service.AuthService;
 import com.timepaper.backend.global.dto.ApiResponse;
 import com.timepaper.backend.global.exception.ErrorCode;
 import com.timepaper.backend.global.exception.custom.auth.LoginValidationException;
+import com.timepaper.backend.global.exception.custom.common.GlobalException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -53,7 +54,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     } catch (IOException e) {
       //여기 예외처리 어떻게 하징
-      throw new RuntimeException("LoginRequestDto 파싱 중 에러 발생 ", e);
+      throw new GlobalException(ErrorCode.SERVER_ERROR);
     }
 
     validateLoginRequest(requestDto);
