@@ -7,11 +7,14 @@ import { api } from '../../api/api';
 import { useSelector } from 'react-redux';
 import { setPageTitle } from '../../store/slices/headerSlice';
 import { useDispatch } from 'react-redux';
+import Alert from '../../components/Alert/Alert';
+import { finishLoading, startLoading } from '../../store/slices/loadingSlice';
 
 export default function TimePaperCreate() {
   const [title, setTitle] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [isInValidTitle, setIsInValidTitle] = useState(false);
+  const [invalidTitleMessage, setInvalidTitleMessage] = useState('');
+  const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('제목을 입력해주세요.');
   const [isLoginButtonEnable, setIsLoginButtonEnable] = useState(false);
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -24,43 +27,43 @@ export default function TimePaperCreate() {
     setTitle(newValue);
 
     if (newValue === '') {
-      setError(false);
+      setIsInValidTitle(false);
       return;
     }
     if (newValue && newValue.trim().length === 0) {
-      setError(true);
-      setErrorMessage('공백만으로 이루어진 제목은 사용할 수 없습니다.');
+      setIsInValidTitle(true);
+      setInvalidTitleMessage('공백만으로 이루어진 제목은 사용할 수 없습니다.');
       return;
     }
     if (newValue.length > 30) {
       const trimmedValue = newValue.slice(0, 30);
       setTitle(trimmedValue);
-      setError(true);
-      setErrorMessage('제목의 최대 글자 수는 30자 입니다.');
+      setIsInValidTitle(true);
+      setInvalidTitleMessage('제목의 최대 글자 수는 30자 입니다.');
       return;
     }
-    setError(false);
+    setInvalidTitleMessage(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title.trim()) {
-      setError(true);
+      setIsError(true);
       setErrorMessage('제목을 입력해주세요.');
       return;
     }
-    setLoading(true);
 
     try {
+      dispatch(startLoading());
       const response = await api.createTimepaper(title);
       console.log(response);
       navigate(`/timepaper/${response.data.data.timePaperId}`);
     } catch (err) {
       console.error(err);
-      setError(true);
+      setIsError(true);
       setErrorMessage('타임페이퍼 생성 중 오류가 발생했습니다.');
     } finally {
-      setLoading(false);
+      dispatch(finishLoading());
     }
   };
 
@@ -86,10 +89,23 @@ export default function TimePaperCreate() {
     dispatch(setPageTitle('타임페이퍼 생성'));
   }, []);
 
+  const handleAlertButtonClick = () => {
+    setIsError(false);
+  };
+
   return (
     <>
       <form>
         <div className={styles.container}>
+          {isError && (
+            <div className={styles.alertContainer}>
+              <Alert
+                buttonTitle={'확인'}
+                message={errorMessage}
+                onClick={handleAlertButtonClick}
+              ></Alert>
+            </div>
+          )}
           <div className={styles.inputContainer}>
             <UnderBarInput
               placeholder="제목을 입력해주세요"
@@ -98,13 +114,13 @@ export default function TimePaperCreate() {
             />
             <div
               className={styles.errContainer}
-              style={{ visibility: error ? 'visible' : 'hidden' }}
+              style={{ visibility: isInValidTitle ? 'visible' : 'hidden' }}
             >
-              {errorMessage}
+              {invalidTitleMessage}
             </div>
           </div>
           <BottomButton
-            title={loading ? '추억거리 생성 중...' : '타임페이퍼 생성'}
+            title={'타임페이퍼 생성'}
             onClick={handleSubmit}
             isEnable={isLoginButtonEnable}
           />

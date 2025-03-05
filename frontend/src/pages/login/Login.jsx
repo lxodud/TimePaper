@@ -21,19 +21,20 @@ export default function Login() {
   const handleLoginButtonClick = async (event) => {
     setIsLoginButtonEnable(false);
     event.preventDefault();
-    dispatch(startLoading());
-    try {
-      const response = await api.login(inputData.email, inputData.password);
-      dispatch(login(response.headers.authorization));
-      const next = location.state?.next ?? -1;
-      navigate(next, { replace: true });
-    } catch (error) {
-      console.log(error);
-      setIsAlertShow(true);
-      setIsLoginButtonEnable(true);
-    } finally {
-      dispatch(finishLoading());
-    }
+    (async () => {
+      dispatch(startLoading());
+      try {
+        const response = await api.login(inputData.email, inputData.password);
+        dispatch(login(response.headers.authorization));
+        const next = location.state?.next ?? -1;
+        navigate(next, { replace: true });
+      } catch (error) {
+        setIsAlertShow(true);
+        setIsLoginButtonEnable(true);
+      } finally {
+        dispatch(finishLoading());
+      }
+    })();
   };
 
   const handleInputChange = (event) => {
@@ -71,11 +72,13 @@ export default function Login() {
     <>
       <div className={styles.container}>
         {isAlertShow && (
-          <Alert
-            buttonTitle={'확인'}
-            message={'로그인 실패했습니다.'}
-            onClick={handleAlertButtonClick}
-          ></Alert>
+          <div className={styles.alertContainer}>
+            <Alert
+              buttonTitle={'확인'}
+              message={'로그인 실패했습니다.'}
+              onClick={handleAlertButtonClick}
+            ></Alert>
+          </div>
         )}
         <img src={staticImagePath.timepaperLogo} className="logo-image" />
         <form action="" className={styles.formContainer}>
