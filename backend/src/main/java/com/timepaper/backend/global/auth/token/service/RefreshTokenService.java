@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timepaper.backend.domain.user.repository.UserRepository;
 import com.timepaper.backend.global.auth.token.entity.RefreshTokenInfo;
 import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
+import com.timepaper.backend.global.exception.ErrorCode;
 import com.timepaper.backend.global.exception.custom.auth.InvalidRefreshTokenException;
+import com.timepaper.backend.global.exception.custom.common.ResourceNotFoundException;
 import com.timepaper.backend.global.exception.custom.common.ServerErrorException;
 import java.time.Duration;
 import java.util.stream.Collectors;
@@ -99,9 +101,7 @@ public class RefreshTokenService {
     }
 
     return userRepository.findUserIdByEmail(email)
-        .orElseThrow(() -> new IllegalArgumentException(
-            "존재하지 않는 회원"
-        ));
+        .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
   }
 
   public void delete(String email) {

@@ -22,7 +22,7 @@ public enum ErrorCode {
 
   INVALID_EMAIL_FORMAT(HttpStatus.BAD_REQUEST, "1001", "이메일 형식이 올바르지 않습니다."),
   PASSWORD_TOO_SHORT(HttpStatus.BAD_REQUEST, "1002", "비밀번호는 최소 8자 이상이어야 합니다."),
-  USER_NOT_FOUND(HttpStatus.NOT_FOUND, "1003", "사용자를 찾을 수 없습니다."),
+  USER_NOT_FOUND(HttpStatus.NOT_FOUND, "2010", "사용자를 찾을 수 없습니다."),
 
   //인증 관련 (3000번)
   INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "3000", "아이디 또는 비밀번호가 일치하지 않습니다"),
