@@ -29,6 +29,7 @@
 
 .logoImage {
   width: 100%;
+  height: auto;
   user-select: none;
   pointer-events: none;
 }
@@ -38,8 +39,8 @@
   height: 7%;
   background-color: transparent;
   position: absolute;
-  top: 515px;
-  right: 50px;
+  bottom: 30px;
+  right: 30px;
   text-align: center;
   color: var(--black-color);
   font-family: var(--pretendard-regular);
@@ -54,25 +55,25 @@
   width: 100%;
   font-size: 18px;
   position: absolute;
-  top: 50%;
+  top: 33%;
   transform: translateY(-75%);
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 .fromText:focus {
+  height: auto;
   text-overflow: ellipsis; /* 텍스트 잘림 효과 */
-  white-space: normal; /* 텍스트 줄바꿈 허용 */
+  white-space: normal; /* 줄바꿈 허용 */
   overflow-wrap: break-word; /* 단어가 길 경우 줄바꿈 */
-  word-break: break-word; /* 단어를 강제로 줄바꿈 */
+  word-break: break-word; /* 긴 단어 분리 */
 }
 
 .textareaWrapper {
   position: absolute;
-  top: 200px;
-  left: 45px;
-  width: 85%;
+  top: 130px;
+  left: 30px;
+  width: 70%;
   height: 54%;
   resize: none;
   overflow: auto;
