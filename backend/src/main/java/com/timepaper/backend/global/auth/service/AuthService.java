@@ -39,8 +39,9 @@ public class AuthService {
   private final EmailSendManager emailSendManager;
   private final PasswordEncoder passwordEncoder;
 
-  public void setTokensResponse(HttpServletResponse response, Authentication authentication) {
-    String accessToken = jwtUtil.createToken(authentication);
+  public void setTokensResponse(HttpServletResponse response, Authentication authentication,
+      Long userId) {
+    String accessToken = jwtUtil.createToken(authentication, userId);
     String refreshToken = refreshTokenUtil.createRefreshToken(authentication.getName());
     refreshTokenService.save(refreshToken, authentication);
 
@@ -53,7 +54,12 @@ public class AuthService {
   public void reissueToken(HttpServletResponse response, String refreshToken) {
 
     Authentication authentication = refreshTokenService.validate(refreshToken);
-    setTokensResponse(response, authentication);
+
+    //refreshToken에서 email을 가져오고, 이걸 기반으로 user_id 가져오기
+    Long userId = refreshTokenService.getUserId(refreshToken);
+    log.info("userId: {}", userId);
+
+    setTokensResponse(response, authentication, userId);
   }
 
 
