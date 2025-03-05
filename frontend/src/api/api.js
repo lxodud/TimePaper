@@ -100,11 +100,11 @@ export const api = {
     return response;
   },
 
-  getPostits: async (timepaperId, page) => {
+  getPostits: async (timepaperId, page, size = 10) => {
     const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`, {
       params: {
         page: page,
-        size: 3,
+        size: size,
       },
     });
     return response;
