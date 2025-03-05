@@ -9,7 +9,7 @@ import Loading from './components/Loading/Loading';
 
 export default function App() {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.loading.isLoading);
+  const isLoading = useSelector((state) => state.loading.isLoading);
 
   useEffect(() => {
     (async () => {
