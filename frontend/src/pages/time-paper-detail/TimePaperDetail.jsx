@@ -43,6 +43,11 @@ export default function TimePaperDetail() {
         console.log(timePaperResponse.data.data);
         if (timePaperResponse && timePaperResponse.data && timePaperResponse.data.data) {
           const timePaperData = timePaperResponse.data.data;
+          if (timePaperData.locked) {
+            navigate(`/timepaper/${timepaperId}/lock`, { replace: true});
+            return;
+          }
+
           setTimepaper(timePaperData);
           dispatch(setPageTitle('타임페이퍼'));
         }
@@ -103,6 +108,7 @@ export default function TimePaperDetail() {
   const handleDeleteTimepaper = async () => {
     try {
       await api.deleteTimepaper(timepaperId); // 삭제 API 호출
+
       alert('타임페이퍼가 성공적으로 삭제되었습니다.');
       navigate('/'); // 삭제 후 목록 페이지로 이동
     } catch (error) {
