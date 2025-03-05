@@ -9,15 +9,6 @@
   gap: 20%;
 }
 
-.alertContainer {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  min-height: 210px;
-}
-
 .inputContainer {
   width: 80%;
 }

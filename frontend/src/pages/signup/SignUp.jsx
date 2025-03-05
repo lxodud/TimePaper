@@ -64,7 +64,7 @@ export default function SignUp() {
     setIsEmailInputEnable(false);
 
     try {
-      await api.requestEmailVerificationCode(email);
+      // await api.requestEmailVerificationCode(email);
       setIsAlertShow(true);
       setAlertMessage('인증 메일이 전송되었습니다.');
       setIsCodeSent(true);
@@ -92,7 +92,7 @@ export default function SignUp() {
     setIsEmailInputEnable(false);
 
     try {
-      await api.checkEmailVerificationCode(email, authCode);
+      // await api.checkEmailVerificationCode(email, authCode);
       setAlertMessage('인증 되었습니다.');
       setIsAlertShow(true);
       setVerification((prev) => ({ ...prev, authCodeCheck: true }));
@@ -192,13 +192,7 @@ export default function SignUp() {
     <>
       <div className={styles.signUpContainer}>
         {isAlertShow && (
-          <div className={styles.alertContainer}>
-            <Alert
-              buttonTitle="확인"
-              message={alertMessage}
-              onClick={handleAlertButtonClick}
-            ></Alert>
-          </div>
+          <Alert buttonTitle="확인" message={alertMessage} onClick={handleAlertButtonClick}></Alert>
         )}
         <div className={styles.signUpForm}>
           <div>
