@@ -1,7 +1,5 @@
 import apiInstance from './apiInstance';
 import store from '../store/store';
-import { couldStartTrivia } from 'typescript';
-const state = store.getState();
 
 export const api = {
   login: async (email, password) => {

@@ -3,7 +3,7 @@
   width: 80%;
   height: 200px;
   position: absolute;
-  top: 100%;
+  top: 60%;
   left: 50%;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@
   font-size: 3rem;
   z-index: 1000;
   border-radius: 15px;
-  transform: translate(-50%, -50%)
+  transform: translate(-50%, -50%);
 }
 
 .message {

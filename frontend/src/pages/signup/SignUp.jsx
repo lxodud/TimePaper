@@ -71,7 +71,7 @@ export default function SignUp() {
       setTimeLeft(300);
     } catch (error) {
       setIsAlertShow(true);
-      setAlertMessage('오류발생')
+      setAlertMessage('오류발생');
       setIsAuthCodeSendButtonEnable(true);
       setIsEmailInputEnable(true);
     } finally {
@@ -99,8 +99,8 @@ export default function SignUp() {
       setIsConfirmAuthMessage('인증되었습니다.');
     } catch (error) {
       setIsAlertShow(true);
-      setAlertMessage('오류발생')
-      console.log(error.response)
+      setAlertMessage('오류발생');
+      console.log(error.response);
       setIsConfirmAuthCodeButtonEnable(true);
       setIsAuthCodeInputEnable(true);
     }
@@ -167,7 +167,7 @@ export default function SignUp() {
       });
     } catch {
       setIsAlertShow(true);
-      setAlertMessage('오류발생')
+      setAlertMessage('오류발생');
       setIsEnable(true);
     } finally {
       dispatch(finishLoading());
@@ -194,11 +194,7 @@ export default function SignUp() {
     <>
       <div className={styles.signUpContainer}>
         {isAlertShow && (
-          <Alert
-            buttonTitle="확인"
-            message={alertMessage}
-            onClick={handleAlertButtonClick}
-          ></Alert>
+          <Alert buttonTitle="확인" message={alertMessage} onClick={handleAlertButtonClick}></Alert>
         )}
         <div className={styles.signUpForm}>
           <div>
