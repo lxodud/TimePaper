@@ -8,14 +8,17 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { api } from '../../api/api';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../store/slices/headerSlice';
+import { finishLoading, startLoading } from '../../store/slices/loadingSlice';
+import Alert from '../../components/Alert/Alert';
 
 export default function TimePaperSetLock() {
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('제목을 입력해주세요.');
   const [releaseDate, setReleaseDate] = useState(null);
-  const [isLoginButtonEnable, setIsLoginButtonEnable] = useState(false);
+  const [isCapsuleButtonEnable, setIsCapsuleButtonEnable] = useState(false);
+  const [isShowAlert, setIsShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const { timepaperId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,28 +40,28 @@ export default function TimePaperSetLock() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoginButtonEnable(false);
+    setIsCapsuleButtonEnable(false);
 
-    setLoading(true);
+    dispatch(startLoading());
 
     try {
       const response = await api.lockTimepaper(timepaperId, email, releaseDate);
       navigate(`/timepaper/${response.id}/lock`, { replace: true });
     } catch (err) {
       console.error(err);
-      setError(true);
-      setErrorMessage('타임페이퍼 캡슐화 중 오류가 발생했습니다.');
+      setIsShowAlert(true)
+      setAlertMessage('타임페이퍼 캡슐화 중 오류가 발생했습니다.');
     } finally {
-      setLoading(false);
-      setIsLoginButtonEnable(true);
+      dispatch(finishLoading());
+      setIsCapsuleButtonEnable(true);
     }
   };
 
   useEffect(() => {
     if (!error && email.trim().length !== 0 && releaseDate !== null) {
-      setIsLoginButtonEnable(true);
+      setIsCapsuleButtonEnable(true);
     } else {
-      setIsLoginButtonEnable(false);
+      setIsCapsuleButtonEnable(false);
     }
   }, [email, releaseDate]);
 
@@ -66,12 +69,17 @@ export default function TimePaperSetLock() {
     dispatch(setPageTitle('타임캡슐 생성'));
   }, []);
 
+  const handleAlertButtonClick = () => {
+    setIsShowAlert(false);
+  };
+
   if (!location.state?.authorEmail) {
     return <Navigate to="/404" replace />;
   }
 
   return (
     <>
+      {isShowAlert && <Alert message={alertMessage} buttonTitle={"확인"} onClick={handleAlertButtonClick}></Alert>}
       <form>
         <div className={styles.container}>
           <div className={styles.inputContainer}>
@@ -101,9 +109,9 @@ export default function TimePaperSetLock() {
             </div>
           </div>
           <BottomButton
-            title={loading ? '시간 자물쇠 거는 중...' : '타임페이퍼 캡슐화'}
+            title={'타임페이퍼 캡슐화'}
             onClick={handleSubmit}
-            isEnable={isLoginButtonEnable}
+            isEnable={isCapsuleButtonEnable}
           />
         </div>
       </form>

@@ -23,6 +23,8 @@ export default function TimePaperDetail() {
   const [selectedPostit, setSelectedPostit] = useState(null); // 선택된 포스트잇 저장
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [isScrollLoading, setIsScrollLoading] = useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -40,7 +42,6 @@ export default function TimePaperDetail() {
       dispatch(startLoading());
       try {
         const timePaperResponse = await api.getTimepaper(timepaperId);
-        console.log(timePaperResponse.data.data);
         if (timePaperResponse && timePaperResponse.data && timePaperResponse.data.data) {
           const timePaperData = timePaperResponse.data.data;
           if (timePaperData.locked) {
@@ -72,17 +73,18 @@ export default function TimePaperDetail() {
     }
 
     dispatch(startLoading());
+    setIsScrollLoading(true)
 
     try {
       const response = await api.getPostits(timepaperId, currentPage);
       const postits = response.data.data.postits;
       const next = response.data.data.hasNext;
-      console.log(hasNext);
       setHasNext(next);
       setPostits((prev) => [...prev, ...postits]);
     } catch {
     } finally {
       dispatch(finishLoading());
+      setIsScrollLoading(false)
     }
   };
 
@@ -131,14 +133,11 @@ export default function TimePaperDetail() {
 
   const handleScroll = useCallback(
     ([entry], observer) => {
-      if (entry.isIntersecting && hasNext && !isFirstRender && !isLoading) {
-        console.log(hasNext);
-        console.log(!isFirstRender);
-        console.log(!isLoading);
+      if (entry.isIntersecting && hasNext && !isFirstRender && !isScrollLoading) {
         setCurrentPage(currentPage + 1);
       }
     },
-    [currentPage, isFirstRender, isLoading, hasNext],
+    [currentPage, isFirstRender, isScrollLoading, hasNext],
   );
 
   useEffect(() => {
@@ -245,6 +244,7 @@ export default function TimePaperDetail() {
         </div>
       </div>
       <div ref={bottomRef}></div>
+      {isScrollLoading && <div>로딩중......</div>}
     </>
   );
 }
