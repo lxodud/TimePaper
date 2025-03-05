@@ -31,7 +31,7 @@ public class JWTUtil {
     secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
   }
 
-  public String createToken(Authentication authentication) {
+  public String createToken(Authentication authentication, Long userId) {
     String email = authentication.getName();
 
     List<String> roles = authentication.getAuthorities()
@@ -41,6 +41,7 @@ public class JWTUtil {
 
     Claims claims = Jwts.claims().setSubject(email);
     claims.put("roles", roles);
+    claims.put("userId", userId);
 
     Date now = new Date();
     Date validity = new Date(now.getTime() + tokenValidityInMilliseconds);
