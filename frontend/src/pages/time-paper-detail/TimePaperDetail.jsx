@@ -19,7 +19,6 @@ export default function TimePaperDetail() {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  // Redux에서 현재 로그인한 사용자의 이메일 가져오기
   const userId = useSelector((state) => state.auth.userId || '');
 
   useEffect(() => {
@@ -168,7 +167,8 @@ export default function TimePaperDetail() {
               modalContent={selectedPostit.content}
               from={selectedPostit.author}
               postitId={selectedPostit.postitId}
-              timepaperId={timepaperId}
+              authorId={selectedPostit.authorId}
+              userId={userId}
             />
           )}
           <BottomButton
