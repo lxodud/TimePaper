@@ -8,6 +8,7 @@ import BottomButton from '../../components/BottomButton/BottomButton';
 import ConfirmModal from '../../components/confirmmodal/ConfirmModal';
 import Modal from '../../components/Modal/Modal';
 import { finishLoading, startLoading } from '../../store/slices/loadingSlice';
+import Alert from '../../components/Alert/Alert';
 
 export default function TimePaperDetail() {
   const { timepaperId } = useParams();
@@ -46,11 +47,10 @@ export default function TimePaperDetail() {
           dispatch(setPageTitle('타임페이퍼'));
         }
       } catch (error) {
+        setIsError(true);
         if (error.response && error.response.status === 404) {
           setErrorMessage('해당 타임페이퍼는 존재하지 않습니다.');
         } else {
-          console.log(error.response);
-          console.error('타임페이퍼 조회 에러:', error);
           setErrorMessage('타임페이퍼 데이터를 불러오는 중 오류가 발생했습니다.');
         }
       } finally {
@@ -106,8 +106,8 @@ export default function TimePaperDetail() {
       alert('타임페이퍼가 성공적으로 삭제되었습니다.');
       navigate('/'); // 삭제 후 목록 페이지로 이동
     } catch (error) {
-      console.error('타임페이퍼 삭제 실패:', error);
-      alert('타임페이퍼를 삭제하는 데 실패했습니다.');
+      setIsError(true);
+      setErrorMessage('타임페이퍼를 삭제하는 데 실패했습니다.');
     }
     setShowConfirmModal(false); // 모달 닫기
   };
@@ -155,14 +155,19 @@ export default function TimePaperDetail() {
     setIsFirstRender(false);
   }, []);
 
+  const handleAlertButtonClick = () => {
+    setIsError(false);
+  };
+
   return (
     <>
-      {timepaper ? (
+      {isError && (
+        <Alert message={errorMessage} buttonTitle={'확인'} onClick={handleAlertButtonClick}></Alert>
+      )}
+      {timepaper && (
         <div className={styles.timepaperDetail}>
           <h2>{timepaper.title}</h2>
         </div>
-      ) : (
-        <div>타임페이퍼 데이터를 불러오는 중...</div>
       )}
       <div className={styles.container}>
         <div className={styles.postitsSection}>
