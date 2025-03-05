@@ -2,9 +2,11 @@ package com.timepaper.backend.global.auth.token.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.timepaper.backend.domain.user.repository.UserRepository;
 import com.timepaper.backend.global.auth.token.entity.RefreshTokenInfo;
 import com.timepaper.backend.global.auth.token.util.RefreshTokenUtil;
-import com.timepaper.backend.global.exception.InvalidRefreshTokenException;
+import com.timepaper.backend.global.exception.custom.auth.InvalidRefreshTokenException;
+import com.timepaper.backend.global.exception.custom.common.ServerErrorException;
 import java.time.Duration;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class RefreshTokenService {
   private final StringRedisTemplate redisTemplate;
   private final RefreshTokenUtil refreshTokenUtil;
   private final ObjectMapper objectMapper;
+  private final UserRepository userRepository;
 
   public void save(String refreshToken, Authentication authentication) {
 
@@ -37,7 +40,7 @@ public class RefreshTokenService {
     try {
       tokenInfoJson = objectMapper.writeValueAsString(tokenInfo);
     } catch (JsonProcessingException e) {
-      throw new RuntimeException("Failed to serialize RefreshTokenInfo", e);
+      throw new ServerErrorException();
     }
 
     try {
@@ -47,7 +50,7 @@ public class RefreshTokenService {
           Duration.ofDays(PERSISTENT_VALIDITY_DAYS)
       );
     } catch (DataAccessException e) {
-      throw new RuntimeException("Failed to save RefreshTokenInfo to Redis", e);
+      throw new ServerErrorException();
     }
 
   }
@@ -58,7 +61,7 @@ public class RefreshTokenService {
     String tokenInfoJson = redisTemplate.opsForValue().get(emailKey);
 
     if (tokenInfoJson == null) {
-      throw new InvalidRefreshTokenException("refresh token 유효하지 않음");
+      throw new InvalidRefreshTokenException();
     }
 
     try {
@@ -72,9 +75,33 @@ public class RefreshTokenService {
               SimpleGrantedAuthority::new).collect(Collectors.toList()));
 
     } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
+      throw new ServerErrorException();
     }
 
+  }
+
+  public Long getUserId(String refreshToken) {
+    String emailKey = getEmailKey(refreshToken);
+
+    String tokenInfoJson = redisTemplate.opsForValue().get(emailKey);
+
+    if (tokenInfoJson == null) {
+      throw new InvalidRefreshTokenException();
+    }
+
+    String email;
+    try {
+      RefreshTokenInfo refreshTokenInfo = objectMapper.readValue(tokenInfoJson,
+          RefreshTokenInfo.class);
+      email = refreshTokenInfo.getEmail();
+    } catch (JsonProcessingException e) {
+      throw new ServerErrorException();
+    }
+
+    return userRepository.findUserIdByEmail(email)
+        .orElseThrow(() -> new IllegalArgumentException(
+            "존재하지 않는 회원"
+        ));
   }
 
   public void delete(String email) {

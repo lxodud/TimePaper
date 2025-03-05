@@ -1,10 +1,10 @@
 import axios from 'axios';
-import store from '../store/store'
-import { api } from './api'
+import store from '../store/store';
+// import { api } from './api'
 import { login } from '../store/slices/authSlice';
 
 const apiInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 const NO_TOKEN_REQUIRED = [
@@ -20,11 +20,9 @@ apiInstance.interceptors.request.use((config) => {
   const state = store.getState();
   const isRequireToken = !NO_TOKEN_REQUIRED.includes(config.url);
   const isGetTimepaper = GET_TIMEPAPER_REGEX.test(config.url) && config.method === 'get';
-
   if (isRequireToken && !isGetTimepaper) {
     config.headers['Authorization'] = state.auth.accessToken;
   }
-
   return config;
 });
 
@@ -50,4 +48,4 @@ apiInstance.interceptors.response.use(
   },
 );
 
-export default apiInstance
+export default apiInstance;

@@ -1,4 +1,4 @@
-package com.timepaper.backend.global.auth.token.filter;
+package com.timepaper.backend.global.auth.filter;
 
 import static java.util.Arrays.stream;
 

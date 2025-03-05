@@ -1,0 +1,33 @@
+.container {
+  background-color: white;
+  width: 80%;
+  height: 200px;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-family: var(--pretendard-bold);
+  font-size: 3rem;
+  z-index: 1000;
+  border-radius: 15px;
+  transform: translate(-50%, -50%)
+}
+
+.message {
+  font-family: var(--pretendard-regular);
+  font-size: var(--font-size-medium);
+  align-self: center;
+  margin-top: 10%;
+}
+
+.button {
+  width: 80%;
+  height: 20%;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--orange-color);
+  cursor: pointer;
+}

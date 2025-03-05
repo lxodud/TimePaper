@@ -1,30 +1,42 @@
-import apiInstance from "./apiInstance";
+import apiInstance from './apiInstance';
+import store from '../store/store';
+import { couldStartTrivia } from 'typescript';
+const state = store.getState();
 
 export const api = {
-  login: async (email, password) => { 
-    const response = await apiInstance.post("/auth/login", {
+  login: async (email, password) => {
+    const response = await apiInstance.post(
+      '/auth/login',
+      {
         email: email,
-        password: password
-    }, {
-      withCredentials: true
-    })
+        password: password,
+      },
+      {
+        withCredentials: true,
+      },
+    );
 
-    return response
+    return response;
   },
 
-  reissue: async () => { 
-    const response = await apiInstance.post("/auth/reissue", {}, {
-      withCredentials: true,
-      headers: {
-        'Access-Control-Allow-Origin': `${import.meta.env.VITE_API_URL}` 
-      }
-    })
+  reissue: async () => {
+    const response = await apiInstance.post(
+      '/auth/reissue',
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          'Access-Control-Allow-Origin': `${import.meta.env.VITE_API_URL}`,
+        },
+      },
+    );
 
-    return response
+    return response;
   },
 
   logout: async () => {
-    const response = await apiInstance.post('/auth/logout',
+    const response = await apiInstance.post(
+      '/auth/logout',
       {},
       {
         withCredentials: true,
@@ -34,73 +46,72 @@ export const api = {
   },
 
   signup: async (email, password, isPrivacyPolicyAccepted, isTermsAccepted) => {
-    const response = await apiInstance.post("/auth/signup", {
-        email: email,
-        password: password,
-        isPrivacyPolicyAccepted : isPrivacyPolicyAccepted,
-        isTermsAccepted : isTermsAccepted
-      }
-    )
+    const response = await apiInstance.post('/auth/signup', {
+      email: email,
+      password: password,
+      isPrivacyPolicyAccepted: isPrivacyPolicyAccepted,
+      isTermsAccepted: isTermsAccepted,
+    });
 
-    return response
-  },
-
-  unsubscribe: async () => {
-    const response = await apiInstance.delete("/auth/unsubscribe")
-  },
-
-  requestEmailVerificationCode: async (email) => {
-    const response = await apiInstance.post("/auth/email-verification-codes", {
-        email: email
-    })
     return response;
   },
 
-  checkEmailVerificationCode: async (email,authenticationCode) => { 
-    const response = await apiInstance.post("/auth/email-verification-codes/validate", {
-        email: email,
-        authenticationCode: authenticationCode
-    })
+  unsubscribe: async () => {
+    const response = await apiInstance.delete('/auth/unsubscribe');
+  },
+
+  requestEmailVerificationCode: async (email) => {
+    const response = await apiInstance.post('/auth/email-verification-codes', {
+      email: email,
+    });
+    return response;
+  },
+
+  checkEmailVerificationCode: async (email, authenticationCode) => {
+    const response = await apiInstance.post('/auth/email-verification-codes/validate', {
+      email: email,
+      authenticationCode: authenticationCode,
+    });
     return response;
   },
 
   getTimepaper: async (timepaperId) => {
-    const response = await apiInstance.get(`/timepapers/${timepaperId}`)
+    const response = await apiInstance.get(`/timepapers/${timepaperId}`);
     return response;
   },
 
   createTimepaper: async (title) => {
     const response = await apiInstance.post('/timepapers', {
-        title: title
-    })
+      title: title,
+    });
 
-    return response
-  },
-
-  deleteTimepaper: async (timepaperId) => { 
-    const response = await apiInstance.delete(`/timepapers/${timepaperId}`)
-    return response
-  },
-
-  lockTimepaper: async (timepaperId, email, releaseDate) => { 
-    const response = await apiInstance.patch(`/timepapers/${timepaperId}/lock`, {
-      recipientEmail: email,
-      releaseDate: releaseDate
-    })
-
-    return response
-  },
-
-  getPostits: async (timepaperId) => { 
-    const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`)
     return response;
   },
 
-  createPostit: async (timepaperId, data) => { 
+  deleteTimepaper: async (timepaperId) => {
+    const response = await apiInstance.delete(`/timepapers/${timepaperId}`);
+    return response;
+  },
+
+  lockTimepaper: async (timepaperId, email, releaseDate) => {
+    const response = await apiInstance.patch(`/timepapers/${timepaperId}/lock`, {
+      recipientEmail: email,
+      releaseDate: releaseDate,
+    });
+
+    return response;
+  },
+
+  getPostits: async (timepaperId) => {
+    const response = await apiInstance.get(`/timepapers/${timepaperId}/postits`);
+    return response;
+  },
+
+  createPostit: async (timepaperId, data) => {
     const response = await apiInstance.post(`/timepapers/${timepaperId}/postits`, data, {
       headers: {
-        "Content-Type": "multipart/form-data",
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
     return response;
   },
@@ -110,15 +121,25 @@ export const api = {
     return response;
   },
 
-  getMyPostits: async () => { 
-    const response = await apiInstance.get(`/my/postits`)
+  getMyTimePapers: async () => {
+    const state = store.getState();
+    const response = await apiInstance.get(`/my/timepapers`, {
+      headers: {
+        Authorization: state.auth.accessToken,
+      },
+      withCredentials: true,
+    });
+    return response;
   },
 
-  getMyTimePapers: async () => { 
-    const response = await apiInstance.get(`/my/timepapers`)
+  getMyPostits: async () => {
+    const state = store.getState();
+    const response = await apiInstance.get(`/my/postits`, {
+      headers: {
+        Authorization: state.auth.accessToken,
+      },
+      withCredentials: true,
+    });
+    return response;
   },
-
-  getMyInfo: async () => {
-    return await apiInstance.get(`/my`)
-  }
-}
+};

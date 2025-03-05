@@ -1,200 +1,248 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './SignUp.module.css';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import { api } from '../../api/api';
+import { finishLoading, startLoading } from '../../store/slices/loadingSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { replace, useNavigate } from 'react-router-dom';
+import Alert from '../../components/Alert/Alert';
 
 export default function SignUp() {
-  const [placeholdersVisible, setPlaceholdersVisible] = useState([true, true, true, true]);
-  const [email, setEmail] = useState(''); // 이메일 입력값 저장
-  const [authenticationCode, setauthenticationCode] = useState(''); //인증번호 input창 데이터 저장
-  const [isCodeSent, setIsCodeSent] = useState(false); // 인증번호 입력창 노출을 위한 useState
-  const [timeLeft, setTimeLeft] = useState(0); // 인증시간 관련 useState
-  const [password, setPassword] = useState(''); // 비밀번호input의 값을 넣을 useState
-  const [passwordCheck, setPasswordCheck] = useState(false); //비밀번호확인 input의 값을 넣을 useState
-  const [isEnable, setIsEnable] = useState(false); // 회원가입 버튼 활성화/비활성화
+  const [email, setEmail] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isAuthCodeSendButtonEnable, setIsAuthCodeSendButtonEnable] = useState(false);
+  const [isEmailInputEnable, setIsEmailInputEnable] = useState(true);
+  const [isCodeSent, setIsCodeSent] = useState(false);
+
+  const [authCode, setAuthCode] = useState('');
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isAuthCodeInputEnable, setIsAuthCodeInputEnable] = useState(true);
+  const [isConfirmAuthCodeButtonEnable, setIsConfirmAuthCodeButtonEnable] = useState(false);
+  const [confirmAuthMessage, setIsConfirmAuthMessage] = useState('');
+
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+
+  const [isEnable, setIsEnable] = useState(false);
 
   const [verification, setVerification] = useState({
-    passwordConstraints: false, // 비밀번호 제약조건 성립여부
-    passwordCheckConstraints: false, // 비밀번호확인 제약조건 성립여부
-    verificationCodeCheck: false, // 인증코드 인증여부 true/false
-    isPrivacyPolicyAccepted: false, // 개인정보 약관 동의 true/false
-    isTermsAccepted: false, // 이용 약관 동의 true/false
+    passwordConstraints: false,
+    passwordCheckConstraints: false,
+    authCodeCheck: false,
+    isPrivacyPolicyAccepted: false,
+    isTermsAccepted: false,
   });
+
+  const [isAlertShow, setIsAlertShow] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoggedIn, isLoading } = useSelector((state) => {
+    return {
+      isLoggedIn: state.auth.isLoggedIn,
+      isLoading: state.loading.isLoading,
+    };
+  });
+
+  const emailFormat = /^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[cC][oO][mM]$/;
+
+  const handleEmailInputChange = (e) => {
+    e.preventDefault();
+    setEmail(e.target.value);
+
+    const isEmailValid = emailFormat.test(e.target.value);
+
+    setIsAuthCodeSendButtonEnable(isEmailValid);
+    setIsEmailValid(isEmailValid && e.target.value.trim());
+  };
+
+  const handleAuthCodeSendButtonClick = async (e) => {
+    e.preventDefault();
+    dispatch(startLoading());
+    setIsAuthCodeSendButtonEnable(false);
+    setIsEmailInputEnable(false);
+
+    try {
+      await api.requestEmailVerificationCode(email);
+      setIsAlertShow(true);
+      setAlertMessage('인증 메일이 전송되었습니다.');
+      setIsCodeSent(true);
+      setTimeLeft(300);
+    } catch (error) {
+      setIsAlertShow(true);
+      setAlertMessage('오류발생')
+      setIsAuthCodeSendButtonEnable(true);
+      setIsEmailInputEnable(true);
+    } finally {
+      dispatch(finishLoading());
+    }
+  };
+
+  const handleAuthCodeInputChange = (e) => {
+    e.preventDefault();
+
+    setAuthCode(e.target.value);
+    setIsConfirmAuthCodeButtonEnable(e.target.value.length === 6);
+  };
+
+  const emailVerificationCodeCheck = async () => {
+    setIsConfirmAuthCodeButtonEnable(false);
+    setIsAuthCodeInputEnable(false);
+    setIsEmailInputEnable(false);
+
+    try {
+      await api.checkEmailVerificationCode(email, authCode);
+      setAlertMessage('인증 되었습니다.');
+      setIsAlertShow(true);
+      setVerification((prev) => ({ ...prev, authCodeCheck: true }));
+      setIsConfirmAuthMessage('인증되었습니다.');
+    } catch (error) {
+      setIsAlertShow(true);
+      setAlertMessage('오류발생')
+      console.log(error.response)
+      setIsConfirmAuthCodeButtonEnable(true);
+      setIsAuthCodeInputEnable(true);
+    }
+  };
+
+  useEffect(() => {
+    if (verification.authCodeCheck) {
+      return;
+    }
+
+    setIsConfirmAuthMessage(
+      `남은 시간: ${Math.floor(timeLeft / 60)}:${('0' + (timeLeft % 60)).slice(-2)}`,
+    );
+
+    if (timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+
+    if (timeLeft === 0 && isCodeSent) {
+      setIsConfirmAuthMessage('인증 코드가 만료되었습니다.');
+      setIsEmailInputEnable(true);
+      setIsAuthCodeSendButtonEnable(true);
+      setIsAuthCodeInputEnable(true);
+    }
+  }, [timeLeft]);
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value.replace(/(\s*)/g, '');
+    setPassword(value);
+
+    const check = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+    console.log(check.test(value) && value.length >= 8);
+
+    setVerification((prev) => ({
+      ...prev,
+      passwordConstraints: check.test(value) && value.length >= 8,
+    }));
+  };
+
+  const handlePasswordCheck = (e) => {
+    const value = e.target.value.replace(/(\s*)/g, '');
+    setPasswordCheck(value);
+    setVerification((prev) => ({ ...prev, passwordCheckConstraints: password === value }));
+  };
 
   useEffect(() => {
     const allTrue = Object.values(verification).every(Boolean);
     setIsEnable(allTrue);
   }, [verification]);
 
-  const email_format = /^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[cC][oO][mM]$/;
-
-  const emailCertification = async (e) => {
-    e.preventDefault();
-    setTimeLeft(300);
-
-    if (!email || !email_format.test(email)) {
-      alert('이메일 형식이 올바르지 않습니다.');
-      return;
-    } else {
-      try {
-        const response = await api.requestEmailVerificationCode(email);
-        alert('인증 메일이 전송되었습니다.');
-        setIsCodeSent(true);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
-  const emailverificationCodeCheck = async () => {
-    setVerification((prev) => ({ ...prev, verificationCodeCheck: true }));
-    try {
-      await api.checkEmailVerificationCode(email, authenticationCode);
-      alert('인증되었습니다.');
-      setVerification((prev) => ({ ...prev, verificationCodeCheck: true }));
-    } catch (error) {
-      setVerification((prev) => ({ ...prev, verificationCodeCheck: false }));
-      console.error('인증 확인 중 오류 발생:', error);
-    }
-  };
-
-  useEffect(() => {
-    if (isCodeSent) {
-      setTimeLeft(300);
-    }
-  }, [isCodeSent]);
-
-  useEffect(() => {
-    if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [timeLeft]);
-
-  const handleFocus = (index) => {
-    const newPlaceholdersVisible = [...placeholdersVisible];
-    newPlaceholdersVisible[index] = false;
-    setPlaceholdersVisible(newPlaceholdersVisible);
-  };
-
-  const handleBlur = (index, value) => {
-    const newPlaceholdersVisible = [...placeholdersVisible];
-    if (value === '') {
-      newPlaceholdersVisible[index] = true;
-    }
-    setPlaceholdersVisible(newPlaceholdersVisible);
-  };
-
-  const handlePassword = (e) => {
-    const value = e.target.value.replace(/(\s*)/g, '');
-    setPassword(value);
-
-    const check = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
-
-    if (check.test(value) && value.length >= 8) {
-      setVerification((prev) => ({
-        ...prev,
-        passwordConstraints: true,
-      }));
-    } else {
-      setVerification((prev) => ({
-        ...prev,
-        passwordConstraints: false,
-      }));
-    }
-  };
-
-  const handlePasswordCheck = (e) => {
-    const value = e.target.value.replace(/(\s*)/g, '');
-    setPasswordCheck(value);
-
-    if (password === value) {
-      setVerification((prev) => ({ ...prev, passwordCheckConstraints: true }));
-    } else {
-      setVerification((prev) => ({ ...prev, passwordCheckConstraints: false }));
-    }
-  };
-
   const handleSignUp = async () => {
-    await api.signup(
-      email,
-      password,
-      verification.isPrivacyPolicyAccepted,
-      verification.isTermsAccepted,
-    );
+    setIsEnable(false);
+    dispatch(startLoading());
+    try {
+      await api.signup(
+        email,
+        password,
+        verification.isPrivacyPolicyAccepted,
+        verification.isTermsAccepted,
+      );
+      navigate('/login', {
+        replace: true,
+      });
+    } catch {
+      setIsAlertShow(true);
+      setAlertMessage('오류발생')
+      setIsEnable(true);
+    } finally {
+      dispatch(finishLoading());
+    }
   };
 
-  const handleAlertSignUp = () => {
-    alert('잘못 입력된 내용이 있습니다.');
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/', replace);
+    }
+  }, [isLoggedIn]);
+
+  const handleAlertButtonClick = () => {
+    setIsAlertShow(false);
+  };
+
+  const resolveInvalidMessageStyle = (isValid, inputValue) => {
+    return isValid || inputValue.length === 0
+      ? styles.invalidMessageHidden
+      : styles.invalidMessageVisible;
   };
 
   return (
     <>
       <div className={styles.signUpContainer}>
+        {isAlertShow && (
+          <Alert
+            buttonTitle="확인"
+            message={alertMessage}
+            onClick={handleAlertButtonClick}
+          ></Alert>
+        )}
         <div className={styles.signUpForm}>
-          <div className={styles.marginBox}>
+          <div>
             <label className={styles.fields}>이메일*</label>
             <input
-              className={`${verification.verificationCodeCheck ? styles.fieldsInputLock : styles.fieldsInput}`}
+              className={isEmailInputEnable ? styles.fieldsInput : styles.fieldsInputLock}
               type="email"
               name="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              placeholder={placeholdersVisible[0] ? '이메일 작성' : ''}
-              onFocus={() => handleFocus(0)}
-              onBlur={(e) => handleBlur(0, e.target.value)}
-              style={{ textAlign: placeholdersVisible[0] ? 'center' : 'left' }}
+              onChange={handleEmailInputChange}
+              placeholder={'이메일 작성'}
             />
             <button
-              className={
-                verification.verificationCodeCheck
-                  ? styles.butLock
-                  : email_format.test(email)
-                    ? styles.emailCheckBut
-                    : styles.butLock
-              }
-              onClick={emailCertification}
+              className={isAuthCodeSendButtonEnable ? styles.emailCheckBut : styles.butLock}
+              onClick={handleAuthCodeSendButtonClick}
             >
               인증
             </button>
+            <br />
+            {!isCodeSent && (
+              <span className={resolveInvalidMessageStyle(isEmailValid, email)}>
+                이메일 형식이 올바르지 않습니다.
+              </span>
+            )}
           </div>
 
           {isCodeSent && (
             <div className={styles.marginBox}>
-              <div className={styles.fields}>인증 코드 입력</div>
+              <label className={styles.fields}>인증 코드 입력</label>
               <input
-                className={`${verification.verificationCodeCheck ? styles.fieldsInputLock : styles.fieldsInput}`}
+                className={isAuthCodeInputEnable ? styles.fieldsInput : styles.fieldsInputLock}
                 type="text"
-                placeholder={placeholdersVisible[1] ? '인증 번호 입력' : ''}
+                placeholder={'인증 번호 입력'}
                 maxLength="6"
-                onFocus={() => handleFocus(1)}
-                onBlur={(e) => handleBlur(1, e.target.value)}
-                style={{ textAlign: placeholdersVisible[1] ? 'center' : 'left' }}
-                onChange={(e) => setauthenticationCode(e.target.value)}
-                value={authenticationCode}
+                onChange={handleAuthCodeInputChange}
               />
               <button
-                className={
-                  verification.verificationCodeCheck
-                    ? styles.butLock // 인증 성공하면 버튼 비활성화
-                    : authenticationCode.length === 6
-                      ? styles.emailCheckBut // 6자리 인증번호 입력되면 활성화
-                      : styles.butLock // 그렇지 않으면 비활성화
-                }
-                onClick={emailverificationCodeCheck}
+                className={isConfirmAuthCodeButtonEnable ? styles.emailCheckBut : styles.butLock}
+                onClick={emailVerificationCodeCheck}
               >
-                번호확인
+                확인
               </button>
 
-              <div className={styles.authentication}>
-                {verification.verificationCodeCheck && timeLeft > 0 ? (
-                  '인증되었습니다!'
-                ) : timeLeft > 0 ? (
-                  `남은 시간: ${Math.floor(timeLeft / 60)}:${('0' + (timeLeft % 60)).slice(-2)}`
-                ) : (
-                  <span className={styles.expired}>인증 코드가 만료되었습니다.</span>
-                )}
-              </div>
+              <br />
+              <span className={styles.authentication}>{confirmAuthMessage}</span>
             </div>
           )}
 
@@ -204,21 +252,15 @@ export default function SignUp() {
               className={styles.fieldsInput}
               type="password"
               name="password"
-              placeholder={placeholdersVisible[2] ? '비밀번호 작성' : ''}
-              onFocus={() => handleFocus(2)}
-              onBlur={(e) => handleBlur(2, e.target.value)}
-              style={{ textAlign: placeholdersVisible[2] ? 'center' : 'left' }}
-              onChange={handlePassword}
+              placeholder={'비밀번호 작성'}
+              onChange={handlePasswordChange}
             />
-            <div
-              className={
-                !password || verification.passwordConstraints
-                  ? styles.visibilityVisible
-                  : styles.visibilityHidden
-              }
+            <br />
+            <span
+              className={resolveInvalidMessageStyle(verification.passwordConstraints, password)}
             >
               비밀번호는 특수부호를 포함 8자이상 작성해주세요
-            </div>
+            </span>
           </div>
 
           <div>
@@ -229,21 +271,18 @@ export default function SignUp() {
               className={styles.fieldsInput}
               type="password"
               name="passwordCheck"
-              placeholder={placeholdersVisible[3] ? '비밀번호 확인' : ''}
-              onFocus={() => handleFocus(3)}
-              onBlur={(e) => handleBlur(3, e.target.value)}
-              style={{ textAlign: placeholdersVisible[3] ? 'center' : 'left' }}
+              placeholder={'비밀번호 확인'}
               onChange={handlePasswordCheck}
             />
-            <div
-              className={
-                !passwordCheck || verification.passwordCheckConstraints
-                  ? styles.visibilityVisible
-                  : styles.visibilityHidden
-              }
+            <br />
+            <span
+              className={resolveInvalidMessageStyle(
+                verification.passwordCheckConstraints,
+                passwordCheck,
+              )}
             >
               비밀번호가 일치하지 않습니다.
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -288,7 +327,7 @@ export default function SignUp() {
           title={'가입하기'}
           onClick={handleSignUp}
           isEnable={isEnable}
-          cursor={isEnable ? 'pointer' : 'not-allowed'}
+          pointer={isEnable ? 'pointer' : 'not-allowed'}
         />
       </div>
     </>

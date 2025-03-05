@@ -32,10 +32,10 @@ export default function Login() {
   };
 
   const handleInputChange = (event) => {
-    setIntputData({
-      ...inputData,
+    setIntputData((prev) => ({
+      ...prev,
       [event.target.name]: event.target.value,
-    });
+    }));
   };
 
   const handleSignUpButtonClick = (event) => {

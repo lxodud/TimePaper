@@ -1,4 +1,5 @@
 .signUpContainer {
+  position: relative;
   margin-bottom: 3rem;
   display: flex;
   margin: 0 auto;
@@ -12,9 +13,11 @@
   gap: 10px;
   margin: 0 auto 10% 0;
 }
+
 .signUpForm label {
   display: block;
 }
+
 .signUpForm > div {
   width: 95%;
   margin-left: 6%;
@@ -32,6 +35,16 @@
   width: 70%;
   height: 25px;
   border-radius: 5px;
+}
+
+.fieldsInput::placeholder {
+  opacity: 1;
+  text-align: center;
+}
+
+.fieldsInput:focus::placeholder {
+  opacity: 0;
+  text-align: left;
 }
 
 .fieldsInputLock {
@@ -115,8 +128,8 @@
 }
 
 .authentication {
-  font-size: 10px;
-  padding-left: 3px;
+  font-size: var(--font-size-small);
+  font-family: var(--pretendard-Light);
 }
 
 .visibilityVisible {
@@ -131,7 +144,7 @@
 }
 
 .marginBox {
-  margin-bottom: 8px;
+  
 }
 
 /* 전체 요소에 드래그 방지 적용 */
@@ -144,4 +157,18 @@
 
 .bottomBox {
   text-align: center;
+}
+
+.invalidMessageVisible {
+  color: red;
+  font-size: var(--font-size-small);
+  font-family: var(--pretendard-Light);
+  visibility: visible;
+}
+
+.invalidMessageHidden {
+  color: red;
+  font-size: var(--font-size-small);
+  font-family: var(--pretendard-Light);
+  visibility: hidden;
 }
