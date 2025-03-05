@@ -3,8 +3,11 @@ import styles from './MyPage.module.css';
 import Dropdown from './Dropdown.jsx'; // 드롭다운 컴포넌트 import
 import { useSelector } from 'react-redux';
 import { api } from '../../api/api.js';
+import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
+  const navigate = useNavigate();
+
   // Redux 상태에서 email 가져오기
   const email = useSelector((state) => state.auth.email);
 
@@ -58,6 +61,17 @@ const MyPage = () => {
     }
   }, [accessToken]); // accessToken이 변경될 때마다 API 호출
 
+  // Handler to navigate to timepaper details
+  const handleTimePaperClick = (timepaperId) => {
+    // Navigate to the timepaper details page
+    navigate(`/timepaper/${timepaperId}`);
+  };
+
+  // Handler to navigate to postit details
+  const handlePostitClick = (postitId) => {
+    navigate(`/postits/${postitId}`);
+  };
+
   const handleActionClick = (path) => {
     //    console.log(`${path}로 이동`); // 경로 처리 로직 추가
     // 필요 시 navigate(path)로 경로 이동 구현 가능
@@ -89,7 +103,11 @@ const MyPage = () => {
         {currentTab === 'timepapers' && (
           <ul>
             {myTimepapers.map((timepaper) => (
-              <li key={timepaper.key} className={styles.listItem}>
+              <li
+                key={timepaper.key}
+                className={styles.listItem}
+                onClick={() => handleTimePaperClick(timepaper.rollingPaperId)}
+              >
                 {timepaper.title}
               </li>
             ))}
@@ -98,7 +116,11 @@ const MyPage = () => {
         {currentTab === 'postits' && (
           <ul>
             {myPostits.map((postit) => (
-              <li key={postit.key} className={styles.listItem}>
+              <li
+                key={postit.key}
+                className={styles.listItem}
+                onClick={() => handlePostitClick(postit.postitId)}
+              >
                 {postit.content}
               </li>
             ))}

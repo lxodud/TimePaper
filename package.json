@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@reduxjs/toolkit": "^2.6.0",
     "axios": "^1.8.1",
     "husky": "^9.1.7",
     "jwt-decode": "^4.0.0",

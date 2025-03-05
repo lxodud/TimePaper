@@ -1,6 +1,5 @@
 import apiInstance from './apiInstance';
 import store from '../store/store';
-import { couldStartTrivia } from 'typescript';
 const state = store.getState();
 
 export const api = {
@@ -141,4 +140,28 @@ export const api = {
     });
     return response;
   },
+
+
+  // getMyTimePapers: async () => {
+  //   const state = store.getState();
+  //   const response = await apiInstance.get(`/my/timepapers/${timepaperId}`, {
+  //     headers: {
+  //       Authorization: state.auth.accessToken,
+  //     },
+  //     withCredentials: true,
+  //   });
+  //   return response;
+  // },
+
+  // getMyPostits: async () => {
+  //   const state = store.getState();
+  //   const response = await apiInstance.get(`/my/postits/${postitId}`, {
+  //     headers: {
+  //       Authorization: state.auth.accessToken,
+  //     },
+  //     withCredentials: true,
+  //   });
+  //   return response;
+  // },
+
 };
