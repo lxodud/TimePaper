@@ -8,7 +8,8 @@ import com.timepaper.backend.domain.timepaper.entity.TimePaper;
 import com.timepaper.backend.domain.timepaper.repository.TimePaperRepository;
 import com.timepaper.backend.domain.user.entity.User;
 import com.timepaper.backend.global.exception.ErrorCode;
-import com.timepaper.backend.global.exception.custom.timepaper.ResourceNotFoundException;
+import com.timepaper.backend.global.exception.custom.common.ForBiddenException;
+import com.timepaper.backend.global.exception.custom.common.ResourceNotFoundException;
 import com.timepaper.backend.global.s3.service.S3Service;
 import java.util.Map;
 import java.util.UUID;
@@ -63,10 +64,10 @@ public class PostitService {
   @Transactional
   public void deletePostit(Long postitId, Long userId) {
     Postit postit = postitRepository.findById(postitId)
-        .orElseThrow(() -> new IllegalArgumentException("포스트잇이 없습니다."));
+        .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.POSTIT_NOT_FOUND));
 
     if (postit.getAuthor().getId() != userId) {
-      throw new IllegalArgumentException("삭제 권한이 없습니다");
+      throw new ForBiddenException();
     }
 
     if (postit.getS3Key() != null) {

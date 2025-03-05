@@ -27,7 +27,7 @@ public enum ErrorCode {
   //인증 관련 (3000번)
   INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "3000", "아이디 또는 비밀번호가 일치하지 않습니다"),
   INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "3001", "유효하지 않은 JWT TOKEN 입니다."),
-  FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN, "3002", "접근 권한이 없습니다."),
+  //필요한가?
   INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "3003", "유효하지 않은 REFRESH TOKEN 입니다."),
   EMAIL_PASSWORD_REQUIRED(HttpStatus.BAD_REQUEST, "3004", "이메일 비밀번호는 필수입니다."),
 
@@ -35,12 +35,16 @@ public enum ErrorCode {
   //클라이언트 (4000번)
   INVALID_INPUT(HttpStatus.BAD_REQUEST, "4000", "입력값이 올바르지 않습니다."),
   PAYLOAD_TOO_LARGE(HttpStatus.BAD_REQUEST, "4001", "파일 크키가 너무 큽니다. 3MB 이하로 업로드해주세요."),
-  DEFAULT_NOT_FOUD(HttpStatus.BAD_REQUEST, "40002", "해당 리소스가 존재하지 않습니다."),
+  DEFAULT_NOT_FOUND(HttpStatus.BAD_REQUEST, "4002", "해당 리소스가 존재하지 않습니다."),
+  DEFAULT_FORBIDDEN(HttpStatus.FORBIDDEN, "4003", "권한이 없습니다."),
 
-  //타임페이퍼(40100)
-  TIMEPAPER_NOT_FOUND(HttpStatus.BAD_REQUEST, "40100", "해당 타임페이퍼가 존재하지 않습니다."),
+  //타임페이퍼(4100)
+  TIMEPAPER_NOT_FOUND(HttpStatus.BAD_REQUEST, "4104", "해당 타임페이퍼가 존재하지 않습니다."),
 
-  //포스트잇 (40200)
+  //포스트잇 (4200)
+  POSTIT_DELETE_FORBIDDEN(HttpStatus.BAD_REQUEST, "4203", "해당 포스트잇을 삭제할 권한이 없습니다."),
+  POSTIT_NOT_FOUND(HttpStatus.BAD_REQUEST, "4204", "해당 포스트잇이 존재하지 않습니다."),
+
 
   //네트워크, 데이터베이스 등
   SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "5000", "서버 내부 오류가 발생했습니다.");
