@@ -237,7 +237,7 @@ export default function TimePaperDetail() {
               </div>
             )}
             <div className={styles.buttonGroup}>
-              <ShareLink></ShareLink>
+              <ShareLink timepaperId={timepaperId}></ShareLink>
               <BottomButton
                 title="포스트잇 작성"
                 onClick={handlePostItCreateClick}

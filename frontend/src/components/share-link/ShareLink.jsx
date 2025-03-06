@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import BottomButton from '../BottomButton/BottomButton';
 
-export default function ShareLink() {
+export default function ShareLink({ timepaperId }) {
   const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
-  const realUrl = 'https://43.201.24.13.sslip.io/';
+  const realUrl = `https://43.201.24.13.sslip.io/timepaper/${timepaperId}`;
 
   useEffect(() => {
     if (!window.Kakao) {
