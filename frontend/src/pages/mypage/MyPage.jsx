@@ -64,47 +64,7 @@ const MyPage = () => {
     }
   }, [accessToken]);
 
-  // useEffect(() => {
-  //   const fetchTimepaper = async () => {
-  //     try {
-  //       const response = await api.getTimepaper(timepaperId);
-  //       if (response && response.data && response.data.data) {
-  //         const timePaperData = response.data.data;
-  //         setTimepaper(timePaperData);
-  //         dispatch(setPageTitle(timePaperData.title));
-  //       }
-  //     } catch (error) {
-  //       if (error.response && error.response.status === 404) {
-  //         setErrorMessage('해당 타임페이퍼는 존재하지 않습니다.');
-  //       } else {
-  //         console.log(error.response.status);
-  //         console.error('타임페이퍼 조회 에러:', error);
-  //         setErrorMessage('타임페이퍼 데이터를 불러오는 중 오류가 발생했습니다.');
-  //       }
-  //     }
-  //   };
-  //   fetchTimepaper();
-  // }, [timepaperId, dispatch]);
-
-  // 포스트잇 데이터 가져오기
-  // useEffect(() => {
-  //   if (!timepaper) return; // 타임페이퍼가 없으면 포스트잇 데이터를 가져오지 않음
-  //   const fetchPostits = async () => {
-  //     try {
-  //       const response = await api.getPostits(timepaperId);
-  //       if (response && response.data && response.data.data && response.data.data.postits) {
-  //         setPostits(response.data.data.postits);
-  //       } else {
-  //         console.error('포스트잇 데이터가 없습니다.');
-  //       }
-  //     } catch (error) {
-  //       console.error('포스트잇 조회 에러:', error);
-  //     }
-  //   };
-
-  //   fetchPostits();
-  // }, [timepaper, timepaperId]);
-
+  
   // 롤링페이퍼 클릭 시 상세 페이지로 이동
   const handleTimePaperClick = (timepaperId) => {
     navigate(`/timepaper/${timepaperId}`);
