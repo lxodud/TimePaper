@@ -9,6 +9,7 @@ import ConfirmModal from '../../components/confirmmodal/ConfirmModal';
 import Modal from '../../components/Modal/Modal';
 import { finishLoading, startLoading } from '../../store/slices/loadingSlice';
 import Alert from '../../components/Alert/Alert';
+import ShareLink from '../../components/share-link/ShareLink';
 
 export default function TimePaperDetail() {
   const { timepaperId } = useParams();
@@ -45,7 +46,7 @@ export default function TimePaperDetail() {
         if (timePaperResponse && timePaperResponse.data && timePaperResponse.data.data) {
           const timePaperData = timePaperResponse.data.data;
           if (timePaperData.locked) {
-            navigate(`/timepaper/${timepaperId}/lock`, { replace: true});
+            navigate(`/timepaper/${timepaperId}/lock`, { replace: true });
             return;
           }
 
@@ -234,12 +235,15 @@ export default function TimePaperDetail() {
                 )}
               </div>
             )}
-            <BottomButton
-              title="포스트잇 작성"
-              onClick={handlePostItCreateClick}
-              isEnable={true}
-              className={styles.postitCreate}
-            />
+            <div className={styles.buttonGroup}>
+              <ShareLink timepaperId={timepaperId}></ShareLink>
+              <BottomButton
+                title="포스트잇 작성"
+                onClick={handlePostItCreateClick}
+                isEnable={true}
+                className={styles.postitCreate}
+              />
+            </div>
           </div>
         </div>
       </div>
