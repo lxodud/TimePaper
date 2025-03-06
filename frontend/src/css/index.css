@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
 :root {
   /*color*/
   --orange-color: #f0842c;
@@ -15,31 +17,6 @@
   --font-size-medium: 18px;
 
   --top-margin: 10%;
-}
-
-@font-face {
-  font-family: 'Pretendard-Regular';
-  src: url('../assets/fonts/Pretendard-Regular.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Pretendard-Bold';
-  src: url('../assets/fonts/Pretendard-Bold.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Pretendard-SemiBold';
-  src: url('../assets/fonts/Pretendard-SemiBold.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Pretendard-Light';
-  src: url('../assets/fonts/Pretendard-Light.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Pretendard-Medium';
-  src: url('../assets/fonts/Pretendard-Medium.otf') format('opentype');
 }
 
 .main-container {
