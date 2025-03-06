@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import staticImagePath from '../../constant/staticImagePath';
 import styles from './PostItCreate.module.css';
 import UnderBarInput from '../../components/UnderBarInput/UnderBarInput';
 import BottomButton from '../../components/BottomButton/BottomButton';
 import { api } from '../../api/api';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ssrModuleExportsKey } from 'vite/module-runner';
+import Alert from '../../components/Alert/Alert';
 
 export default function PostItCreate() {
   const { timepaperId } = useParams();
@@ -12,6 +14,9 @@ export default function PostItCreate() {
   const [isSubmitable, setIsSubmitable] = useState(false);
   const templates = [staticImagePath.postitAfternoon, staticImagePath.postitNight];
   const [errors, setErrors] = useState({});
+  const [isTouched, setIsTouched] = useState({ content: false, authorName: false });
+  const [isShowAlert, setIsShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
 
   const INITIAL_FORM_DATA = {
@@ -50,6 +55,10 @@ export default function PostItCreate() {
     }));
   };
 
+  useEffect(() => {
+    setErrors(validateInput(inputData));
+  }, [inputData]);
+
   const handleStaticImage = (src) => () => {
     setImageState((prev) => ({
       ...prev,
@@ -57,6 +66,13 @@ export default function PostItCreate() {
       preview: src,
       imageData: src,
     }));
+  };
+
+  const handleOnClick = (e) => {
+    const { name } = e.target;
+    setIsTouched((prev) => ({ ...prev, [name]: true }));
+    const a = validateInput(inputData);
+    setErrors(a);
   };
 
   const handleUploadImageClick = () => {
@@ -70,7 +86,8 @@ export default function PostItCreate() {
 
     const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!validImageTypes.includes(file.type)) {
-      alert('이미지 파일만 업로드 가능합니다.');
+      setIsShowAlert(true);
+      setAlertMessage('이미지 파일만 업로드 가능합니다.');
       return;
     }
 
@@ -84,10 +101,6 @@ export default function PostItCreate() {
       }));
     };
     reader.readAsDataURL(file);
-  };
-
-  const handleBlur = () => {
-    setErrors(validateInput(inputData));
   };
 
   const validateInput = (data) => {
@@ -151,6 +164,7 @@ export default function PostItCreate() {
       formData.append('image', imageState.imageData);
     }
 
+    setIsSubmitable(false);
     (async () => {
       try {
         const response = await api.createPostit(timepaperId, formData);
@@ -158,35 +172,46 @@ export default function PostItCreate() {
           navigate(`/timepaper/${timepaperId}`, { replace: true });
         }
       } catch (error) {
-        alert('등록에 실패했습니다.');
-      } finally {
-        setIsSubmitable(false);
+        setIsShowAlert(true);
+        setAlertMessage('등록에 실패했습니다.');
+        setIsSubmitable(true);
       }
     })();
   };
 
+  const handleAlertButtonClick = () => {
+    setIsShowAlert(false);
+  };
+
   return (
     <>
+      {isShowAlert && (
+        <Alert message={alertMessage} buttonTitle={'확인'} onClick={handleAlertButtonClick}></Alert>
+      )}
       <form action="" className={styles.container}>
         <div className={styles.underBarInput}>
           <UnderBarInput
             onChange={handleOnChange}
             name="authorName"
             placeholder="작성자 입력"
-            onBlur={handleBlur}
+            onClick={handleOnClick}
           ></UnderBarInput>
-          {errors.authorName && <p className={styles.error}>{errors.authorName}</p>}
+          {isTouched.authorName && errors.authorName && (
+            <p className={styles.error}>{errors.authorName}</p>
+          )}
         </div>
         <div className={styles.selectedImage}>
           <img src={imageState.preview} className="logo-image" alt="선택된 포스트잇 이미지" />
           <div className={styles.textareaContainer}>
             <textarea
               onChange={handleOnChange}
-              onBlur={handleBlur}
               name="content"
               className={styles.textarea}
+              onClick={handleOnClick}
             ></textarea>
-            {errors.content && <p className={styles.textareaError}>{errors.content}</p>}
+            {isTouched.content && errors.content && (
+              <p className={styles.textareaError}>{errors.content}</p>
+            )}
           </div>
         </div>
         <section className={styles.imageContainer}>
