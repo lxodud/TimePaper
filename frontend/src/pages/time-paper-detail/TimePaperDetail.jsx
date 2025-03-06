@@ -25,7 +25,7 @@ export default function TimePaperDetail() {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [isScrollLoading, setIsScrollLoading] = useState(false)
+  const [isScrollLoading, setIsScrollLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -74,7 +74,7 @@ export default function TimePaperDetail() {
     }
 
     dispatch(startLoading());
-    setIsScrollLoading(true)
+    setIsScrollLoading(true);
 
     try {
       const response = await api.getPostits(timepaperId, currentPage);
@@ -85,7 +85,7 @@ export default function TimePaperDetail() {
     } catch {
     } finally {
       dispatch(finishLoading());
-      setIsScrollLoading(false)
+      setIsScrollLoading(false);
     }
   };
 
@@ -224,15 +224,6 @@ export default function TimePaperDetail() {
                   isEnable={true}
                 />
                 <BottomButton title="타임페이퍼 삭제" onClick={handleDeleteClick} isEnable={true} />
-
-                {/* 확인 모달 */}
-                {showConfirmModal && (
-                  <ConfirmModal
-                    message="정말로 이 타임페이퍼를 삭제하시겠습니까?"
-                    onConfirm={handleDeleteTimepaper} // 확인 클릭 시 삭제 처리
-                    onCancel={() => setShowConfirmModal(false)} // 취소 클릭 시 모달 닫기
-                  />
-                )}
               </div>
             )}
             <div className={styles.buttonGroup}>
@@ -247,6 +238,14 @@ export default function TimePaperDetail() {
           </div>
         </div>
       </div>
+      {/* 확인 모달 */}
+      {showConfirmModal && (
+        <ConfirmModal
+          message="정말로 이 타임페이퍼를 삭제하시겠습니까?"
+          onConfirm={handleDeleteTimepaper} // 확인 클릭 시 삭제 처리
+          onCancel={() => setShowConfirmModal(false)} // 취소 클릭 시 모달 닫기
+        />
+      )}
       <div ref={bottomRef}></div>
       {isScrollLoading && <div>로딩중......</div>}
     </>
