@@ -1,6 +1,6 @@
 services:
   mysql:
-    container_name: mysql-container-test
+    container_name: mysql-container-local
     image: mysql:8.0
     volumes:
       - db-volume:/var/lib/mysql
@@ -15,7 +15,7 @@ services:
       retries: 3
       start_period: 30s
   redis:
-    container_name: redis-container-test
+    container_name: redis-container-local
     image: redis:latest
     volumes:
       - redis-volume:/data
@@ -31,20 +31,11 @@ services:
       retries: 3
       start_period: 10s
   api:
-    container_name: api-container-test
+    container_name: api-container-local
     build:
       context: ./backend
-      #이미지 레이어 캐싱 적용
-      cache_to:
-        - type=local,dest=/tmp/.build-cache/api,mode=max
-      cache_from:
-        - type=local,src=/tmp/.build-cache/api
-    image: yejinoh58/timepaper-api-image:local
     env_file:
       - .env.local
-    # 임시로 포트 포워딩
-    ports:
-      - "8082:8080"
     networks:
       - db-network
       - cache-network
@@ -55,18 +46,13 @@ services:
       redis:
         condition: service_healthy
   client:
-    container_name: client-container-test
+    container_name: client-container-local
     build:
       context: ./frontend
       dockerfile: Dockerfile.local
-      cache_to:
-        - type=local,dest=/tmp/.build-cache/client,mode=max
-      cache_from:
-        - type=local,src=/tmp/.build-cache/client
       args:
         VITE_API_URL: ${VITE_API_URL}
         VITE_KAKAO_API_KEY: ${VITE_KAKAO_API_KEY}
-    image: yejinoh58/timepaper-client-image:local
     env_file:
       - .env.local
     ports:
