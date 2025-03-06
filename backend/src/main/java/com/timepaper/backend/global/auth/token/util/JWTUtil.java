@@ -23,7 +23,7 @@ public class JWTUtil {
   private static final Logger log = LoggerFactory.getLogger(JWTUtil.class);
   private final long tokenValidityInMilliseconds = 1000L * 60 * 60 * 24 * 7; // 개발용 7일
 
-  @Value("${jwt.secret}")
+  @Value("${JWT_SECRET}")
   private String secretKey;
 
   @PostConstruct

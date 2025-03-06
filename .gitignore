@@ -64,6 +64,7 @@ $RECYCLE.BIN/
 
 .env
 .env.local
+.env.local.copy
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,visualstudiocode
