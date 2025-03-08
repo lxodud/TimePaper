@@ -63,8 +63,8 @@ services:
         - type=local,src=/tmp/.build-cache/client
       args:
         VITE_API_URL: ${VITE_API_URL}
-        VITE_KAKAO_API_KEY: ${VITE_KAKAO_API_KEY}
-    image: yejinoh58/timepaper-client-image:latest
+        # VITE_KAKAO_API_KEY: ${VITE_KAKAO_API_KEY}
+    image: wonnho/timepaper-client-image:latest
     env_file:
       - .env
     environment:
