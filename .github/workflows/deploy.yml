@@ -19,7 +19,10 @@ jobs:
         with:
           path: /tmp/.build-cache
           key: docker-image-cache-${{ github.sha }}
-          restore-keys: docker-image-cache-
+          restore-keys: 
+            docker-image-cache-${{ github.head_ref }}-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/requirements.txt') }}
+            docker-image-cache-${{ github.head_ref }}-
+            docker-image-cache-
 
       - name: Create .env file
         run: |
