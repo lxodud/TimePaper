@@ -48,6 +48,7 @@ jobs:
           echo "TIME_PAPER_URL=${{ secrets.TIME_PAPER_URL }}" >> .env
           echo "ORIGIN=${{ secrets.ORIGIN }}" >> .env
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
+          echo "DOCKER_REGISTRY=${{ secrets.DOCKER_REGISTRY }}" >> .env
 
       - name: Add ssh-agent
         uses: webfactory/ssh-agent@v0.9.0
